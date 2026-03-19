@@ -34,6 +34,6 @@ export const HOME_DATA: Record<Language, HomeContent> = {
     ],
     intro: "Your personal catchphrase or introduction goes here.",
     selectedWorks: "Selected Works",
-    years: "[ 20XX — 20XX ]"
+    years: "[ 2020 — 2026 ]"
   }
 };
