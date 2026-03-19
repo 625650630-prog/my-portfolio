@@ -16,28 +16,24 @@ export interface HomeContent {
 export const HOME_DATA: Record<Language, HomeContent> = {
   zh: {
     heroItems: [
-      { text: "电商视觉设计", annotation: "", category: Category.VIDEO },
-      { text: "AIGC项目对接", annotation: "", category: Category.DESIGN },
-      { text: "新媒体运营", annotation: "", category: Category.DESIGN },
-      { text: "商业拍摄与视频制作", annotation: "", category: Category.DEV },
-      { text: "多元视觉设计落地", annotation: "", category: Category.DESIGN },
+      { text: "摄影摄像", annotation: "（作品积累较多）", category: Category.VIDEO }, // category is kept as VIDEO but UI will split
+      { text: "平面交互", annotation: "（当前主攻，兴趣所在）", category: Category.DESIGN },
+      { text: "应用开发", annotation: "（vibe builder）", category: Category.DEV },
+      { text: "炒粉炒饭", annotation: "（还在学）", category: null }
     ],
-    // 📍 首页文字介绍（支持使用 | 换行）
-    intro: "你好，我是 [你的名字] | 专注于电商视觉、AIGC 创意落地与新媒体运营 | 致力于通过商业拍摄与视频制作，实现多元化的视觉叙事与商业价值落地。",
+    intro: "Your personal catchphrase or introduction goes here.",
     selectedWorks: "精选作品",
-    years: "[ 2024 — 2026 ]"
+    years: "[ 20XX — 20XX ]"
   },
   en: {
     heroItems: [
-      { text: "E-commerce Visual Design", annotation: "", category: Category.VIDEO },
-      { text: "AIGC Project Integration", annotation: "", category: Category.DESIGN },
-      { text: "New Media Operations", annotation: "", category: Category.DESIGN },
-      { text: "Commercial Photo & Video", annotation: "", category: Category.DEV },
-      { text: "Visual Design Execution", annotation: "", category: Category.DESIGN }
+      { text: "Photography & Videography", annotation: "(Extensive Portfolio)", category: Category.VIDEO },
+      { text: "Graphic & UI", annotation: "(Main Focus & Passion)", category: Category.DESIGN },
+      { text: "Development", annotation: "(Vibe Coder)", category: Category.DEV },
+      { text: "Cooking", annotation: "(Still Learning)", category: null }
     ],
-    // 📍 英文版介绍
-    intro: "Hi, I'm [Your Name] | Focused on E-commerce Visuals, AIGC & New Media | Dedicated to bringing diverse visual designs to life through commercial photography and high-quality video production.",
+    intro: "Your personal catchphrase or introduction goes here.",
     selectedWorks: "Selected Works",
-    years: "[ 2024 — 2026 ]"
+    years: "[ 20XX — 20XX ]"
   }
 };
