@@ -38,22 +38,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       item.text.includes('Photography & Videography');
 
     if (isPhotographyVideography) {
-      const parts = language === 'zh' 
-        ? [
-            { text: '摄影', category: Category.PHOTO },
-            { text: '摄像', category: Category.VIDEO }
-          ]
-        : [
-            { text: 'Photography', category: Category.PHOTO },
-            { text: '&', category: null },
-            { text: 'Videography', category: Category.VIDEO }
-          ];
-
-      return (
-        <h1 className={`
-          ${language === 'en' ? 'text-[8vw] lg:text-[6vw]' : 'text-[10vw] lg:text-[5vw]'} 
-          font-black tracking-wide leading-tight text-black dark:text-white transition-all duration-300 whitespace-nowrap overflow-visible
-        `}>
+  // ... 其他代码
+  return (
+    <h1 className={`${fontSizeClasses} font-black tracking-normal leading-tight text-black dark:text-white transition-all duration-300 whitespace-nowrap`}>
+      {/* parts.map ... */}
+    </h1>
+  );
+}
           {parts.map((part, pIndex) => (
             <span 
               key={pIndex}
@@ -91,10 +82,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
   };
 
   return (
-    <div className="w-full max-w-[96vw] mx-auto animate-fade-in relative">
-      
-      {/* Intro Block - Mobile Stacked, Desktop Split */}
-      <section className="flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-16 mb-12 lg:mb-20 items-start">
+  <h1 className={`${fontSizeClasses} font-black tracking-normal leading-tight text-black dark:text-white transition-all duration-300 whitespace-nowrap group-hover:opacity-70`}>
+    {item.text}
+    {/* annotation ... */}
+  </h1>
+);
         
         {/* LEFT: Massive Interactive Title */}
         <div className="lg:col-span-7 w-full">
