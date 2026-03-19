@@ -22,18 +22,19 @@ export const HOME_DATA: Record<Language, HomeContent> = {
       { text: "商业拍摄与视频制作",  category: Category.DESIGN },
       { text: "多元视觉设计落地", category: Category.DESIGN }
     ],
-    intro: "Your personal catchphrase or introduction goes here.",
+    intro: "pursuit of perfection.",
     selectedWorks: "精选作品",
     years: "[ 2020 — 2026 ]"
   },
   en: {
     heroItems: [
-      { text: "Photography & Videography", annotation: "(Extensive Portfolio)", category: Category.VIDEO },
-      { text: "Graphic & UI", annotation: "(Main Focus & Passion)", category: Category.DESIGN },
-      { text: "Development", annotation: "(Vibe Coder)", category: Category.DEV },
-      { text: "Cooking", annotation: "(Still Learning)", category: null }
+      { text: "Electricity Design", category: Category.VIDEO }, // category is kept as VIDEO but UI will split
+      { text: "AIGC Project",  category: Category.DESIGN },
+      { text: "New Media Operations",  category: Category.DESIGN },
+      { text: "Commercial Photograph",  category: Category.DESIGN },
+      { text: "Visual Design", category: Category.DESIGN }
     ],
-    intro: "Your personal catchphrase or introduction goes here.",
+    intro: "pursuit of perfection.",
     selectedWorks: "Selected Works",
     years: "[ 2020 — 2026 ]"
   }
