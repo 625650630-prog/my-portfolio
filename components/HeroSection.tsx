@@ -52,7 +52,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       return (
         <h1 className={`
           ${language === 'en' ? 'text-[8vw] lg:text-[6vw]' : 'text-[10vw] lg:text-[5vw]'} 
-          font-black tracking-normal leading-tight text-black dark:text-white transition-all duration-300 whitespace-nowrap overflow-visible
+          font-black tracking-wide leading-tight text-black dark:text-white transition-all duration-300 whitespace-nowrap overflow-visible
         `}>
           {parts.map((part, pIndex) => (
             <span 
@@ -69,7 +69,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
             </span>
           ))}
           {/* Annotation */}
-          <span className="text-[0.3em] align-middle ml-2 lg:ml-4 text-gray-400 font-bold tracking-normal inline-block transform translate-y-[-0.1em]">
+          <span className="text-[0.3em] align-middle ml-2 lg:ml-4 text-gray-400 font-bold tracking-wide inline-block transform translate-y-[-0.1em]">
             {item.annotation}
           </span>
         </h1>
