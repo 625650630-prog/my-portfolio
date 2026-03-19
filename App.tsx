@@ -464,7 +464,7 @@ function App() {
                       {language === 'zh' ? '公众号' : 'WeChat'}
                     </h3>
                     <p className="text-lg opacity-70 text-gray-500 dark:text-gray-400 transition-colors duration-300">
-                      {content.socials?.wechat || 'Lun3cy'}
+                      {content.socials?.wechat || 'Silence7c'}
                     </p>
                     
                     {/* Glassmorphism Tooltip */}
@@ -514,7 +514,7 @@ function App() {
                       {language === 'zh' ? '小红书' : 'RED'}
                     </h3>
                     <p className="text-lg opacity-70 text-gray-500 dark:text-gray-400 transition-colors duration-300">
-                      {content.socials?.xiaohongshu || 'Lun3cy'}
+                      {content.socials?.xiaohongshu || 'Silence7c'}
                     </p>
 
                     {/* Glassmorphism Tooltip */}
@@ -564,7 +564,7 @@ function App() {
                       Bilibili
                     </h3>
                     <p className="text-lg opacity-70 text-gray-500 dark:text-gray-400 transition-colors duration-300">
-                      {content.socials?.bilibili || 'Lun3cy'}
+                      {content.socials?.bilibili || 'Silence7c'}
                     </p>
 
                     {/* Glassmorphism Tooltip */}
