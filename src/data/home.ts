@@ -19,7 +19,7 @@ export const HOME_DATA: Record<Language, HomeContent> = {
       { text: "视觉与包装设计", category: Category.DESIGN }, // category is kept as VIDEO but UI will split
       { text: "AIGC项目", category: Category.DESIGN },
       { text: "商业摄影与视频", category: Category.DESIGN）", category: Category.DEV },
-      { text: "新媒体运营", category: Category.DESIGN }
+      { text: "新媒体运营", category: Category.DESIGN },
     ],
     intro: "Your personal catchphrase or introduction goes here.",
     selectedWorks: "精选作品",
