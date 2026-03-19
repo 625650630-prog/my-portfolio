@@ -52,7 +52,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       return (
         <h1 className={`
           ${language === 'en' ? 'text-[8vw] lg:text-[6vw]' : 'text-[10vw] lg:text-[5vw]'} 
-          font-black tracking-tighter leading-tight text-black dark:text-white transition-all duration-300 whitespace-nowrap overflow-visible
+          font-black tracking-normal leading-tight text-black dark:text-white transition-all duration-300 whitespace-nowrap overflow-visible
         `}>
           {parts.map((part, pIndex) => (
             <span 
