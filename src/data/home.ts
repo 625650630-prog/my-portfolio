@@ -24,7 +24,7 @@ export const HOME_DATA: Record<Language, HomeContent> = {
     ],
     intro: "pursuit of perfection.",
     selectedWorks: "精选作品",
-    years: "[ 2020 — 2026 ]"
+    years: "[ 2018 — 2026 ]"
   },
   en: {
     heroItems: [
@@ -36,6 +36,6 @@ export const HOME_DATA: Record<Language, HomeContent> = {
     ],
     intro: "pursuit of perfection.",
     selectedWorks: "Selected Works",
-    years: "[ 2020 — 2026 ]"
+    years: "[ 2018 — 2026 ]"
   }
 };
