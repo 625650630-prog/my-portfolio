@@ -69,14 +69,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
     currentProjects.some(p => p.category === cat) || cat === Category.DEV
   );
   
- const categories = [
-  Category.ALL,
-  Category.DESIGN,
-  Category.AIGC,
-  Category.NEW_MEDIA,
-  Category.VIDEO_PHOTO,
-  Category.MULTIVERSAL
-];
+  const categories = ['All', ...availableCategories];
 
   const filteredProjects = filter === 'All' 
     ? currentProjects 
