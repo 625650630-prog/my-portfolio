@@ -3,16 +3,11 @@ export type Language = 'zh' | 'en';
 
 export enum Category {
   ALL = 'All',
-  DESIGN = 'Commercial Visual Design',      // 对应：电商视觉设计
-  AIGC = 'AIGC Projects',                   // 对应：AIGC项目
-  
-  // 👇 下面是你新增的三个分类
-  NEW_MEDIA = 'New Media Operations',       // 对应：新媒体运营
-  VIDEO_PHOTO = 'Commercial Photo & Video', // 对应：商业拍摄与视频制作
-  MULTIVERSAL = 'Multiversal Design',       // 对应：多元视觉设计落地
-  
-  // 如果你还需要保留以前的“开发”和“文章”分类，可以留着下面这两行；不需要的话直接删掉即可
-  DEV = 'Development',
+  DESIGN = 'Commercial Visual Design', 
+  AIGC = 'AIGC Projects',
+  NEW_MEDIA = 'New Media Operations',     
+  VIDEO_PHOTO = 'Commercial Photo & Video', 
+  MULTIVERSAL = 'Multiversal Design',    
   ARTICLE = 'Article'
 }
 
