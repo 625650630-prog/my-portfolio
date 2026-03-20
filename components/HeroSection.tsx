@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { HOME_DATA } from '../src/data/home';
 import { CONTACT_DATA } from '../src/data/contact';
@@ -24,7 +23,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
 
   const handleHeadlineClick = (category: Category | null) => {
     if (category) {
-      onCategorySelect(category);
+      onCategorySelect(category); // 记录选中的分类
+      onNavigate('portfolio');    // 👉 新增的跳转代码：立刻跳转到作品页
     } else {
       // Show "Still Learning" Toast
       setShowToast(true);
