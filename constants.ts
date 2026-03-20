@@ -6,7 +6,7 @@ import { ARTICLE_DATA } from './src/data/articles';
 export const CATEGORY_LABELS: Record<Language, Record<string, string>> = {
   zh: {
     'All': '全部',
-    'Commercial Visual Design': '商视觉设计',
+    'Commercial Visual Design': '电商视觉设计',
     'AIGC Projects': 'AIGC项目',
     'New Media Operations': '新媒体运营',
     'Commercial Photo & Video': '商业拍摄与视频制作',
