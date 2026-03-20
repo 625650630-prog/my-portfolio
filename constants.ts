@@ -6,17 +6,19 @@ import { ARTICLE_DATA } from './src/data/articles';
 export const CATEGORY_LABELS: Record<Language, Record<string, string>> = {
   zh: {
     'All': '全部',
-    'Videography': '动态影像', // Renamed
-    'Graphics & UI': '平面交互',
-    'Photography': '静态摄影', // Renamed
-    'Development': '应用开发'
+    'Commercial Visual Design': '商视觉设计',
+    'AIGC Projects': 'AIGC项目',
+    'New Media Operations': '新媒体运营',
+    'Commercial Photo & Video': '商业拍摄与视频制作',
+    'Multiversal Design': '多元视觉设计落地'
   },
   en: {
     'All': 'All',
-    'Videography': 'Videography',
-    'Graphics & UI': 'Graphics & UI',
-    'Photography': 'Photography',
-    'Development': 'Development'
+    'Commercial Visual Design': 'Commercial Visual Design',
+    'AIGC Projects': 'AIGC Projects',
+    'New Media Operations': 'New Media Operations',
+    'Commercial Photo & Video': 'Commercial Photo & Video',
+    'Multiversal Design': 'Multiversal Design Implementation'
   }
 };
 
