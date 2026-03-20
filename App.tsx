@@ -690,7 +690,7 @@ function App() {
 
          {/* Footer */}
          <footer className="w-full max-w-[96vw] mx-auto mt-32 border-t-2 border-black dark:border-white pt-12 flex flex-col md:flex-row justify-between items-center text-sm font-light text-gray-400 dark:text-gray-500 uppercase tracking-wide gap-4 transition-colors duration-300">
-            <p>© 2026 LUN3CY FAN</p>
+            <p>© 2026 Silence7c </p>
             <p>{content.footerDesign}</p>
          </footer>
       </main>
