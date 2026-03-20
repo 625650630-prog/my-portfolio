@@ -1,6 +1,6 @@
 @echo off
 echo ========================================================
-echo       LuN3cy Image Compressor Tool
+echo       Silence7c Image Compressor Tool
 echo ========================================================
 echo.
 echo This tool scans your photography folder and automatically 
