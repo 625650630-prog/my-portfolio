@@ -4,9 +4,9 @@ export type Language = 'zh' | 'en';
 export enum Category {
   ALL = 'All',
   VIDEO = 'Videography',
-  DESIGN = 'Graphics & UI',
+  DESIGN = '电商视觉设计',
   PHOTO = 'Photography',
-  DEV = 'Development',
+  DEV = 'AIGC项目',
   ARTICLE = 'Article'
 }
 
