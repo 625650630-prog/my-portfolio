@@ -3,10 +3,11 @@ export type Language = 'zh' | 'en';
 
 export enum Category {
   ALL = 'All',
-  VIDEO = 'Videography',
-  DESIGN = 'Graphics & UI',
-  PHOTO = 'Photography',
-  DEV = 'Development',
+  COM_VISUAL = 'Commercial Visual Design',
+  AIGC = 'AIGC Projects',
+  NEW_MEDIA = 'New Media Operations',
+  PHOTO_VIDEO = 'Commercial Photo & Video',
+  MULTIVERSAL = 'Multiversal Design',
   ARTICLE = 'Article'
 }
 
