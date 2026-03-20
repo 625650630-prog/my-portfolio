@@ -56,13 +56,17 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
     }
   }, [externalFilter]);
 
-  // Get Categories in preferred order
+// Get Categories in preferred order
   const currentProjects = PROJECTS[language];
+  
+  // 👇 在这里排好你想要的按钮显示顺序
   const preferredOrder = [
-    Category.PHOTO,
-    Category.VIDEO,
-    Category.DESIGN,
-    Category.DEV
+    Category.DESIGN,       // 电商视觉设计
+    Category.AIGC,         // AIGC项目
+    Category.NEW_MEDIA,    // 新媒体运营
+    Category.VIDEO_PHOTO,  // 商业拍摄与视频制作
+    Category.MULTIVERSAL,  // 多元视觉设计落地
+    Category.DEV           // 应用开发 (如果你不需要这个了，可以删掉)
   ];
   
   const availableCategories = preferredOrder.filter(cat => 
