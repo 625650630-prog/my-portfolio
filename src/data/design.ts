@@ -35,9 +35,37 @@ export const DESIGN_DATA: Project[] = [
     }
   },
   {
+    id: 'd5',
+    common: {
+      category: 'AIGC Projects', // 👈 AIGC项目 (现在排在第 2 位)
+      image: 'https://www.figma.com/file/hslZfU850zu8tJ6P1Y6fbC/thumbnail',
+      figmaUrl: 'https://www.figma.com/design/hslZfU850zu8tJ6P1Y6fbC/%E6%AF%95%E8%AE%BE-%7C-%E8%AE%A1%E9%87%8F%E7%94%B5%E5%BD%B1%E5%AD%A6%E5%8F%AF%E8%A7%86%E5%8C%96?node-id=0-1&t=BT0hFhRYsmFehU60-1'
+    },
+    zh: {
+      title: '本科毕设 | 基于计量电影学的影片信息图表设计',
+      subtitle: '视觉设计系统',
+      description: '基于计量电影学（Cinemetrics）的信息图表设计项目，主要是对电影进行内容上的数据分析可视化。',
+      role: '全包',
+      tags: ['信息图表', '视计量电影学', 'Figma'],
+      awards: ["无"],
+      concept: "模拟荧幕的暗调设计风格以及霓虹高饱和提示色设计。",
+      roleDetail: "啥都干啊，这可是我的毕设。"
+    },
+    en: {
+      title: 'Infographic Design for Movie Information | Undergraduate Thesis',
+      subtitle: 'Visual Design System',
+      description: 'The infographic design project based on Cinemetrics, which mainly focuses on the content analysis and visualization of movies.',
+      role: 'ALL',
+      tags: ['Infographic', 'Cinemetrics', 'Figma'],
+      awards: ["None"],
+      concept: "Antique kraft paper design, new Chinese-style design.",
+      roleDetail: "Cover everything."
+    }
+  },
+  {
     id: 'd2',
     common: {
-      category: 'New Media Operations', // 新媒体运营
+      category: 'New Media Operations', // 新媒体运营 (现在排在第 3 位)
       image: 'https://www.figma.com/file/NDxB7Lh3WxAbSuCTJj2DU1/thumbnail?ver=thumbnails/ab422914-1f7c-4e2c-84d9-da1cbd5a49c5',
       figmaUrl: 'https://www.figma.com/design/NDxB7Lh3WxAbSuCTJj2DU1/MY-BRAND-%7C-%E5%85%AC%E4%BC%97%E5%8F%B7%E7%89%A9%E6%96%99%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%B1%B1%E6%B5%B7%E7%96%97%E5%85%BB%E9%99%A2?node-id=0-1&t=WQZ4agZJUDV7xMFW-1'
     },
@@ -65,7 +93,7 @@ export const DESIGN_DATA: Project[] = [
   {
     id: 'd3',
     common: {
-      category: 'Multiversal Design', // 多元视觉设计落地
+      category: 'Multiversal Design', // 多元视觉设计落地 (现在排在第 4 位)
       image: 'https://www.figma.com/file/z3UFyuPdEXd6hjG9CN1Ax2/thumbnail?ver=thumbnails/21d64c42-da89-494b-82f1-f64107525fd6',
       figmaUrl: 'https://www.figma.com/design/z3UFyuPdEXd6hjG9CN1Ax2/%E5%B9%B3%E9%9D%A2-%7C-%E6%9C%88%E5%85%89%E7%96%97%E5%85%BB%E9%99%A2?node-id=0-1&t=BQlZwjpSjHFDooFz-1'
     },
@@ -93,7 +121,7 @@ export const DESIGN_DATA: Project[] = [
   {
     id: 'd4',
     common: {
-      category: 'Commercial Photo & Video', // 商业拍摄与视频制作
+      category: 'Commercial Photo & Video', // 商业拍摄与视频制作 (现在排在第 5 位)
       image: 'https://www.figma.com/file/M9L3zEuJBRhj41JuXrOEO5/thumbnail',
       figmaUrl: 'https://www.figma.com/design/M9L3zEuJBRhj41JuXrOEO5/%E8%AE%A1%E8%AE%BE-%7C-%E6%95%B0%E5%AD%97%E7%9F%AD%E7%89%87?node-id=0-1&t=GjOH16Ga485SW7OC-1'
     },
@@ -116,34 +144,6 @@ export const DESIGN_DATA: Project[] = [
       awards: ["None"],
       concept: "Antique kraft paper design, new Chinese-style design.",
       roleDetail: "Visual concept definition, graphic system development, and extension design."
-    }
-  },
-  {
-    id: 'd5',
-    common: {
-      category: 'Commercial Visual Design', // 电商视觉设计
-      image: 'https://www.figma.com/file/hslZfU850zu8tJ6P1Y6fbC/thumbnail',
-      figmaUrl: 'https://www.figma.com/design/hslZfU850zu8tJ6P1Y6fbC/%E6%AF%95%E8%AE%BE-%7C-%E8%AE%A1%E9%87%8F%E7%94%B5%E5%BD%B1%E5%AD%A6%E5%8F%AF%E8%A7%86%E5%8C%96?node-id=0-1&t=BT0hFhRYsmFehU60-1'
-    },
-    zh: {
-      title: '本科毕设 | 基于计量电影学的影片信息图表设计',
-      subtitle: '视觉设计系统',
-      description: '基于计量电影学（Cinemetrics）的信息图表设计项目，主要是对电影进行内容上的数据分析可视化。',
-      role: '全包',
-      tags: ['信息图表', '视计量电影学', 'Figma'],
-      awards: ["无"],
-      concept: "模拟荧幕的暗调设计风格以及霓虹高饱和提示色设计。",
-      roleDetail: "啥都干啊，这可是我的毕设。"
-    },
-    en: {
-      title: 'Infographic Design for Movie Information | Undergraduate Thesis',
-      subtitle: 'Visual Design System',
-      description: 'The infographic design project based on Cinemetrics, which mainly focuses on the content analysis and visualization of movies.',
-      role: 'ALL',
-      tags: ['Infographic', 'Cinemetrics', 'Figma'],
-      awards: ["None"],
-      concept: "Antique kraft paper design, new Chinese-style design.",
-      roleDetail: "Cover everything."
     }
   }
 ];
