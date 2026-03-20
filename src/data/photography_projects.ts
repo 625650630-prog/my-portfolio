@@ -4,7 +4,8 @@ export const PHOTOGRAPHY_PROJECTS: Project[] = [
   {
     id: 'sample-1',
     common: {
-      category: 'Category Name',
+      // 👉 已经替换为最新的分类 Key
+      category: 'Commercial Photo & Video', 
       image: 'https://via.placeholder.com/1920x1080?text=Project+Cover',
       // bilibiliId: 'BVxxxxxxx' // For video
     },
