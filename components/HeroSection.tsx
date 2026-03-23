@@ -73,13 +73,27 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                 ? '打破常规框架。将最前沿的视觉设计、AIGC技术与多元理念结合，提供无与伦比的商业现实感与美学深度。' 
                 : 'Break the barriers. Combining cutting-edge visuals, AIGC, and multiversal design to deliver unparalleled commercial realism.'}
             </p>
-            <button 
-              onClick={handleExploreClick}
-              className="flex items-center gap-4 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl bg-[#151515] text-white"
-            >
-              {language === 'zh' ? '探索作品世界' : 'EXPLORE WORKS'}
-              <ArrowRight size={20} />
-            </button>
+            
+            {/* 👉 这里做了修改：增加了双按钮组，方便面试官直接联系 */}
+            <div className="flex flex-wrap items-center gap-4">
+              {/* 主按钮：探索作品世界 */}
+              <button 
+                onClick={handleExploreClick}
+                className="flex items-center gap-4 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl bg-[#151515] text-white"
+              >
+                {language === 'zh' ? '探索作品世界' : 'EXPLORE WORKS'}
+                <ArrowRight size={20} />
+              </button>
+
+              {/* 次按钮：合作与联系 */}
+              <button 
+                onClick={() => onNavigate('contact')}
+                className="flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-sm bg-white text-[#111] border border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+              >
+                {language === 'zh' ? '合作与联系' : 'GET IN TOUCH'}
+                <Mail size={20} className="text-gray-500" />
+              </button>
+            </div>
           </div>
 
           <div className="relative w-full aspect-square lg:aspect-[4/5] rounded-t-[50%] rounded-b-[2rem] overflow-hidden shadow-2xl transition-transform duration-700 hover:scale-[1.02]">
@@ -133,7 +147,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               {marqueeTrack.map((skill, index) => (
                 <div 
                   key={index} 
-                  /* 👉 修改了这里：底色统一成纯白 bg-white，悬停变成极其微弱的浅灰 hover:bg-gray-50 */
                   className="mx-3 flex items-center gap-3 px-6 py-4 bg-white rounded-2xl hover:bg-gray-50 transition-colors cursor-default shrink-0 shadow-sm border border-black/5"
                 >
                   {/* 黑色圆形小图标 */}
