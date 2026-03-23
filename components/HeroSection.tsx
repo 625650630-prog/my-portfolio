@@ -121,7 +121,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-10">
             <div>
               <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-2 text-[#111]">
-                {language === 'zh' ? '个人核心技能' : 'CORE SKILLS'}
+                {language === 'zh' ? '核心技能优势' : 'CORE SKILLS'}
               </h2>
             </div>
           </div>
