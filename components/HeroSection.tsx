@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Language, Category } from '../types';
-import { ArrowRight, ChevronRight, Play } from 'lucide-react';
-import { createPortal } from 'react-dom';
+import { CONTACT_DATA } from '../src/data/contact';
+import { ArrowRight, MapPin, Mail, Sparkles, Moon, Sun } from 'lucide-react';
 
 interface HeroSectionProps {
   onNavigate: (page: string) => void;
@@ -10,146 +10,197 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategorySelect, language }) => {
-  const [showToast, setShowToast] = useState(false);
+  const contactContent = CONTACT_DATA[language];
+  
+  // 👉 核心：黑白交替状态控制
+  const [isDark, setIsDark] = useState(false);
 
-  // 点击底部栏跳转到对应的作品分类
+  // 动态生成黑白主题的 Tailwind 类名
+  const themeBg = isDark ? 'bg-[#0f0f11]' : 'bg-[#eef1f5]';
+  const themeText = isDark ? 'text-white' : 'text-[#111111]';
+  const elementBg = isDark ? 'bg-white' : 'bg-[#151515]';
+  const elementText = isDark ? 'text-black' : 'text-white';
+  const cardBg = isDark ? 'bg-white' : 'bg-[#1a1a1c]';
+  const cardText = isDark ? 'text-[#111]' : 'text-white';
+  const cardBtnBg = isDark ? 'bg-[#111] text-white' : 'bg-white text-black';
+
+  // 点击跳转逻辑
   const handleCategoryClick = (category: Category) => {
     onCategorySelect(category);
     onNavigate('portfolio');
   };
 
-  // 底部的 4 个分类入口配置
-  const bottomFeatures = [
+  // 4 个纵向分类卡片数据 (带有参考图风格的圆形配图)
+  const categoryCards = [
     {
       id: '01',
       title: language === 'zh' ? '电商视觉' : 'E-commerce',
-      desc: language === 'zh' ? '高转化率的商业视觉设计与电商排版' : 'High-conversion commercial visual design',
-      category: Category.DESIGN
+      desc: language === 'zh' ? '高转化率的商业视觉设计与电商排版。' : 'High-conversion commercial visual design.',
+      category: Category.DESIGN,
+      img: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=400&h=400&fit=crop'
     },
     {
       id: '02',
       title: language === 'zh' ? 'AIGC 项目' : 'AIGC Projects',
-      desc: language === 'zh' ? '人工智能生成内容与前沿视觉探索' : 'AI-generated content and visual exploration',
-      category: Category.AIGC
+      desc: language === 'zh' ? '人工智能生成内容与前沿视觉探索。' : 'AI-generated content and visual exploration.',
+      category: Category.AIGC,
+      img: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=400&fit=crop'
     },
     {
       id: '03',
       title: language === 'zh' ? '新媒体运营' : 'New Media',
-      desc: language === 'zh' ? '全平台社交媒体视觉矩阵与品牌传播' : 'Social media visual matrix and brand communication',
-      category: Category.NEW_MEDIA
+      desc: language === 'zh' ? '全平台社交媒体视觉矩阵与品牌传播。' : 'Social media visual matrix and branding.',
+      category: Category.NEW_MEDIA,
+      img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=400&fit=crop'
     },
     {
       id: '04',
       title: language === 'zh' ? '商业影像' : 'Photo & Video',
-      desc: language === 'zh' ? '从企划到落地的全流程商业视频与拍摄' : 'End-to-end commercial photography & videography',
-      category: Category.VIDEO_PHOTO
+      desc: language === 'zh' ? '从企划到落地的全流程商业视频与拍摄。' : 'End-to-end commercial photography & videography.',
+      category: Category.VIDEO_PHOTO,
+      img: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=400&fit=crop'
     }
   ];
 
   return (
-    <div className="w-full max-w-[96vw] mx-auto animate-fade-in relative z-10 mb-16">
+    <div className={`w-full min-h-screen transition-colors duration-700 ease-in-out ${themeBg} overflow-hidden font-sans pt-24 pb-20 relative`}>
       
-      {/* 沉浸式暗黑英雄区容器 */}
-      <div className="relative w-full rounded-[2rem] bg-[#0a0a0a] overflow-hidden min-h-[85vh] flex flex-col justify-between border border-white/10 shadow-2xl">
+      {/* 👉 黑白切换按钮 (悬浮在右上角) */}
+      <button 
+        onClick={() => setIsDark(!isDark)}
+        className={`absolute top-6 right-6 md:top-10 md:right-10 z-50 p-4 rounded-full shadow-2xl transition-all duration-500 hover:scale-110 flex items-center gap-2 font-bold
+          ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
+      >
+        {isDark ? <Sun size={20} /> : <Moon size={20} />}
+        <span className="hidden md:inline">{isDark ? 'Light Mode' : 'Dark Mode'}</span>
+      </button>
+
+      {/* 装饰性背景曲线 (SVG) */}
+      <svg className={`absolute top-0 left-0 w-full h-full pointer-events-none transition-opacity duration-700 ${isDark ? 'opacity-10' : 'opacity-5'}`} viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path d="M0,50 Q25,20 50,50 T100,50" fill="none" stroke="currentColor" strokeWidth="0.2" className={themeText} />
+        <path d="M0,80 Q25,110 50,80 T100,80" fill="none" stroke="currentColor" strokeWidth="0.2" className={themeText} />
+      </svg>
+
+      <div className="max-w-[90vw] lg:max-w-[80vw] mx-auto relative z-10">
         
-        {/* 背景图层：请将下面 src 里的图片链接换成你自己的帅照或背景图 */}
-        <div className="absolute inset-0 z-0 pointer-events-none select-none">
-          {/* 这里放你的右侧人物背景图 */}
-          <img 
-            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2000&auto=format&fit=crop" 
-            alt="Hero Background" 
-            className="absolute top-0 right-0 h-full w-full md:w-3/4 object-cover object-right-top opacity-50 md:opacity-80"
-          />
-          {/* 左侧向右的黑色渐变，确保文字清晰 */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent"></div>
-          {/* 底部向上的黑色渐变，融合底部栏 */}
-          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0a0a0a] to-transparent"></div>
-        </div>
-
-        {/* 主体内容区 (上半部分) */}
-        <div className="relative z-10 px-8 py-16 md:px-16 md:py-24 flex flex-col justify-center flex-grow">
+        {/* 第一部分：Hero 英雄区 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
           
-          {/* 顶部小标签 */}
-          <div className="flex items-center gap-2 text-gray-400 font-mono text-sm tracking-widest uppercase mb-6 md:mb-8">
-            <span className="text-blue-500">«</span>
-            {language === 'zh' ? '多元视觉设计师 & 开发者' : 'Multidisciplinary Designer & Dev'}
-            <span className="text-blue-500">»</span>
+          {/* 左侧文字区 */}
+          <div className="flex flex-col items-start z-10">
+            <h1 className={`text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] mb-6 transition-colors duration-700 ${themeText}`}>
+              {language === 'zh' ? (
+                <>深潜视觉<br/>与体验的<br/><span className="text-gray-400">无尽边界</span></>
+              ) : (
+                <>Dive Into<br/>The Depths Of<br/><span className="text-gray-400">Visual Design</span></>
+              )}
+            </h1>
+            <p className={`text-lg md:text-xl font-medium max-w-lg mb-10 transition-colors duration-700 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              {language === 'zh' 
+                ? '打破常规框架。将最前沿的电商视觉、AIGC技术与多元设计理念结合，提供无与伦比的商业现实感与美学深度。' 
+                : 'Break the barriers of the physical world. Combining cutting-edge E-commerce visuals, AIGC, and multiversal design to deliver unparalleled commercial realism.'}
+            </p>
+            
+            {/* 胶囊主按钮 */}
+            <button 
+              onClick={() => handleCategoryClick(Category.ALL)}
+              className={`flex items-center gap-4 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl ${elementBg} ${elementText}`}
+            >
+              {language === 'zh' ? '探索作品世界' : 'EXPLORE WORKS'}
+              <ArrowRight size={20} />
+            </button>
           </div>
 
-          {/* 巨型标题 */}
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-white mb-8 tracking-tighter leading-[0.9]">
-            Silence <br /> 7C.
-          </h1>
-
-          {/* 按钮组 */}
-          <div className="flex flex-wrap items-center gap-4 md:gap-6 mt-4">
-            {/* 蓝色主按钮 -> 跳转全部作品 */}
-            <button 
-              onClick={() => {
-                onCategorySelect(Category.ALL);
-                onNavigate('portfolio');
-              }}
-              className="bg-blue-600 hover:bg-blue-500 text-white rounded-full pl-6 pr-2 py-2 flex items-center gap-4 transition-all duration-300 transform hover:scale-105 shadow-[0_0_30px_rgba(37,99,235,0.3)]"
-            >
-              <span className="font-bold text-lg">{language === 'zh' ? '查看精选作品' : 'View Selected Works'}</span>
-              <div className="bg-white text-blue-600 rounded-full p-2">
-                <ArrowRight size={20} strokeWidth={3} />
-              </div>
-            </button>
-
-            {/* 深灰色次按钮 -> 跳转联系页面 */}
-            <button 
-              onClick={() => onNavigate('contact')}
-              className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/10 rounded-full px-8 py-4 flex items-center gap-3 transition-all duration-300"
-            >
-              <span className="font-bold text-lg">{language === 'zh' ? '取得联系' : 'Get in Touch'}</span>
-              <ChevronRight size={20} className="text-gray-400" />
-            </button>
+          {/* 右侧超大异形图片 */}
+          <div className="relative w-full aspect-square lg:aspect-[4/5] rounded-t-[50%] rounded-b-[2rem] overflow-hidden shadow-2xl transition-transform duration-700 hover:scale-[1.02]">
+            <img 
+              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop" 
+              alt="Hero Concept" 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* 叠加一层渐变让图片更融入背景 */}
+            <div className={`absolute inset-0 transition-colors duration-700 ${isDark ? 'bg-black/20' : 'bg-transparent'}`}></div>
           </div>
         </div>
 
-        {/* 底部 4 列网格分类栏 (完美复刻参考图) */}
-        <div className="relative z-10 w-full border-t border-white/10 bg-black/40 backdrop-blur-xl">
-          {/* 进度条样式的细线 */}
-          <div className="absolute top-0 left-0 h-[1px] bg-white/40 w-1/4"></div>
+        {/* 第二部分：悬浮联系方式条 (参考图中心的横向胶囊) */}
+        <div className={`relative z-20 -mt-32 md:-mt-20 mb-24 max-w-4xl mx-auto rounded-full p-6 md:p-8 flex flex-col md:flex-row items-center justify-around gap-6 shadow-2xl transition-colors duration-700 ${elementBg} ${elementText}`}>
+          
+          {/* Location */}
+          <div className="flex items-center gap-4 cursor-pointer group">
+            <div className={`p-3 rounded-full transition-colors ${isDark ? 'bg-gray-100 text-black' : 'bg-gray-800 text-white'}`}>
+              <MapPin size={24} />
+            </div>
+            <div>
+              <p className="text-sm font-bold opacity-70 mb-1">{contactContent.baseLabel}</p>
+              <p className="font-bold text-lg group-hover:underline decoration-2 underline-offset-4">{contactContent.locationValue}</p>
+            </div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-            {bottomFeatures.map((feature, index) => (
+          {/* Divider */}
+          <div className={`hidden md:block w-px h-12 opacity-20 ${isDark ? 'bg-black' : 'bg-white'}`}></div>
+
+          {/* Contact */}
+          <div onClick={() => onNavigate('contact')} className="flex items-center gap-4 cursor-pointer group">
+            <div className={`p-3 rounded-full transition-colors ${isDark ? 'bg-gray-100 text-black' : 'bg-gray-800 text-white'}`}>
+              <Mail size={24} />
+            </div>
+            <div>
+              <p className="text-sm font-bold opacity-70 mb-1">{language === 'zh' ? '取得联系' : 'Send a Message'}</p>
+              <p className="font-bold text-lg group-hover:underline decoration-2 underline-offset-4">{contactContent.contactLabel}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 第三部分：核心分类卡片矩阵 (复刻参考图的四个立柱卡片) */}
+        <div className="mb-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div>
+              <h2 className={`text-4xl md:text-5xl font-black uppercase tracking-tight mb-2 transition-colors duration-700 ${themeText}`}>
+                {language === 'zh' ? '为什么选择 7C?' : 'WHY BUILD'}
+              </h2>
+              <h3 className={`text-3xl md:text-4xl font-light uppercase tracking-widest transition-colors duration-700 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
+                {language === 'zh' ? '核心专业领域' : 'WITH 7C?'}
+              </h3>
+            </div>
+            <p className={`max-w-md mt-6 md:mt-0 font-medium transition-colors duration-700 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              {language === 'zh' 
+                ? '解锁多元视觉的真正潜力。提供完整、无缝的视觉生态系统。' 
+                : 'Unlock the true potential of multiversal design with a complete, frictionless ecosystem.'}
+            </p>
+          </div>
+
+          {/* 4 个胶囊形状的卡片 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {categoryCards.map((card) => (
               <div 
-                key={feature.id}
-                onClick={() => handleCategoryClick(feature.category)}
-                className={`p-6 md:p-8 cursor-pointer group transition-all duration-300 hover:bg-white/5 
-                  ${index !== bottomFeatures.length - 1 ? 'border-b md:border-b-0 lg:border-r border-white/10' : ''}
-                `}
+                key={card.id}
+                className={`flex flex-col items-center text-center p-8 rounded-[3rem] shadow-xl transition-all duration-500 hover:-translate-y-4 group ${cardBg} ${cardText}`}
               >
-                {/* 序号与标题 */}
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-7 h-7 rounded-full border border-gray-600 text-gray-400 flex items-center justify-center text-xs font-mono font-bold group-hover:border-blue-500 group-hover:text-blue-500 transition-colors">
-                    {feature.id}
-                  </div>
-                  <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
-                    {feature.title}
-                  </h3>
+                {/* 内部圆形图片 */}
+                <div className="w-32 h-32 rounded-full overflow-hidden mb-8 shadow-inner relative">
+                  <img src={card.img} alt={card.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
                 </div>
-                {/* 描述 */}
-                <p className="text-sm text-gray-400 font-medium leading-relaxed group-hover:text-gray-300 transition-colors">
-                  {feature.desc}
+                
+                <h4 className="text-2xl font-black uppercase tracking-wide mb-4">{card.title}</h4>
+                <p className={`text-sm mb-10 leading-relaxed font-medium flex-grow ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>
+                  {card.desc}
                 </p>
+
+                {/* 卡片内的跳转按钮 */}
+                <button 
+                  onClick={() => handleCategoryClick(card.category)}
+                  className={`w-full py-4 rounded-full font-bold text-sm tracking-widest uppercase transition-transform duration-300 group-hover:scale-105 ${cardBtnBg}`}
+                >
+                  {language === 'zh' ? '查看项目' : 'TRY IT NOW'}
+                </button>
               </div>
             ))}
           </div>
         </div>
 
       </div>
-
-      {/* 提示气泡 */}
-      {showToast && createPortal(
-        <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-white text-black px-8 py-4 rounded-full shadow-2xl z-[100] animate-fade-in font-bold text-xl">
-           {language === 'zh' ? '敬请期待... 🚀' : 'Coming soon... 🚀'}
-        </div>,
-        document.body
-      )}
-
     </div>
   );
 };
