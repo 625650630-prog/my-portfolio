@@ -17,7 +17,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     onNavigate('portfolio');
   };
 
-  // 👉 增加到了 5 个分类卡片
   const categoryCards = [
     {
       id: '01',
@@ -48,11 +47,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       img: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=400&fit=crop'
     },
     {
-      id: '05', // 👉 这是新增的第 5 个卡片
+      id: '05',
       title: language === 'zh' ? '多元视觉' : 'Multiversal',
       desc: language === 'zh' ? '跨媒介的视觉设计与全场景落地。' : 'Cross-medium visual implementation.',
       category: Category.MULTIVERSAL,
-      img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=400&fit=crop' // 找了一张带有设计/科技感的占位图
+      img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=400&fit=crop'
     }
   ];
 
@@ -61,7 +60,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       <div className="max-w-[95vw] lg:max-w-[85vw] mx-auto relative z-10 pt-8 md:pt-16">
         
         {/* 顶部 Hero 区域 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-16 md:mb-24">
           <div className="flex flex-col items-start z-10">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] mb-6 text-[#111]">
               {language === 'zh' ? (
@@ -93,8 +92,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           </div>
         </div>
 
-        {/* 悬浮联系方式胶囊 */}
-        <div className="relative z-20 -mt-32 md:-mt-20 mb-24 max-w-4xl mx-auto rounded-full p-6 md:p-8 flex flex-col md:flex-row items-center justify-around gap-6 shadow-2xl bg-[#151515] text-white">
+        {/* 👉 这里做了修改：去掉了负边距，增加了向下的边距 mt-8 md:mt-12 */}
+        <div className="relative z-20 mt-8 md:mt-12 mb-24 max-w-4xl mx-auto rounded-full p-6 md:p-8 flex flex-col md:flex-row items-center justify-around gap-6 shadow-2xl bg-[#151515] text-white">
           <div className="flex items-center gap-4 cursor-pointer group">
             <div className="p-3 rounded-full bg-[#2a2a2a] text-white">
               <MapPin size={24} />
@@ -129,7 +128,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
             </div>
           </div>
 
-          {/* 👉 注意这里的 grid-cols-5，专门为 5 个卡片适配的排版 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
             {categoryCards.map((card) => (
               <div 
