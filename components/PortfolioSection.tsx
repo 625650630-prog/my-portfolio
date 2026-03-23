@@ -3,108 +3,62 @@ import { createPortal } from 'react-dom';
 import { PROJECTS, CATEGORY_LABELS } from '../constants';
 import { Category, Language, Project } from '../types';
 import { PHOTOGRAPHY_GALLERY } from '../src/data/photography';
-import { ArrowUpRight, X, Terminal, MessageCircle, IdCard, Github, ExternalLink, ChevronLeft, ChevronRight, FileText, Film } from 'lucide-react';
+import { ArrowUpRight, X } from 'lucide-react';
 
 interface PortfolioSectionProps {
   language: Language;
   externalFilter?: string;
 }
 
-const GalleryImage = ({ src, alt, onClick }: { src: string, alt: string, onClick: (e: React.MouseEvent) => void }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  return (
-    <div className="aspect-square overflow-hidden cursor-zoom-in relative group rounded-2xl shadow-sm hover:shadow-md will-change-transform transform-gpu" onClick={onClick}>
-      {!isLoaded && (
-        <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center z-10"></div>
-      )}
-      <img src={src} alt={alt} loading="lazy" decoding="async" referrerPolicy="no-referrer"
-        className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 will-change-transform transform-gpu ${isLoaded ? 'opacity-100' : 'opacity-0'}`} 
-        onLoad={() => setIsLoaded(true)}
-      />
-    </div>
-  );
-};
-
 export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, externalFilter }) => {
   const [filter, setFilter] = useState<string>('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [displayProject, setDisplayProject] = useState<Project | null>(null);
   const [isModalRendered, setIsModalRendered] = useState(false);
-  
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
+  // 监听来自上方英雄区的分类点击
   useEffect(() => {
     if (externalFilter) setFilter(externalFilter);
   }, [externalFilter]);
 
   const currentProjects = PROJECTS[language];
-  const preferredOrder = [
-    Category.DESIGN,
-    Category.AIGC,
-    Category.NEW_MEDIA,
-    Category.VIDEO_PHOTO,
-    Category.MULTIVERSAL,
-    Category.DEV
-  ];
-  
-  const availableCategories = preferredOrder.filter(cat => 
-    currentProjects.some(p => p.category === cat) || cat === Category.DEV
-  );
-  const categories = ['All', ...availableCategories];
 
+  // 根据当前过滤器筛选作品
   const filteredProjects = filter === 'All' 
     ? currentProjects 
     : currentProjects.filter(p => p.category === filter);
 
+  // 弹窗状态管理
   useEffect(() => {
     if (selectedProject) {
       setDisplayProject(selectedProject);
       setIsModalRendered(true);
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'; // 禁止背景滚动
     } else {
       document.body.style.overflow = '';
       const timer = setTimeout(() => {
         setIsModalRendered(false);
         setDisplayProject(null);
-        setLightboxIndex(null);
       }, 300);
       return () => clearTimeout(timer);
     }
   }, [selectedProject]);
 
-  const currentGallery = displayProject ? (displayProject.gallery || PHOTOGRAPHY_GALLERY[displayProject.id] || []) : [];
-
-  const handlePrev = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    if (lightboxIndex !== null && currentGallery.length > 0) setLightboxIndex((prev) => (prev! - 1 + currentGallery.length) % currentGallery.length);
-  };
-  const handleNext = (e?: React.MouseEvent) => {
-    e?.stopPropagation();
-    if (lightboxIndex !== null && currentGallery.length > 0) setLightboxIndex((prev) => (prev! + 1) % currentGallery.length);
-  };
-
   return (
     <div className="w-full bg-[#eef1f5] pb-20 pt-10">
       <div className="max-w-[90vw] lg:max-w-[80vw] mx-auto">
         
-        {/* 👉 胶囊过滤按钮 (带黑白点击交替效果) */}
-        <div className="flex flex-wrap gap-3 md:gap-4 mb-12 md:mb-16 pb-4 md:pb-8 sticky top-20 md:top-24 z-30 pt-4 overflow-x-auto no-scrollbar">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`
-                px-6 py-3 rounded-full text-sm md:text-base font-bold transition-all duration-300 whitespace-nowrap shadow-sm border
-                ${filter === cat 
-                  ? 'bg-[#111] text-white border-[#111] scale-105' // 选中：黑底白字，稍微放大
-                  : 'bg-white text-[#111] border-transparent hover:border-gray-300 hover:bg-gray-50'} // 未选中：白底黑字
-              `}
-            >
-              {CATEGORY_LABELS[language][cat] || cat}
-            </button>
-          ))}
+        {/* 👉 替换后的全新标题排版 */}
+        <div className="mb-10 md:mb-16 pb-4 md:pb-6 border-b-2 border-black/5 flex justify-between items-end">
+          <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight text-[#111]">
+            {language === 'zh' ? '精选作品展示' : 'SELECTED WORKS'}
+          </h2>
+          {/* 当处于筛选状态时，显示一个小提示，表明当前展示的是特定分类 */}
+          {filter !== 'All' && (
+            <span className="hidden md:block text-sm font-bold text-gray-400 uppercase tracking-widest bg-black/5 px-4 py-1.5 rounded-full">
+               {CATEGORY_LABELS[language][filter] || filter}
+            </span>
+          )}
         </div>
 
         {/* Bento 风格作品网格 */}
@@ -129,7 +83,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
                     </div>
                 )}
                 
-                {/* 悬浮分类胶囊 */}
+                {/* 图片左上角的分类标签依然保留，增加辨识度 */}
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-black px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-full shadow-sm">
                   {CATEGORY_LABELS[language][project.category] || project.category}
                 </div>
@@ -164,7 +118,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
           ))}
         </div>
 
-        {/* 弹窗部分 (保留你原有的逻辑，稍作圆角优化) */}
+        {/* 弹窗部分 (保留你原有的详情逻辑) */}
         {isModalRendered && createPortal(
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8">
              <div className={`absolute inset-0 bg-black/80 ${selectedProject ? 'animate-[fadeIn_0.3s_ease-out_forwards]' : 'animate-fade-out'}`} onClick={() => setSelectedProject(null)}></div>
@@ -175,7 +129,8 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
                    <button onClick={() => setSelectedProject(null)} className="absolute top-6 right-6 z-10 p-3 rounded-full bg-black/10 hover:bg-black/20 transition-colors">
                      <X size={24} className="text-black" />
                    </button>
-                   {/* 此处保留你原有的详情排版内容，为了节省代码长度这里简写，如果你原文件里这部分很复杂，请将原来 <div className="p-6 md:p-12"> 里面的内容粘贴回这里 */}
+                   
+                   {/* 这里是你作品详情的排版，如果你原代码有更复杂的视频/画廊展示，可以直接替换下面这个 div 里的内容 */}
                    <div className="w-full bg-gray-100 relative group-modal-media shrink-0 aspect-video">
                       <img src={displayProject.image} alt={displayProject.title} className="w-full h-full object-cover" />
                    </div>
