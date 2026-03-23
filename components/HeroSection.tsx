@@ -12,45 +12,57 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategorySelect, language }) => {
   const contactContent = CONTACT_DATA[language];
 
-  // 点击探索全部作品
   const handleExploreClick = () => {
     onCategorySelect(Category.ALL);
     onNavigate('portfolio');
   };
 
-  // 技能栈数据配置
+  // 核心技能数据 (仅提取缩写和全称)
   const skillsList = [
-    { name: 'Photoshop', abbr: 'Ps', desc: language === 'zh' ? '高级图像处理与精修' : 'Advanced Image Editing' },
-    { name: 'CorelDRAW', abbr: 'Cd', desc: language === 'zh' ? '专业矢量图形与排版' : 'Vector Graphics & Layout' },
-    { name: 'Illustrator', abbr: 'Ai', desc: language === 'zh' ? '矢量插画与视觉设计' : 'Vector Illustration' },
-    { name: 'Premiere', abbr: 'Pr', desc: language === 'zh' ? '专业级视频剪辑制作' : 'Professional Video Editing' },
-    { name: 'After Effects', abbr: 'Ae', desc: language === 'zh' ? '动态视觉与高级特效' : 'Motion Graphics & VFX' },
-    { name: 'Lightroom', abbr: 'Lr', desc: language === 'zh' ? '商业级色彩校正' : 'Commercial Color Grading' },
-    { name: 'DaVinci Resolve', abbr: 'Dv', desc: language === 'zh' ? '影视级调色与后期' : 'Cinematic Color & Post' },
-    { name: 'ComfyUI', abbr: 'Cu', desc: language === 'zh' ? '节点式 AI 绘画工作流' : 'Node-based AI Workflows' },
-    { name: 'Gemini', abbr: 'Gm', desc: language === 'zh' ? '多模态大模型开发助手' : 'Multimodal AI Assistant' },
-    { name: '剪映', abbr: '剪', desc: language === 'zh' ? '高效短视频创作与包装' : 'Short Video Creation' },
-    { name: '即梦', abbr: '梦', desc: language === 'zh' ? 'AI 视频与图像跨模态生成' : 'AI Video & Image Gen' },
-    { name: 'DeepSeek', abbr: 'Ds', desc: language === 'zh' ? '大语言模型提示词与应用' : 'LLM Prompting & Apps' }
+    { name: 'Photoshop', abbr: 'Ps' },
+    { name: 'CorelDRAW', abbr: 'Cd' },
+    { name: 'Illustrator', abbr: 'Ai' },
+    { name: 'Premiere', abbr: 'Pr' },
+    { name: 'After Effects', abbr: 'Ae' },
+    { name: 'Lightroom', abbr: 'Lr' },
+    { name: 'DaVinci Resolve', abbr: 'Dv' },
+    { name: 'ComfyUI', abbr: 'Cu' },
+    { name: 'Gemini', abbr: 'Gm' },
+    { name: '剪映', abbr: '剪' },
+    { name: '即梦', abbr: '梦' },
+    { name: 'DeepSeek', abbr: 'Ds' }
   ];
 
-  // 复制一份数据，用于实现无缝首尾相连的滚动
-  const marqueeSkills = [...skillsList, ...skillsList];
+  // 数组重组函数：用于将三排图标错开显示，避免上下对得太齐显得死板
+  const shiftArray = (arr: typeof skillsList, n: number) => [...arr.slice(n), ...arr.slice(0, n)];
+  
+  // 复制4遍以确保在超宽屏幕上也能无缝滚动
+  const track1 = [...skillsList, ...skillsList, ...skillsList, ...skillsList];
+  const track2 = [...shiftArray(skillsList, 4), ...shiftArray(skillsList, 4), ...shiftArray(skillsList, 4), ...shiftArray(skillsList, 4)];
+  const track3 = [...shiftArray(skillsList, 8), ...shiftArray(skillsList, 8), ...shiftArray(skillsList, 8), ...shiftArray(skillsList, 8)];
 
   return (
     <div className="w-full bg-[#eef1f5] font-sans pb-16 relative overflow-hidden">
       
-      {/* 注入滚动动画的 CSS */}
+      {/* 注入三排交替滚动的动画 CSS */}
       <style>
         {`
-          @keyframes marquee {
+          @keyframes marquee-left {
             0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
           }
-          .animate-marquee {
-            animation: marquee 40s linear infinite;
+          @keyframes marquee-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
           }
-          .animate-marquee:hover {
+          .animate-marquee-fast { animation: marquee-left 35s linear infinite; }
+          .animate-marquee-reverse { animation: marquee-right 40s linear infinite; }
+          .animate-marquee-slow { animation: marquee-left 45s linear infinite; }
+          
+          /* 鼠标悬停时，暂停所有滚动 */
+          .pause-on-hover:hover .animate-marquee-fast,
+          .pause-on-hover:hover .animate-marquee-reverse,
+          .pause-on-hover:hover .animate-marquee-slow {
             animation-play-state: paused;
           }
         `}
@@ -114,8 +126,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           </div>
         </div>
 
-        {/* 👉 全新升级：横向滚动技能墙 */}
-        <div className="mb-10 w-full">
+        {/* 👉 全新升级：3排纯图标滚动矩阵 */}
+        <div className="mb-10 w-full relative">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12">
             <div>
               <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-2 text-[#111]">
@@ -127,33 +139,45 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
             </div>
           </div>
 
-          {/* 滚动容器 (两端带有渐变遮罩，让滚动显得更自然) */}
+          {/* 滚动容器 (左右带有黑色渐变遮罩，使图标隐现更高级) */}
           <div 
-            className="relative w-full overflow-hidden" 
+            className="relative w-full overflow-hidden pause-on-hover py-4" 
             style={{ maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)' }}
           >
-            <div className="flex gap-4 lg:gap-6 w-max animate-marquee pb-4 pt-2">
-              {marqueeSkills.map((skill, index) => (
-                <div 
-                  key={index}
-                  className="w-[260px] lg:w-[280px] shrink-0 flex flex-col items-center text-center p-6 lg:p-8 rounded-[2rem] lg:rounded-[3rem] shadow-xl bg-[#1a1a1c] text-white group cursor-default"
-                >
-                  {/* 软件图标 (采用极简的高级字母缩写风格) */}
-                  <div className="w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br from-gray-700 to-[#111] overflow-hidden mb-6 flex items-center justify-center shadow-inner border border-white/10 group-hover:border-white/30 transition-colors">
-                     <span className="text-3xl lg:text-4xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400">
+            {/* 轨道 1：向左滚动 */}
+            <div className="flex w-max animate-marquee-fast mb-4 lg:mb-6">
+              {track1.map((skill, index) => (
+                <div key={`t1-${index}`} className="group mx-2 lg:mx-3 cursor-crosshair">
+                  <div className="w-20 h-20 lg:w-28 lg:h-28 rounded-[1.5rem] lg:rounded-[2rem] shadow-lg bg-gradient-to-br from-[#2a2a2c] to-[#111] flex items-center justify-center border border-white/5 group-hover:border-white/40 group-hover:-translate-y-1 transition-all duration-300">
+                     <span className="text-2xl lg:text-4xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500 group-hover:to-white transition-all">
                         {skill.abbr}
                      </span>
                   </div>
-                  
-                  {/* 软件名称与描述 */}
-                  <h4 className="text-xl lg:text-2xl font-black tracking-wide mb-3">{skill.name}</h4>
-                  <p className="text-xs lg:text-sm mb-8 leading-relaxed font-medium flex-grow text-gray-400">
-                    {skill.desc}
-                  </p>
-                  
-                  {/* 底部保留按钮样式，作为熟练度徽章 */}
-                  <div className="w-full py-3 lg:py-4 rounded-full font-bold text-xs lg:text-sm tracking-widest uppercase bg-white/10 text-white mt-auto">
-                    {language === 'zh' ? '熟练应用' : 'PROFICIENT'}
+                </div>
+              ))}
+            </div>
+
+            {/* 轨道 2：向右滚动 */}
+            <div className="flex w-max animate-marquee-reverse mb-4 lg:mb-6">
+              {track2.map((skill, index) => (
+                <div key={`t2-${index}`} className="group mx-2 lg:mx-3 cursor-crosshair">
+                  <div className="w-20 h-20 lg:w-28 lg:h-28 rounded-[1.5rem] lg:rounded-[2rem] shadow-lg bg-gradient-to-br from-[#2a2a2c] to-[#111] flex items-center justify-center border border-white/5 group-hover:border-white/40 group-hover:-translate-y-1 transition-all duration-300">
+                     <span className="text-2xl lg:text-4xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500 group-hover:to-white transition-all">
+                        {skill.abbr}
+                     </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* 轨道 3：向左缓慢滚动 */}
+            <div className="flex w-max animate-marquee-slow">
+              {track3.map((skill, index) => (
+                <div key={`t3-${index}`} className="group mx-2 lg:mx-3 cursor-crosshair">
+                  <div className="w-20 h-20 lg:w-28 lg:h-28 rounded-[1.5rem] lg:rounded-[2rem] shadow-lg bg-gradient-to-br from-[#2a2a2c] to-[#111] flex items-center justify-center border border-white/5 group-hover:border-white/40 group-hover:-translate-y-1 transition-all duration-300">
+                     <span className="text-2xl lg:text-4xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500 group-hover:to-white transition-all">
+                        {skill.abbr}
+                     </span>
                   </div>
                 </div>
               ))}
