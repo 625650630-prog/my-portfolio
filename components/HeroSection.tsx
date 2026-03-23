@@ -60,7 +60,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           <div className="flex flex-col items-start z-10">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] mb-6 text-[#111]">
               {language === 'zh' ? (
-                <>深潜视觉<br/>与体验的<br/><span className="text-gray-400">无尽边界</span></>
+                <>视觉美术与探索的<br/><span className="text-gray-400">无尽边界</span></>
               ) : (
                 <>Dive Into<br/>The Depths Of<br/><span className="text-gray-400">Visual Design</span></>
               )}
@@ -121,7 +121,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-10">
             <div>
               <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-2 text-[#111]">
-                {language === 'zh' ? '核心技能栈' : 'CORE SKILLS'}
+                {language === 'zh' ? '个人核心技能' : 'CORE SKILLS'}
               </h2>
             </div>
           </div>
