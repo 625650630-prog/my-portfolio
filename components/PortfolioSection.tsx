@@ -108,7 +108,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
                     ))}
                   </div>
                   {/* 黑白交替圆角箭头 */}
-                  <div className="bg-[#111] text-white w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110">
+                  <div className="relative z-20 mt-8 md:mt-12 mb-24 max-w-4xl mx-auto rounded-full p-6 md:p-8 flex flex-col md:flex-row items-center justify-around gap-6 shadow-2xl bg-[#151515] text-white">
                     <ArrowUpRight size={20} />
                   </div>
                 </div>
