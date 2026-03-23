@@ -17,7 +17,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     onNavigate('portfolio');
   };
 
-  // 核心技能数据 (提取缩写和全称，用于组合成 Logo 风格)
+  // 核心技能数据 
   const skillsList = [
     { name: 'Photoshop', abbr: 'Ps' },
     { name: 'CorelDRAW', abbr: 'Cd' },
@@ -33,13 +33,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     { name: 'DeepSeek', abbr: 'Ds' }
   ];
 
-  // 复制多份数据以确保在超宽屏幕上也能无缝循环滚动
   const marqueeTrack = [...skillsList, ...skillsList, ...skillsList, ...skillsList];
 
   return (
     <div className="w-full bg-[#eef1f5] font-sans pb-16 relative overflow-hidden">
       
-      {/* 注入单排缓慢滚动的动画 CSS */}
       <style>
         {`
           @keyframes marquee-slow {
@@ -49,7 +47,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           .animate-marquee-super-slow { 
             animation: marquee-slow 60s linear infinite; 
           }
-          /* 鼠标悬停时暂停 */
           .pause-on-hover:hover .animate-marquee-super-slow {
             animation-play-state: paused;
           }
@@ -74,9 +71,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                 : 'Break the barriers. Combining cutting-edge visuals, AIGC, and multiversal design to deliver unparalleled commercial realism.'}
             </p>
             
-            {/* 👉 这里做了修改：增加了双按钮组，方便面试官直接联系 */}
+            {/* 按钮组 */}
             <div className="flex flex-wrap items-center gap-4">
-              {/* 主按钮：探索作品世界 */}
               <button 
                 onClick={handleExploreClick}
                 className="flex items-center gap-4 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl bg-[#151515] text-white"
@@ -85,7 +81,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                 <ArrowRight size={20} />
               </button>
 
-              {/* 次按钮：合作与联系 */}
               <button 
                 onClick={() => onNavigate('contact')}
                 className="flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-sm bg-white text-[#111] border border-gray-200 hover:border-gray-300 hover:bg-gray-50"
@@ -94,6 +89,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                 <Mail size={20} className="text-gray-500" />
               </button>
             </div>
+
+            {/* 👉 全新调整：将位置信息移到了这里，变成精致的小坐标 */}
+            <div className="mt-10 lg:mt-12 flex items-center gap-3 bg-white/50 backdrop-blur-sm pl-2 pr-5 py-2 rounded-full border border-gray-200/60 shadow-sm">
+              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                <MapPin size={16} />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">
+                  {contactContent.baseLabel}
+                </span>
+                <span className="text-sm font-bold text-[#111] leading-none">
+                  {contactContent.locationValue}
+                </span>
+              </div>
+            </div>
+
           </div>
 
           <div className="relative w-full aspect-square lg:aspect-[4/5] rounded-t-[50%] rounded-b-[2rem] overflow-hidden shadow-2xl transition-transform duration-700 hover:scale-[1.02]">
@@ -105,40 +116,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           </div>
         </div>
 
-        {/* 悬浮联系方式胶囊 */}
-        <div className="relative z-20 mt-8 md:mt-12 mb-24 max-w-4xl mx-auto rounded-full p-6 md:p-8 flex flex-col md:flex-row items-center justify-around gap-6 shadow-2xl bg-[#151515] text-white">
-          <div className="flex items-center gap-4 cursor-pointer group">
-            <div className="p-3 rounded-full bg-[#2a2a2a] text-white">
-              <MapPin size={24} />
-            </div>
-            <div>
-              <p className="text-sm font-bold opacity-70 mb-1">{contactContent.baseLabel}</p>
-              <p className="font-bold text-lg group-hover:underline decoration-2 underline-offset-4">{contactContent.locationValue}</p>
-            </div>
-          </div>
-          <div className="hidden md:block w-px h-12 opacity-20 bg-white"></div>
-          <div onClick={() => onNavigate('contact')} className="flex items-center gap-4 cursor-pointer group">
-            <div className="p-3 rounded-full bg-[#2a2a2a] text-white">
-              <Mail size={24} />
-            </div>
-            <div>
-              <p className="text-sm font-bold opacity-70 mb-1">{language === 'zh' ? '取得联系' : 'Send a Message'}</p>
-              <p className="font-bold text-lg group-hover:underline decoration-2 underline-offset-4">{contactContent.contactLabel}</p>
-            </div>
-          </div>
-        </div>
-
         {/* 品牌 Logo 墙风格缓慢滚动 */}
         <div className="mb-10 w-full relative">
           <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-10">
             <div>
               <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-2 text-[#111]">
-                {language === 'zh' ? '核心技能' : 'CORE SKILLS'}
+                {language === 'zh' ? '核心技能栈' : 'CORE SKILLS'}
               </h2>
             </div>
           </div>
 
-          {/* 滚动容器 (带有边缘渐变遮罩) */}
           <div 
             className="relative w-full overflow-hidden pause-on-hover py-4" 
             style={{ maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)' }}
@@ -149,11 +136,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                   key={index} 
                   className="mx-3 flex items-center gap-3 px-6 py-4 bg-white rounded-2xl hover:bg-gray-50 transition-colors cursor-default shrink-0 shadow-sm border border-black/5"
                 >
-                  {/* 黑色圆形小图标 */}
                   <div className="w-8 h-8 rounded-full bg-[#111] text-white flex items-center justify-center text-[10px] font-bold shrink-0">
                     {skill.abbr}
                   </div>
-                  {/* 软件全称 */}
                   <span className="font-bold text-[#111] text-lg tracking-tight whitespace-nowrap">
                     {skill.name}
                   </span>
