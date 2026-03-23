@@ -17,6 +17,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     onNavigate('portfolio');
   };
 
+  // 👉 增加到了 5 个分类卡片
   const categoryCards = [
     {
       id: '01',
@@ -45,12 +46,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       desc: language === 'zh' ? '全流程商业视频与拍摄落地。' : 'Commercial photography & video.',
       category: Category.VIDEO_PHOTO,
       img: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=400&fit=crop'
+    },
+    {
+      id: '05', // 👉 这是新增的第 5 个卡片
+      title: language === 'zh' ? '多元视觉' : 'Multiversal',
+      desc: language === 'zh' ? '跨媒介的视觉设计与全场景落地。' : 'Cross-medium visual implementation.',
+      category: Category.MULTIVERSAL,
+      img: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=400&fit=crop' // 找了一张带有设计/科技感的占位图
     }
   ];
 
   return (
     <div className="w-full bg-[#eef1f5] font-sans pb-16 relative">
-      <div className="max-w-[90vw] lg:max-w-[80vw] mx-auto relative z-10 pt-8 md:pt-16">
+      <div className="max-w-[95vw] lg:max-w-[85vw] mx-auto relative z-10 pt-8 md:pt-16">
         
         {/* 顶部 Hero 区域 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
@@ -108,7 +116,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           </div>
         </div>
 
-        {/* 四列核心领域胶囊卡片 */}
+        {/* 核心领域胶囊卡片 */}
         <div className="mb-10">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12">
             <div>
@@ -121,23 +129,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* 👉 注意这里的 grid-cols-5，专门为 5 个卡片适配的排版 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
             {categoryCards.map((card) => (
               <div 
                 key={card.id}
-                className="flex flex-col items-center text-center p-8 rounded-[3rem] shadow-xl transition-all duration-500 hover:-translate-y-4 group bg-[#1a1a1c] text-white"
+                className="flex flex-col items-center text-center p-6 lg:p-8 rounded-[3rem] shadow-xl transition-all duration-500 hover:-translate-y-4 group bg-[#1a1a1c] text-white"
               >
-                <div className="w-32 h-32 rounded-full overflow-hidden mb-8 shadow-inner relative">
+                <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-full overflow-hidden mb-6 lg:mb-8 shadow-inner relative shrink-0">
                   <img src={card.img} alt={card.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
                 </div>
-                <h4 className="text-2xl font-black uppercase tracking-wide mb-4">{card.title}</h4>
-                <p className="text-sm mb-10 leading-relaxed font-medium flex-grow text-gray-400">
+                <h4 className="text-xl lg:text-2xl font-black uppercase tracking-wide mb-3">{card.title}</h4>
+                <p className="text-xs lg:text-sm mb-8 leading-relaxed font-medium flex-grow text-gray-400">
                   {card.desc}
                 </p>
                 <button 
                   onClick={() => handleCategoryClick(card.category)}
-                  className="w-full py-4 rounded-full font-bold text-sm tracking-widest uppercase transition-transform duration-300 group-hover:scale-105 bg-white text-black"
+                  className="w-full py-3 lg:py-4 rounded-full font-bold text-xs lg:text-sm tracking-widest uppercase transition-transform duration-300 group-hover:scale-105 bg-white text-black mt-auto"
                 >
                   {language === 'zh' ? '查看项目' : 'TRY IT NOW'}
                 </button>
