@@ -56,24 +56,23 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
 
   return (
     <div className="w-full bg-[#eef1f5] pb-20 pt-4 md:pt-10">
-      {/* 👉 重点：这里的宽度 max-w-[95vw] lg:max-w-[85vw] 现在和上方核心技能完全一致了，保证绝对左对齐 */}
       <div className="max-w-[95vw] lg:max-w-[85vw] mx-auto">
         
-        {/* 👉 新增的“精选作品”大标题 */}
+        {/* 精选作品大标题 */}
         <div className="mb-6 md:mb-8 flex justify-start items-end">
           <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-[#111]">
             {language === 'zh' ? '精选作品' : 'SELECTED WORKS'}
           </h2>
         </div>
 
-        {/* 分类胶囊按钮 (采用 justify-start 左对齐) */}
+        {/* 分类胶囊按钮 */}
         <div className="flex flex-wrap gap-3 md:gap-4 mb-10 md:mb-12 sticky top-20 md:top-24 z-30 py-2 overflow-x-auto no-scrollbar justify-start">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
               className={`
-                px-6 py-3 rounded-full text-sm md:text-base font-bold transition-all duration-300 whitespace-nowrap shadow-sm border
+                px-5 py-2.5 md:px-6 md:py-3 rounded-full text-sm md:text-base font-bold transition-all duration-300 whitespace-nowrap shadow-sm border
                 ${filter === cat 
                   ? 'bg-[#111] text-white border-[#111] scale-105'
                   : 'bg-white text-[#111] border-transparent hover:border-gray-300 hover:bg-gray-50'}
@@ -84,12 +83,12 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
           ))}
         </div>
 
-        {/* 作品网格 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* 👉 重点修改：这里改成了 lg:grid-cols-4，间距改成了 gap-6 适配4列 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-6">
           {filteredProjects.map((project) => (
             <div 
               key={project.id} 
-              className="group cursor-pointer flex flex-col h-full bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-2"
+              className="group cursor-pointer flex flex-col h-full bg-white rounded-[1.5rem] lg:rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-2"
               onClick={() => setSelectedProject(project)}
             >
               
@@ -102,33 +101,34 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gray-200 p-8 text-center">
-                        <h4 className="text-2xl font-black text-gray-400">{project.title}</h4>
+                        <h4 className="text-xl font-black text-gray-400">{project.title}</h4>
                     </div>
                 )}
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-black px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-full shadow-sm">
+                {/* 缩减了分类标签的内边距，适应稍微变窄的卡片 */}
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-black px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
                   {CATEGORY_LABELS[language][project.category] || project.category}
                 </div>
               </div>
 
-              {/* 卡片内容区 */}
-              <div className="p-6 md:p-8 flex flex-col flex-grow">
-                <h3 className="text-2xl font-black text-black mb-3 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
+              {/* 卡片内容区 (微调了 padding) */}
+              <div className="p-5 lg:p-6 flex flex-col flex-grow">
+                <h3 className="text-xl lg:text-2xl font-black text-black mb-2 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed font-medium mb-6 flex-grow">
+                <p className="text-xs lg:text-sm text-gray-500 line-clamp-2 leading-relaxed font-medium mb-6 flex-grow">
                   {project.description}
                 </p>
                 
                 <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-100">
-                  <div className="flex flex-wrap gap-2 overflow-hidden max-h-8">
-                    {project.tags.slice(0, 3).map(tag => (
-                      <span key={tag} className="text-[10px] font-bold text-gray-600 bg-gray-100 px-3 py-1 rounded-full uppercase tracking-wider">
+                  <div className="flex flex-wrap gap-1.5 overflow-hidden max-h-6">
+                    {project.tags.slice(0, 2).map(tag => ( // 4列显示时空间变小，只截取前2个标签防止拥挤
+                      <span key={tag} className="text-[9px] font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded-full uppercase tracking-wider">
                         #{tag}
                       </span>
                     ))}
                   </div>
-                  <div className="bg-[#111] text-white w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110">
-                    <ArrowUpRight size={20} />
+                  <div className="bg-[#111] text-white w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110">
+                    <ArrowUpRight size={16} />
                   </div>
                 </div>
               </div>
