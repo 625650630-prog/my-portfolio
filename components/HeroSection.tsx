@@ -114,12 +114,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           </div>
         </div>
 
-        {/* 👉 全新极简：品牌 Logo 墙风格缓慢滚动 */}
+        {/* 品牌 Logo 墙风格缓慢滚动 */}
         <div className="mb-10 w-full relative">
           <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-10">
             <div>
               <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-2 text-[#111]">
-                {language === 'zh' ? '核心技能栈' : 'CORE SKILLS'}
+                {language === 'zh' ? '核心技能' : 'CORE SKILLS'}
               </h2>
             </div>
           </div>
@@ -133,7 +133,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               {marqueeTrack.map((skill, index) => (
                 <div 
                   key={index} 
-                  className="mx-3 flex items-center gap-3 px-6 py-4 bg-[#f5f4ef] rounded-2xl hover:bg-[#ebeae4] transition-colors cursor-default shrink-0 shadow-sm border border-black/5"
+                  /* 👉 修改了这里：底色统一成纯白 bg-white，悬停变成极其微弱的浅灰 hover:bg-gray-50 */
+                  className="mx-3 flex items-center gap-3 px-6 py-4 bg-white rounded-2xl hover:bg-gray-50 transition-colors cursor-default shrink-0 shadow-sm border border-black/5"
                 >
                   {/* 黑色圆形小图标 */}
                   <div className="w-8 h-8 rounded-full bg-[#111] text-white flex items-center justify-center text-[10px] font-bold shrink-0">
