@@ -484,4 +484,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                          </div>
                       )}
 
-                      <div className="flex flex-
+                      <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-100">
+                        {displayProject.tags.map(tag => (
+                          <span key={tag} className="text-xs font-bold text-[#ff5030] bg-[#ff5030]/10 px-3 py-1.5 rounded-full cursor-pointer hover:bg-[#ff5030] hover:text-white transition-colors">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                   </div>
+
+                 </div>
+               </>
+             )}
+           </div>
+        </div>,
+        document.body
+      )}
+
+    </div>
+  );
+};
