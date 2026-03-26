@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import Matter from 'matter-js';
 import { Sidebar } from './components/Sidebar';
@@ -29,7 +28,6 @@ function App() {
   const [gravityActive, setGravityActive] = useState(false);
 
   const startViewTransition = (update: () => void) => {
-    // Disable view transitions on mobile to prevent flickering and performance issues
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
       update();
       return;
@@ -50,13 +48,12 @@ function App() {
   const scrollPositionRef = useRef<number>(0);
 
   useEffect(() => {
-    // Automatic theme based on time: 18:30 - 06:00 is dark mode
     const now = new Date();
     const hour = now.getHours();
     const minutes = now.getMinutes();
     const currentTimeInMinutes = hour * 60 + minutes;
-    const darkStartTimeInMinutes = 18 * 60 + 30; // 18:30
-    const darkEndTimeInMinutes = 6 * 60; // 06:00
+    const darkStartTimeInMinutes = 18 * 60 + 30;
+    const darkEndTimeInMinutes = 6 * 60;
     
     const isDarkTime = currentTimeInMinutes >= darkStartTimeInMinutes || currentTimeInMinutes < darkEndTimeInMinutes;
     setTheme(isDarkTime ? 'dark' : 'light');
@@ -71,7 +68,6 @@ function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // Scroll to top when activeTab changes
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeTab]);
@@ -108,7 +104,6 @@ function App() {
     bodies.forEach((body: any) => {
       if (body.isStatic) return;
 
-      // Add force on click
       if (event.type === 'mousedown') {
           const bodyX = body.position.x;
           const bodyY = body.position.y;
@@ -133,7 +128,6 @@ function App() {
     if (!Matter) return;
 
     scrollPositionRef.current = window.scrollY;
-    // Lock body height to current scroll height to prevent layout jump
     document.body.style.height = `${document.documentElement.scrollHeight}px`; 
     document.body.style.overflow = 'hidden'; 
     
@@ -152,7 +146,6 @@ function App() {
     const world = engine.world;
     engineRef.current = engine;
 
-    // Dissipate large images
     const largeComponents = Array.from(document.querySelectorAll('main img, .aspect-\\[4\\/3\\]')) as HTMLElement[];
     const dissipatedData: ExplodedElementData[] = [];
     
@@ -168,7 +161,6 @@ function App() {
     });
     dissipatedElementsRef.current = dissipatedData;
 
-    // Selector: Target individual visible elements, avoid layout wrappers
     const selector = `
       nav h1, nav button, nav span,
       footer p,
@@ -192,7 +184,6 @@ function App() {
        return true;
     });
 
-    // Containment check to prevent overlapping physics bodies
     const validElements = visibleCandidates.filter(el => {
       return !visibleCandidates.some(parent => parent !== el && parent.contains(el));
     });
@@ -224,7 +215,6 @@ function App() {
       (body as any).domElement = el;
       bodies.push(body);
 
-      // Lock Visuals
       el.style.boxSizing = 'border-box';
       el.style.position = 'absolute';
       el.style.left = `${rect.left + scrollX}px`;
@@ -242,16 +232,14 @@ function App() {
 
     const totalHeight = document.documentElement.scrollHeight;
 
-    // Add floor
     const floor = Bodies.rectangle(
         window.innerWidth / 2, 
-        totalHeight + 500, // Place floor well below content
+        totalHeight + 500,
         window.innerWidth, 
         1000, 
         { isStatic: true, render: { visible: false } }
     );
 
-    // Add walls
     const wallLeft = Bodies.rectangle(
         -500, 
         totalHeight / 2, 
@@ -323,12 +311,9 @@ function App() {
     const explodedData = explodedElementsRef.current;
     
     explodedData.forEach(({ element }) => {
-      // FORCE REFLOW: Critical for smooth transition from chaos to order
       void element.offsetWidth; 
       
-      // Use specific transition property to avoid conflicts
       element.style.transition = 'transform 1s cubic-bezier(0.19, 1, 0.22, 1)';
-      // Reset transform to identity (relative to fixed start position)
       element.style.transform = 'translate(0, 0) rotate(0deg)';
     });
 
@@ -355,7 +340,7 @@ function App() {
       window.scrollTo(0, scrollPositionRef.current);
       
       setGravityActive(false);
-    }, 1000); // Matches transition duration
+    }, 1000);
   };
 
 
@@ -365,13 +350,13 @@ function App() {
     switch (activeTab) {
       case 'dashboard':
         return (
+          // 👉 修改点：删除了原来在这里的 <PortfolioSection />，让首页变得干净纯粹！
           <>
             <HeroSection 
               onNavigate={(tab) => startViewTransition(() => setActiveTab(tab))} 
               onCategorySelect={handleHeroNavigation}
               language={language} 
             />
-            <PortfolioSection language={language} externalFilter={portfolioCategory} />
           </>
         );
       case 'portfolio':
@@ -636,7 +621,6 @@ function App() {
                     onClick={() => window.open('https://github.com/LuN3cy', '_blank')}
                  >
                     <Github size={48} className="mx-auto mb-6 text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors duration-300" />
-                    {/* Custom Floating Color for Github Icon on Hover */}
                     <style>{`
                       .group:hover .text-gray-400.group-hover\\:text-black { color: #0D1932 !important; }
                       .dark .group:hover .text-gray-400.dark\\:group-hover\\:text-white { color: #0D1932 !important; }
@@ -655,13 +639,13 @@ function App() {
         )
       default:
         return (
+          // 👉 兜底页面也一并去掉了
           <>
             <HeroSection 
               onNavigate={(tab) => startViewTransition(() => setActiveTab(tab))} 
               onCategorySelect={handleHeroNavigation}
               language={language} 
             />
-            <PortfolioSection language={language} externalFilter={portfolioCategory} />
           </>
         );
     }
