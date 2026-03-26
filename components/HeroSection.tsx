@@ -99,20 +99,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           .animate-marquee-logos { animation: marquee-slow 40s linear infinite; }
       `}</style>
 
-      {/* 👉 全新图片背景大容器 */}
+      {/* Hero 图片背景大容器 */}
       <div 
         className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden shadow-sm border border-gray-100/50 min-h-[85vh] flex flex-col justify-center bg-cover bg-center"
-        // ⚠️ 这里正确引入了你的图片路径
         style={{ backgroundImage: 'url(/BJ.jpg)' }} 
       >
-        {/* 半透明黑色遮罩，确保背景图不会干扰白色文字的阅读 */}
-        <div className="absolute inset-0 bg-black/40 z-10"></div>
+        {/* 👉 移除黑色的遮罩层，展现原始色彩 */}
         
-        {/* 内容容器：改为 Flex 居中布局，删除了右侧模块 */}
-        <div className="flex flex-col items-center justify-center relative z-20 w-full py-8 lg:py-12 lg:px-16 xl:px-32 text-center">
+        {/* 👉 内容容器：改回靠左对齐 (items-start, justify-center) */}
+        <div className="flex flex-col items-start justify-center relative z-20 w-full py-8 lg:py-12 lg:px-16 xl:px-32 text-left">
           
-          <div className="w-full max-w-4xl flex flex-col items-center justify-center">
-            {/* 顶部的 100+ Projects 胶囊 (玻璃拟态风格) */}
+          <div className="w-full max-w-4xl flex flex-col items-start justify-center">
+            {/* 顶部的 100+ Projects 胶囊 */}
             <div className="flex items-center gap-3 mb-6 lg:mb-8 bg-white/10 px-5 py-2.5 rounded-full border border-white/20 backdrop-blur-md">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-black">
                 <span className="font-serif italic text-base pr-1">S</span>
@@ -137,8 +135,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                 : 'Drive Visual Growth, And Harness Ai-Powered Content — Up To 50x Faster.'}
             </p>
             
-            {/* 头像与坐标 */}
-            <div className="flex items-center gap-4 mb-12 border-t border-white/20 pt-8 w-full max-w-md justify-center">
+            {/* 头像与坐标 (修改为 justify-start 靠左) */}
+            <div className="flex items-center gap-4 mb-12 border-t border-white/20 pt-8 w-full max-w-md justify-start">
               <div className="w-12 h-12 rounded-full bg-gray-500 overflow-hidden flex items-center justify-center shrink-0 border border-white/30 shadow-md">
                  <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop" alt="avatar" className="w-full h-full object-cover" />
               </div>
@@ -148,8 +146,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               </div>
             </div>
             
-            {/* 按钮 */}
-            <div className="flex items-center justify-center gap-6">
+            {/* 按钮 (修改为 justify-start 靠左) */}
+            <div className="flex items-center justify-start gap-6">
               <button 
                 onClick={handleExploreClick}
                 className="bg-white text-black px-8 py-4 rounded-full font-bold text-sm lg:text-base transition-transform hover:scale-105 shadow-xl"
@@ -178,7 +176,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               ) : (
                 <div className="w-8 h-8 rounded-md bg-black text-white flex items-center justify-center font-bold text-[10px]">{item.name.substring(0, 2).toUpperCase()}</div>
               )}
-              {/* 软件名 text-gray-500 灰色 */}
               <span className="text-xl md:text-3xl font-black tracking-tighter text-gray-500">{item.name}</span>
             </div>
           ))}
