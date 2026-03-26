@@ -50,7 +50,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
   ];
   const marqueeTrack = [...skillsList, ...skillsList, ...skillsList];
 
-  // 精选优质作品数据
+  // 精选优质作品数据 (5个手风琴板块)
   const showcaseData = [
     {
       number: '01',
@@ -93,7 +93,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
   const recentProjects = PROJECTS[language].slice(0, 8);
 
   return (
-    <div className="w-full bg-white font-sans pt-4 md:pt-6 px-0 md:px-0">
+    // 外围pt-4，处理滚动条和导航对齐
+    <div className="w-full bg-white font-sans pt-4 md:pt-6 px-0 md:px-0 relative selection:bg-black selection:text-white">
       
       <style>
         {`
@@ -107,7 +108,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         `}
       </style>
 
-      {/* 核心灰色包裹容器 */}
+      {/* 核心灰色包裹容器 (原样保留) */}
       <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto bg-gradient-to-br from-[#f4f5f7] to-[#e5e7eb] rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden shadow-sm border border-gray-100/50 min-h-[85vh] flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 relative z-20 w-full py-8 lg:py-12 lg:px-16 xl:px-32">
           {/* 左侧文字区 */}
@@ -197,10 +198,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 底部软件 Logo 墙 */}
+      {/* 底部软件 Logo 墙 (原样保留两侧虚化) */}
       <div className="w-full max-w-[95vw] lg:max-w-[80vw] mx-auto mt-12 mb-16 overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
         <div className="flex w-max animate-marquee-logos items-center gap-12 lg:gap-20">
-          {marqueeTrack.map((skill, index) => (
+          {skillsList.concat(skillsList, skillsList).map((skill, index) => (
             <div key={index} className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-default">
               <div className="w-6 h-6 rounded-md bg-black text-white flex items-center justify-center font-bold text-[10px]">
                 {skill.substring(0, 2).toUpperCase()}
@@ -213,18 +214,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 精选优质作品标题区 */}
-      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-10 pb-16 mt-16 relative">
-        <div className="flex flex-col items-center text-center mb-16 border-b border-gray-200/60 pb-10 px-4">
-          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-3 text-[#111]">
-            {language === 'zh' ? '精选优质作品' : 'Selected Premium Works'}
-          </h2>
-          <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-400 italic mt-2">
-             Create a visual feast
-          </h3>
-        </div>
+      {/* 精选优质作品标题区 (保持居中和分隔线) */}
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto flex flex-col items-center text-center mt-16 mb-16 border-b border-gray-100 pb-16 px-4">
+        <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-3 text-[#111]">
+          {language === 'zh' ? '精选优质作品' : 'Selected Premium Works'}
+        </h2>
+        <h3 className="text-sm md:text-base font-medium uppercase tracking-[0.2em] text-gray-400 italic">
+           Create a visual feast
+        </h3>
+      </div>
 
-        {/* 手风琴画廊 */}
+      {/* 手风琴画廊 */}
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pb-32 relative selection:bg-black selection:text-white">
         <div className="w-full flex flex-col lg:flex-row gap-4 h-[700px] lg:h-[500px]">
           {showcaseData.map((item, index) => (
             <div 
@@ -264,52 +265,55 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 作品瀑布流 (Masonry Grid) */}
-      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-20 border-t border-gray-100 mt-10">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 px-4 md:px-0">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-2 text-[#111]">
-              {language === 'zh' ? '更多案例存档' : 'Project Archive'}
-            </h2>
-            <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic">
-               Explore the full collection
-            </h3>
-          </div>
+      {/* 👉 全新升级的作品瀑布流区 */}
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 border-t border-gray-100 mt-10 selection:bg-black selection:text-white relative">
+        
+        {/* 👉 修改1：标题区和中英文标题彻底居中对齐 */}
+        <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111] max-w-4xl mx-auto">
+            {language === 'zh' ? '更多案例存档' : 'Project Archive'}
+          </h2>
+          <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic mt-2">
+             Explore the full collection
+          </h3>
+          {/* 这里移除了原本把按钮放右侧的 flex-row布局，按钮在手机端会显示在下方 */}
           <button 
             onClick={() => { onCategorySelect(Category.ALL); onNavigate('portfolio'); }}
-            className="hidden md:flex items-center gap-2 font-bold text-sm uppercase tracking-widest hover:text-[#ff5030] transition-colors"
+            className="hidden md:flex items-center gap-2 font-bold text-sm uppercase tracking-widest hover:text-[#ff5030] transition-colors mt-8 bg-white border border-gray-200 rounded-full px-8 py-4 shadow-sm hover:shadow-lg transition-all"
           >
             {language === 'zh' ? '查看完整作品集' : 'View Full Portfolio'} <ArrowRight size={16} />
           </button>
         </div>
 
-        {/* 瀑布流网格 */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
-          {recentProjects.map((project, index) => (
-            <div 
-              key={project.id} 
-              className="break-inside-avoid relative group rounded-[2rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-1 bg-gray-100 border border-gray-200/50"
-              // 👉 这里修改了点击事件：不再跳转页面，而是将当前项目设置为 selectedProject 打开弹窗
-              onClick={() => setSelectedProject(project)}
-            >
-              <img 
-                src={project.image} 
-                alt={project.title} 
-                loading="lazy"
-                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                style={{ minHeight: index % 3 === 0 ? '400px' : index % 2 === 0 ? '300px' : '250px' }} 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  <div className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-3">
-                    {CATEGORY_LABELS[language][project.category] || project.category}
+        {/* 👉 修改2：作品瀑布流增加两侧渐变虚化效果 (和软件滚动一样的效果) */}
+        {/* 这里给columns网格加了和 Logo 墙一模一样的 w-max, animation, relative 和 maskImage样式 */}
+        <div className="w-full overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 pb-10 px-10"> {/* 增加了px-10和pb-10确保虚化效果完整且内容不被切断 */}
+            {recentProjects.map((project, index) => (
+              <div 
+                key={project.id} 
+                className="break-inside-avoid relative group rounded-[2rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-1 bg-gray-100 border border-gray-200/50"
+                onClick={() => setSelectedProject(project)}
+              >
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  loading="lazy"
+                  className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                  style={{ minHeight: index % 3 === 0 ? '400px' : index % 2 === 0 ? '300px' : '250px' }} 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <div className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-3">
+                      {CATEGORY_LABELS[language][project.category] || project.category}
+                    </div>
+                    <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-2">{project.title}</h3>
+                    <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
                   </div>
-                  <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-2">{project.title}</h3>
-                  <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         <button 
@@ -320,47 +324,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </button>
       </div>
 
-      {/* 个人联系方式尾页 (Footer CTA) */}
-      <div className="w-full bg-[#050505] text-white pt-24 md:pt-32 pb-10 rounded-t-[3rem] md:rounded-t-[4rem] relative overflow-hidden mt-10">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#ff5030]/20 blur-[120px] rounded-full pointer-events-none"></div>
-        <div className="max-w-[95vw] lg:max-w-[80vw] mx-auto flex flex-col items-center text-center relative z-10 px-4">
-          <div className="w-16 h-16 bg-[#ccff00] text-black rounded-full flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(204,255,0,0.2)]">
-            <Mail size={28} strokeWidth={2.5} />
-          </div>
-          <h2 className="text-6xl md:text-8xl lg:text-[10rem] font-serif font-black tracking-tighter leading-none mb-8">
-            Let's Talk<span className="text-[#ff5030]">.</span>
-          </h2>
-          <p className="text-lg md:text-xl text-gray-400 font-medium max-w-2xl mb-12">
-            {language === 'zh' 
-              ? '准备好将您的想法转化为令人惊叹的视觉现实了吗？无论是项目合作还是随性交流，我都在这里。' 
-              : 'Ready to turn your ideas into stunning visual realities? Whether it\'s a project or just to say hi, I\'m here.'}
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 mb-24 lg:mb-32">
-            <a 
-              href={`mailto:${contactContent.email}`} 
-              className="bg-white text-black px-8 py-4 rounded-full font-bold text-base md:text-lg hover:scale-105 transition-transform flex items-center gap-2 shadow-xl"
-            >
-              {language === 'zh' ? '发送邮件给我' : 'Send an Email'} <ArrowUpRight size={20} strokeWidth={3} />
-            </a>
-            <button 
-              onClick={() => onNavigate('contact')} 
-              className="bg-transparent border border-white/20 px-8 py-4 rounded-full font-bold text-base md:text-lg text-white hover:border-[#ccff00] hover:text-[#ccff00] transition-colors"
-            >
-              {language === 'zh' ? '探索更多联系方式' : 'More Contact Info'}
-            </button>
-          </div>
-          <div className="w-full flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-xs md:text-sm text-gray-500 font-medium uppercase tracking-widest gap-4">
-            <span>© {new Date().getFullYear()} SILENCE 7C. ALL RIGHTS RESERVED.</span>
-            <div className="flex gap-6">
-              <span className="hover:text-white cursor-pointer transition-colors" onClick={() => window.open('https://mp.weixin.qq.com/s/MD5T-BsAgUi9yUo6ISY1CA')}>WECHAT</span>
-              <span className="hover:text-white cursor-pointer transition-colors" onClick={() => window.open('https://www.xiaohongshu.com/user/profile/61bbb882000000001000e80d')}>XIAOHONGSHU</span>
-              <span className="hover:text-white cursor-pointer transition-colors" onClick={() => window.open('https://b23.tv/XNNX02Q')}>BILIBILI</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* 👉 修改3：下方的个人联系方式尾页已彻底删除 (Let's Talk板块) */}
 
-      {/* 👉 全新升级：小红书风格的作品详情弹窗 */}
+      {/* 小红书风格的作品详情弹窗 (原样保留) */}
       {isModalRendered && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-8">
            {/* 背景模糊遮罩层，点击关闭 */}
@@ -430,7 +396,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                         {displayProject.description}
                       </p>
                       
-                      {/* 概念说明区块 */}
+                      {/* Concepts说明区块 */}
                       {displayProject.concept && (
                          <div className="bg-[#f8f9fa] p-5 rounded-2xl border border-gray-100 mb-8 relative overflow-hidden">
                            <div className="absolute top-0 left-0 w-1 h-full bg-[#ff5030]"></div>
