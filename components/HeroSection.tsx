@@ -28,7 +28,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
 
   return (
     // 极致暗黑底色，全局替换选择文本颜色为荧光绿
-    <div className="w-full bg-[#050505] font-sans relative overflow-hidden text-white selection:bg-[#ccff00] selection:text-black">
+    <div className="w-full bg-[#050505] font-sans relative overflow-hidden text-white selection:bg-[#ccff00] selection:text-black pb-10">
       
       {/* 注入速度感滚动的 CSS 动画 */}
       <style>
@@ -77,11 +77,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
 
             <p className="mt-8 text-lg md:text-xl font-medium text-gray-400 max-w-lg leading-relaxed mix-blend-lighten">
               {language === 'zh' 
-                ? '打破常规框架，将最前沿的视觉设计与AIGC技术结合。为品牌注入极致性能与无与伦比的现实感。' 
+                ? '打破常规框架，将最前沿的视觉设计与AIGC技术结合。为品牌注入极致性能与无与伦比的商业现实感。' 
                 : 'Break the barriers. Combining cutting-edge visuals and AIGC to deliver ultimate performance and commercial realism.'}
             </p>
 
-            {/* 👉 你要求的 Welcome 坐标位置！改成了硬核的赛车仪表盘风格 */}
+            {/* 赛车仪表盘风格的 Welcome 坐标 */}
             <div className="mt-8 flex items-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 p-2 pr-6 rounded-full w-max shadow-xl">
               <div className="bg-[#ccff00] text-black p-3 rounded-full">
                 <MapPin size={18} strokeWidth={3} />
@@ -92,7 +92,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               </div>
             </div>
 
-            {/* Lando Norris 风格的倾斜进攻性双按钮 */}
+            {/* 倾斜进攻性双按钮 */}
             <div className="flex flex-wrap items-center gap-4 md:gap-6 mt-12">
               <button 
                 onClick={handleExploreClick} 
@@ -112,11 +112,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
             </div>
           </div>
 
-          {/* 右侧：赛车头盔/超燃视觉图蒙版 */}
+          {/* 右侧：视觉图蒙版 */}
           <div className="w-full lg:w-[40%] relative mt-10 lg:mt-0">
-            {/* 不规则的异形容器 */}
             <div className="w-full aspect-[3/4] lg:aspect-[4/5] overflow-hidden rounded-[2rem] lg:rounded-tl-[8rem] lg:rounded-br-[8rem] border border-white/10 relative z-10 shadow-2xl group">
-              {/* 👉 请将这里替换成你最炸裂的一张作品图或个人酷照 */}
               <img 
                 src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop" 
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105" 
@@ -137,10 +135,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 👉 Lando Norris 灵魂元素：巨型倾斜跑马灯轨道 (替换了原本文静的 Logo 墙) */}
+      {/* 巨型倾斜跑马灯轨道 */}
       <div className="mt-16 md:mt-24 w-full relative z-20">
         
-        {/* 轨道 1：荧光绿底黑字，向左疯狂滚动 */}
+        {/* 轨道 1：荧光绿底黑字，向左滚动 */}
         <div className="relative w-full overflow-hidden py-6 transform -skew-y-3 bg-[#ccff00] shadow-2xl shadow-[#ccff00]/20">
           <div className="flex w-max animate-marquee-racing items-center gap-10">
             {marqueeSkills.map((skill, index) => (
@@ -154,7 +152,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           </div>
         </div>
 
-        {/* 轨道 2：黑底荧光绿描边，向右缓慢交错滚动 */}
+        {/* 轨道 2：黑底荧光绿描边，向右滚动 */}
         <div className="relative w-full overflow-hidden py-4 transform -skew-y-3 bg-[#050505] border-y border-[#ccff00]/30 -mt-1 z-[-1]">
           <div className="flex w-max animate-marquee-racing-reverse items-center gap-10">
             {marqueeSkills.map((skill, index) => (
@@ -170,11 +168,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
             ))}
           </div>
         </div>
-
       </div>
       
-      {/* 底部用于无缝衔接下方白色作品区的倾斜切割遮罩 */}
-      <div className="absolute bottom-0 left-0 w-full h-16 bg-[#eef1f5] transform skew-y-2 translate-y-8 z-30"></div>
+      {/* 注：原本在这里的白色背景切割遮罩已经彻底删除！ */}
     </div>
   );
 };
