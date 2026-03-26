@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { PROJECTS, CATEGORY_LABELS } from '../constants';
 import { Category, Language, Project } from '../types';
-import { PHOTOGRAPHY_GALLERY } from '../src/data/photography';
 import { ArrowUpRight, X } from 'lucide-react';
 
 interface PortfolioSectionProps {
@@ -55,80 +54,85 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
   }, [selectedProject]);
 
   return (
-    <div className="w-full bg-[#eef1f5] pb-20 pt-4 md:pt-10">
-      <div className="max-w-[95vw] lg:max-w-[85vw] mx-auto">
+    // 👉 极致暗黑背景，与 Hero 区域完美融合
+    <div className="w-full bg-[#050505] pb-32 pt-16 relative z-10 font-sans selection:bg-[#ccff00] selection:text-black text-white">
+      {/* 宽度与 Hero 区域保持绝对一致 */}
+      <div className="max-w-[95vw] lg:max-w-[90vw] mx-auto">
         
-        {/* 精选作品大标题 */}
-        <div className="mb-6 md:mb-8 flex justify-start items-end">
-          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-[#111]">
+        {/* 赛车风大标题 */}
+        <div className="mb-10 flex justify-start items-end border-b border-white/10 pb-6">
+          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter italic text-white">
             {language === 'zh' ? '精选作品' : 'SELECTED WORKS'}
+            <span className="text-[#ccff00]">.</span>
           </h2>
         </div>
 
-        {/* 分类胶囊按钮 */}
-        <div className="flex flex-wrap gap-3 md:gap-4 mb-10 md:mb-12 sticky top-20 md:top-24 z-30 py-2 overflow-x-auto no-scrollbar justify-start">
+        {/* 倾斜的分类胶囊按钮 */}
+        <div className="flex flex-wrap gap-4 mb-16 sticky top-20 md:top-24 z-30 py-4 overflow-x-auto no-scrollbar justify-start">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
               className={`
-                px-5 py-2.5 md:px-6 md:py-3 rounded-full text-sm md:text-base font-bold transition-all duration-300 whitespace-nowrap shadow-sm border
+                px-6 py-2 md:px-8 md:py-3 font-black uppercase tracking-widest italic transition-all duration-300 transform skew-x-[-10deg]
                 ${filter === cat 
-                  ? 'bg-[#111] text-white border-[#111] scale-105'
-                  : 'bg-white text-[#111] border-transparent hover:border-gray-300 hover:bg-gray-50'}
+                  ? 'bg-[#ccff00] text-[#050505] shadow-[0_0_20px_rgba(204,255,0,0.3)]'
+                  : 'bg-transparent text-white border border-white/20 hover:border-[#ccff00] hover:text-[#ccff00]'}
               `}
             >
-              {CATEGORY_LABELS[language][cat] || cat}
+              <span className="skew-x-[10deg] block">{CATEGORY_LABELS[language][cat] || cat}</span>
             </button>
           ))}
         </div>
 
-        {/* 👉 重点修改：这里改成了 lg:grid-cols-4，间距改成了 gap-6 适配4列 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-6">
+        {/* 作品网格：保持 4 列，全面暗黑化 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {filteredProjects.map((project) => (
             <div 
               key={project.id} 
-              className="group cursor-pointer flex flex-col h-full bg-white rounded-[1.5rem] lg:rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-2"
+              className="group cursor-pointer flex flex-col h-full bg-[#0a0a0a] overflow-hidden border border-white/5 hover:border-[#ccff00]/50 transition-all duration-500 transform-gpu hover:-translate-y-2 shadow-2xl"
+              style={{ borderRadius: '1rem' }}
               onClick={() => setSelectedProject(project)}
             >
               
-              {/* Image Container */}
-              <div className="w-full aspect-[4/3] bg-gray-100 relative overflow-hidden">
+              {/* 图片容器：默认灰度黑白，鼠标悬停时恢复全彩（强烈的视觉冲击） */}
+              <div className="w-full aspect-[4/3] bg-[#111] relative overflow-hidden border-b border-white/5">
                 {project.image && !project.image.includes('picsum') ? (
                     <img 
                       src={project.image} alt={project.title} loading="lazy" decoding="async" referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
                     />
                 ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gray-200 p-8 text-center">
-                        <h4 className="text-xl font-black text-gray-400">{project.title}</h4>
+                    <div className="w-full h-full flex items-center justify-center bg-[#111]">
+                        <h4 className="text-xl font-black text-gray-700 uppercase italic">{project.title}</h4>
                     </div>
                 )}
-                {/* 缩减了分类标签的内边距，适应稍微变窄的卡片 */}
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-black px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
-                  {CATEGORY_LABELS[language][project.category] || project.category}
+                {/* 荧光绿倾斜分类标签 */}
+                <div className="absolute top-4 left-4 bg-[#ccff00] text-[#050505] px-3 py-1 text-[10px] font-black uppercase tracking-widest skew-x-[-10deg]">
+                  <span className="skew-x-[10deg] block">{CATEGORY_LABELS[language][project.category] || project.category}</span>
                 </div>
               </div>
 
-              {/* 卡片内容区 (微调了 padding) */}
+              {/* 卡片内容区 */}
               <div className="p-5 lg:p-6 flex flex-col flex-grow">
-                <h3 className="text-xl lg:text-2xl font-black text-black mb-2 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
+                <h3 className="text-xl lg:text-2xl font-black text-white mb-2 line-clamp-2 leading-tight uppercase italic group-hover:text-[#ccff00] transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-xs lg:text-sm text-gray-500 line-clamp-2 leading-relaxed font-medium mb-6 flex-grow">
+                <p className="text-xs lg:text-sm text-gray-400 line-clamp-2 leading-relaxed font-medium mb-6 flex-grow">
                   {project.description}
                 </p>
                 
-                <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-100">
-                  <div className="flex flex-wrap gap-1.5 overflow-hidden max-h-6">
-                    {project.tags.slice(0, 2).map(tag => ( // 4列显示时空间变小，只截取前2个标签防止拥挤
-                      <span key={tag} className="text-[9px] font-bold text-gray-600 bg-gray-100 px-2 py-1 rounded-full uppercase tracking-wider">
+                <div className="flex justify-between items-center mt-auto pt-4 border-t border-white/10">
+                  <div className="flex flex-wrap gap-2 overflow-hidden max-h-6">
+                    {project.tags.slice(0, 2).map(tag => (
+                      <span key={tag} className="text-[10px] font-bold text-[#ccff00] uppercase tracking-wider">
                         #{tag}
                       </span>
                     ))}
                   </div>
-                  <div className="bg-[#111] text-white w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110">
-                    <ArrowUpRight size={16} />
+                  {/* 荧光绿倾斜方块箭头 */}
+                  <div className="bg-[#ccff00] text-[#050505] w-10 h-10 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 skew-x-[-10deg]">
+                    <ArrowUpRight size={20} className="skew-x-[10deg]" strokeWidth={3} />
                   </div>
                 </div>
               </div>
@@ -137,23 +141,23 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
           ))}
         </div>
 
-        {/* 弹窗部分 */}
+        {/* 弹窗详情页：同步暗黑赛车风格 */}
         {isModalRendered && createPortal(
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8">
-             <div className={`absolute inset-0 bg-black/80 ${selectedProject ? 'animate-[fadeIn_0.3s_ease-out_forwards]' : 'animate-fade-out'}`} onClick={() => setSelectedProject(null)}></div>
+             <div className={`absolute inset-0 bg-[#050505]/95 backdrop-blur-sm ${selectedProject ? 'animate-[fadeIn_0.3s_ease-out_forwards]' : 'animate-fade-out'}`} onClick={() => setSelectedProject(null)}></div>
 
-             <div className={`relative w-full max-w-5xl max-h-[90vh] overflow-y-auto no-scrollbar bg-white rounded-[2rem] shadow-2xl flex flex-col ${selectedProject ? 'animate-message-pop' : 'animate-message-pop-out'}`}>
+             <div className={`relative w-full max-w-6xl max-h-[90vh] overflow-y-auto no-scrollbar bg-[#111] border border-white/10 rounded-2xl shadow-2xl flex flex-col ${selectedProject ? 'animate-message-pop' : 'animate-message-pop-out'}`}>
                {displayProject && (
                  <>
-                   <button onClick={() => setSelectedProject(null)} className="absolute top-6 right-6 z-10 p-3 rounded-full bg-black/10 hover:bg-black/20 transition-colors">
-                     <X size={24} className="text-black" />
+                   <button onClick={() => setSelectedProject(null)} className="absolute top-6 right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-[#ccff00] hover:text-black text-white transition-colors">
+                     <X size={24} />
                    </button>
-                   <div className="w-full bg-gray-100 relative group-modal-media shrink-0 aspect-video">
-                      <img src={displayProject.image} alt={displayProject.title} className="w-full h-full object-cover" />
+                   <div className="w-full bg-[#050505] relative group-modal-media shrink-0 aspect-video border-b border-white/10">
+                      <img src={displayProject.image} alt={displayProject.title} className="w-full h-full object-contain" />
                    </div>
-                   <div className="p-8 md:p-12 text-black">
-                     <h2 className="text-4xl md:text-5xl font-black mb-6">{displayProject.title}</h2>
-                     <p className="text-xl text-gray-600 mb-8">{displayProject.description}</p>
+                   <div className="p-8 md:p-12 text-white">
+                     <h2 className="text-4xl md:text-5xl font-black mb-6 uppercase italic">{displayProject.title}</h2>
+                     <p className="text-xl text-gray-300 mb-8">{displayProject.description}</p>
                      <p className="text-lg text-gray-500">{displayProject.concept}</p>
                    </div>
                  </>
