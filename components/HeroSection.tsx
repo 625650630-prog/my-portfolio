@@ -17,14 +17,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     onNavigate('portfolio');
   };
 
-  // 核心技能数据
+  // 核心技能数据 (用于底部 Logo 墙)
   const skillsList = [
     'Photoshop', 'CorelDRAW', 'Illustrator', 'Premiere', 'After Effects', 
     'Lightroom', 'DaVinci Resolve', 'ComfyUI', 'Gemini', '剪映', '即梦', 'DeepSeek'
   ];
   const marqueeTrack = [...skillsList, ...skillsList, ...skillsList];
 
-  // 精选优质作品数据
+  // 精选优质作品数据 (5个板块)
   const showcaseData = [
     {
       number: '01',
@@ -83,6 +83,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 relative z-20 w-full py-8 lg:py-12 lg:px-16 xl:px-32">
           
+          {/* 左侧文字区 */}
           <div className="lg:col-span-6 flex flex-col items-start justify-center">
             <div className="flex items-center gap-3 mb-6 lg:mb-8">
               <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
@@ -133,6 +134,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
             </div>
           </div>
 
+          {/* 右侧图片悬浮元素区 */}
           <div className="lg:col-span-6 relative h-[500px] lg:h-[650px] w-full max-w-lg lg:max-w-[550px] mx-auto mt-10 lg:mt-0">
             <div className="absolute inset-4 lg:inset-8 bg-gradient-to-br from-[#ff7a50] to-[#ff5030] rounded-[3rem] shadow-2xl overflow-hidden">
                <img 
@@ -174,7 +176,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       </div>
 
       {/* 底部软件 Logo 墙 */}
-      <div className="w-full max-w-[95vw] lg:max-w-[80vw] mx-auto mt-12 mb-10 overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
+      <div className="w-full max-w-[95vw] lg:max-w-[80vw] mx-auto mt-12 mb-16 overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
         <div className="flex w-max animate-marquee-logos items-center gap-12 lg:gap-20">
           {marqueeTrack.map((skill, index) => (
             <div key={index} className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-default">
@@ -189,20 +191,25 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 👉 独立出来的居中大标题区域：夹在滚动条和画廊的中间 */}
-      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto flex flex-col items-center text-center mt-16 mb-16 border-b border-gray-100/80 pb-16 px-4">
-        <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-3 text-[#111]">
-          {language === 'zh' ? '精选优质作品' : 'Selected Premium Works'}
-        </h2>
-        <h3 className="text-sm md:text-base font-medium uppercase tracking-[0.2em] text-gray-400 italic">
-           Create a visual feast
-        </h3>
-      </div>
+      {/* 👉 全新的手风琴展示板块 - 根据用户反馈调整居中排版与间距 */}
+      {/* 调整细节：增加pt-20拓宽与上方的间距，pb-32拓宽整体视觉，mt-32拓宽模块间距 */}
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 mt-32 relative selection:bg-black selection:text-white">
+        
+        {/* 标题区域：彻底居中 */}
+        {/* 调整细节：flex flex-col items-center 确保文字居中，text-center 处理文本，mb-16 增加下方间距 */}
+        <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
+          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-3 text-[#111] max-w-4xl mx-auto">
+            {language === 'zh' ? '精选优质作品' : 'Selected Premium Works'}
+          </h2>
+          {/* 这里去掉了原本英文副标题前面的红色装饰条 span */}
+          <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic mt-2">
+             Create a visual feast
+          </h3>
+        </div>
 
-      {/* 画廊板块：由于标题已经移出去了，这里只保留干净的容器和手风琴卡片 */}
-      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pb-32 relative selection:bg-black selection:text-white">
         {/* 5个板块的横向手风琴容器 */}
         <div className="w-full flex flex-col lg:flex-row gap-4 h-[700px] lg:h-[500px]">
+          
           {showcaseData.map((item, index) => (
             <div 
               key={index}
@@ -240,6 +247,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               </div>
             </div>
           ))}
+
         </div>
       </div>
 
