@@ -93,7 +93,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
   const recentProjects = PROJECTS[language].slice(0, 8);
 
   return (
-    // 外围pt-4，处理滚动条和导航对齐
     <div className="w-full bg-white font-sans pt-4 md:pt-6 px-0 md:px-0 relative selection:bg-black selection:text-white">
       
       <style>
@@ -108,7 +107,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         `}
       </style>
 
-      {/* 核心灰色包裹容器 (原样保留) */}
+      {/* 核心灰色包裹容器 */}
       <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto bg-gradient-to-br from-[#f4f5f7] to-[#e5e7eb] rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden shadow-sm border border-gray-100/50 min-h-[85vh] flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 relative z-20 w-full py-8 lg:py-12 lg:px-16 xl:px-32">
           {/* 左侧文字区 */}
@@ -198,7 +197,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 底部软件 Logo 墙 (原样保留两侧虚化) */}
+      {/* 底部软件 Logo 墙 */}
       <div className="w-full max-w-[95vw] lg:max-w-[80vw] mx-auto mt-12 mb-16 overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
         <div className="flex w-max animate-marquee-logos items-center gap-12 lg:gap-20">
           {skillsList.concat(skillsList, skillsList).map((skill, index) => (
@@ -214,18 +213,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 精选优质作品标题区 (保持居中和分隔线) */}
-      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto flex flex-col items-center text-center mt-16 mb-16 border-b border-gray-100 pb-16 px-4">
-        <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-3 text-[#111]">
-          {language === 'zh' ? '精选优质作品' : 'Selected Premium Works'}
-        </h2>
-        <h3 className="text-sm md:text-base font-medium uppercase tracking-[0.2em] text-gray-400 italic">
-           Create a visual feast
-        </h3>
-      </div>
+      {/* 👉 统一间距：精选优质作品区 */}
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 mt-10 relative selection:bg-black selection:text-white">
+        
+        <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111] max-w-4xl mx-auto">
+            {language === 'zh' ? '精选优质作品' : 'Selected Premium Works'}
+          </h2>
+          <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic mt-2">
+             Create a visual feast
+          </h3>
+        </div>
 
-      {/* 手风琴画廊 */}
-      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pb-32 relative selection:bg-black selection:text-white">
+        {/* 手风琴画廊 */}
         <div className="w-full flex flex-col lg:flex-row gap-4 h-[700px] lg:h-[500px]">
           {showcaseData.map((item, index) => (
             <div 
@@ -265,10 +265,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 👉 全新升级的作品瀑布流区 */}
+      {/* 👉 统一间距：更多案例存档瀑布流区 */}
       <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 border-t border-gray-100 mt-10 selection:bg-black selection:text-white relative">
         
-        {/* 👉 修改1：标题区和中英文标题彻底居中对齐 */}
         <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111] max-w-4xl mx-auto">
             {language === 'zh' ? '更多案例存档' : 'Project Archive'}
@@ -276,7 +275,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic mt-2">
              Explore the full collection
           </h3>
-          {/* 这里移除了原本把按钮放右侧的 flex-row布局，按钮在手机端会显示在下方 */}
           <button 
             onClick={() => { onCategorySelect(Category.ALL); onNavigate('portfolio'); }}
             className="hidden md:flex items-center gap-2 font-bold text-sm uppercase tracking-widest hover:text-[#ff5030] transition-colors mt-8 bg-white border border-gray-200 rounded-full px-8 py-4 shadow-sm hover:shadow-lg transition-all"
@@ -285,10 +283,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           </button>
         </div>
 
-        {/* 👉 修改2：作品瀑布流增加两侧渐变虚化效果 (和软件滚动一样的效果) */}
-        {/* 这里给columns网格加了和 Logo 墙一模一样的 w-max, animation, relative 和 maskImage样式 */}
+        {/* 带有两侧渐变虚化的瀑布流区域 */}
         <div className="w-full overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
-          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 pb-10 px-10"> {/* 增加了px-10和pb-10确保虚化效果完整且内容不被切断 */}
+          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 pb-10 px-10">
             {recentProjects.map((project, index) => (
               <div 
                 key={project.id} 
@@ -324,9 +321,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </button>
       </div>
 
-      {/* 👉 修改3：下方的个人联系方式尾页已彻底删除 (Let's Talk板块) */}
-
-      {/* 小红书风格的作品详情弹窗 (原样保留) */}
+      {/* 小红书风格的作品详情弹窗 */}
       {isModalRendered && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-8">
            {/* 背景模糊遮罩层，点击关闭 */}
