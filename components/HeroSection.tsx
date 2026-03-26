@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Language, Category, Project } from '../types';
 import { CONTACT_DATA } from '../src/data/contact';
-import { ArrowRight, Play, CheckCircle2, Star, ArrowUpRight, Mail, X, ZoomIn, ZoomOut } from 'lucide-react';
-// 引入作品数据用于瀑布流和弹窗展示
+import { ArrowRight, Play, CheckCircle2, Star, ArrowUpRight, X, ZoomIn, ZoomOut } from 'lucide-react';
+// 引入作品数据用于瀑布流展示
 import { PROJECTS, CATEGORY_LABELS } from '../constants';
 
 interface HeroSectionProps {
@@ -11,6 +11,14 @@ interface HeroSectionProps {
   onCategorySelect: (category: Category) => void;
   language: Language;
 }
+
+// 👉 定义瀑布流中不同卡片类型的联合类型
+type GridItem = 
+  | { type: 'project'; data: Project; height: string }
+  | { type: 'featured'; title: string; desc: string; link: string; color: string; height: string }
+  | { type: 'category'; name: string; label: string; color: string; height: string }
+  | { type: 'explore'; height: string }
+  | { type: 'title'; number: string; title: string; subtitle: string; height: string };
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategorySelect, language }) => {
   const contactContent = CONTACT_DATA[language];
@@ -94,8 +102,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     }
   ];
 
-  // 截取前 8 个作品用于瀑布流展示
-  const recentProjects = PROJECTS[language].slice(0, 8);
+  // 👉 全新升级：模拟参考图的瀑布流数据结构
+  const exampleGridItems: GridItem[] = [
+    { type: 'category', name: 'COMMERCIAL', label: 'E-COMMERCE PLATFORM', color: 'bg-[#ff5030]', height: '300px' },
+    { type: 'project', data: PROJECTS[language][0], height: '400px' },
+    { type: 'title', number: '#01', title: 'BRAND IDENTITY SYSTEM', subtitle: 'AIGC MULTIMODAL EXPLORATION', height: '280px' },
+    { type: 'featured', title: 'AIGC VISUAL EXPLORATION', desc: 'Combine Stable Diffusion & Midjourney, create highly realistic visuals.', link: '/portfolio', color: 'bg-black', height: '350px' },
+    { type: 'category', name: 'AIGC', label: 'MULTIMODAL EXPLORATION', color: 'bg-[#111]', height: '250px' },
+    { type: 'project', data: PROJECTS[language][1], height: '450px' },
+    { type: 'explore', height: '250px' },
+    { type: 'category', name: 'BRANDING', label: 'IDENTITY SYSTEM', color: 'bg-[#ff5030]', height: '250px' },
+    { type: 'title', number: '#02', title: 'E-COMMERCE VISUAL DESIGN', subtitle: 'Scalable visual standards & promotion packaging.', height: '300px' },
+    { type: 'project', data: PROJECTS[language][2], height: '400px' },
+    { type: 'category', name: 'MOTION', label: 'NEW MEDIA MOTION GRAPHICS', color: 'bg-gray-100', height: '250px' },
+    { type: 'project', data: PROJECTS[language][3], height: '350px' },
+    { type: 'title', number: '#03', title: 'NEW MEDIA MOTION', subtitle: 'Use After Effects & C4D, dynamic short video effects.', height: '280px' },
+    { type: 'category', name: 'AIGC', label: 'AIGC OPTIMIZED!', color: 'bg-blue-500', height: '250px' },
+    { type: 'project', data: PROJECTS[language][4], height: '400px' },
+  ];
 
   return (
     <div className="w-full bg-white font-sans pt-4 md:pt-6 px-0 md:px-0 relative selection:bg-black selection:text-white">
@@ -205,7 +229,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       {/* 底部软件 Logo 墙 */}
       <div className="w-full max-w-[95vw] lg:max-w-[80vw] mx-auto mt-12 mb-16 overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
         <div className="flex w-max animate-marquee-logos items-center gap-12 lg:gap-20">
-          {marqueeTrack.map((skill, index) => (
+          {skillsList.concat(skillsList, skillsList).map((skill, index) => (
             <div key={index} className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-default">
               <div className="w-6 h-6 rounded-md bg-black text-white flex items-center justify-center font-bold text-[10px]">
                 {skill.substring(0, 2).toUpperCase()}
@@ -230,8 +254,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           </h3>
         </div>
 
-        {/* 👉 尺寸调整：增加手风琴画廊的高度，制造舒展感 */}
-        {/* 将 h-[700px] lg:h-[500px] 修改为 h-[750px] lg:h-[650px] */}
+        {/* 手风琴画廊 (尺寸已调整) */}
         <div className="w-full flex flex-col lg:flex-row gap-4 h-[750px] lg:h-[650px]">
           {showcaseData.map((item, index) => (
             <div 
@@ -249,16 +272,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               {/* 卡片内容容器 */}
               <div className="absolute bottom-0 left-0 w-full p-6 lg:p-8 flex flex-col justify-end h-full">
                 
-                {/* 👉 内容调整：在编号（item.number）后面显示项目名称 */}
+                {/* 编号与装饰条 */}
                 <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-3 mb-2 lg:mb-0 transition-all duration-700 group-hover:mb-4">
                   
-                  {/* 将数字和名称放在同一个块中，即使在窄状态下也并排显示 */}
+                  {/* 项目编号 */}
                   <div className="flex items-center gap-3">
                     <span className="text-white font-black text-3xl lg:text-4xl opacity-80 group-hover:opacity-100 group-hover:text-[#ff5030] transition-colors shrink-0">
                       {item.number}
                     </span>
                     
-                    {/* 这是在大屏幕和移动端窄状态都可见的项目标题 */}
+                    {/* 项目标题名称 */}
                     <div className="flex flex-col">
                       <span className="text-white font-bold text-xl lg:text-2xl leading-none transition-colors">
                         {language === 'zh' ? item.titleZh : item.titleEn}
@@ -313,31 +336,140 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
 
         {/* 带有两侧渐变虚化的瀑布流区域 */}
         <div className="w-full overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
+          
+          {/* 👉 全新升级：错落有致的瀑布流网格，模拟参考图布局 */}
           <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 pb-10 px-10">
-            {recentProjects.map((project, index) => (
-              <div 
-                key={project.id} 
-                className="break-inside-avoid relative group rounded-[2rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-1 bg-gray-100 border border-gray-200/50"
-                onClick={() => setSelectedProject(project)}
-              >
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  loading="lazy"
-                  className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                  style={{ minHeight: index % 3 === 0 ? '400px' : index % 2 === 0 ? '300px' : '250px' }} 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <div className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-3">
-                      {CATEGORY_LABELS[language][project.category] || project.category}
+            {exampleGridItems.map((item, index) => {
+              // 👉 根据 item.type 进行条件渲染
+
+              if (item.type === 'project') {
+                // 标准项目卡片 (原样保留，调整 minHeight)
+                const project = item.data;
+                return (
+                  <div 
+                    key={project.id} 
+                    className="break-inside-avoid relative group rounded-[2rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-1 bg-gray-100 border border-gray-200/50"
+                    onClick={() => setSelectedProject(project)}
+                  >
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      loading="lazy"
+                      className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                      style={{ minHeight: item.height }} // 使用项目指定的高度
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                      <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <div className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-3">
+                          {CATEGORY_LABELS[language][project.category] || project.category}
+                        </div>
+                        <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-2">{project.title}</h3>
+                        <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
+                      </div>
                     </div>
-                    <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-2">{project.title}</h3>
-                    <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
                   </div>
-                </div>
-              </div>
-            ))}
+                );
+              }
+
+              if (item.type === 'featured') {
+                // 特别推荐板块 (橘红/黑色背景，纯文字)
+                return (
+                  <div 
+                    key={index} 
+                    className={`break-inside-avoid relative group rounded-[2rem] p-8 md:p-10 flex flex-col justify-end transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-1 ${item.color}`}
+                    style={{ minHeight: item.height }}
+                    onClick={() => { onCategorySelect(Category.ALL); onNavigate('portfolio'); }}
+                  >
+                    <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center mb-8 shrink-0 shadow-lg">
+                      <Star size={24} fill="black" />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                       <h3 className="text-2xl md:text-3xl font-black text-white leading-tight uppercase tracking-tight">
+                        {item.title}
+                       </h3>
+                       <p className="text-gray-300 text-sm md:text-base mb-6 leading-relaxed">
+                        {item.desc}
+                       </p>
+                       <div className="flex items-center gap-2 text-xs font-bold text-white/70 uppercase tracking-widest group-hover:text-white transition-colors">
+                        Explore Works <ArrowUpRight size={16} strokeWidth={3} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              if (item.type === 'category') {
+                // 分类标签卡片 (深色/白色背景，醒目标签)
+                return (
+                  <div 
+                    key={index} 
+                    className={`break-inside-avoid relative group rounded-[2rem] p-8 flex flex-col justify-center items-start transition-all duration-500 shadow-sm border border-gray-100 ${item.color}`}
+                    style={{ minHeight: item.height }}
+                  >
+                    <div className="flex flex-col gap-2 relative z-10">
+                       <h3 className={`text-xl md:text-2xl font-bold uppercase tracking-tight ${item.color === 'bg-gray-100' ? 'text-[#111]' : 'text-white'}`}>
+                        {item.name}
+                       </h3>
+                       <span className={`text-sm md:text-base font-medium opacity-70 ${item.color === 'bg-gray-100' ? 'text-gray-600' : 'text-gray-200'}`}>
+                        {item.label}
+                       </span>
+                    </div>
+                    {item.color !== 'bg-gray-100' && (
+                       <div className="absolute top-0 right-0 p-8 text-white/10 group-hover:text-white/20 transition-colors pointer-events-none">
+                         <Star size={32} />
+                       </div>
+                    )}
+                  </div>
+                );
+              }
+
+              if (item.type === 'explore') {
+                // "Explore All Work" 卡片 (纯白背景，带箭头的超大文字)
+                return (
+                  <div 
+                    key={index} 
+                    className="break-inside-avoid relative group rounded-[2rem] bg-white border border-gray-100 p-10 flex items-center justify-center transition-all duration-500 shadow-sm hover:shadow-2xl hover:-translate-y-1"
+                    style={{ minHeight: item.height }}
+                    onClick={() => { onCategorySelect(Category.ALL); onNavigate('portfolio'); }}
+                  >
+                    <div className="flex flex-col items-center text-center gap-4">
+                       <h3 className="text-3xl md:text-4xl lg:text-5xl font-serif font-black text-[#111] leading-none uppercase tracking-tighter">
+                        EXPLORE ALL WORK<sup className="text-lg md:text-2xl text-[#ff5030] ml-1">+</sup>
+                       </h3>
+                       <ArrowRight size={24} className="text-[#ff5030] transition-transform group-hover:translate-x-2" />
+                    </div>
+                  </div>
+                );
+              }
+
+              if (item.type === 'title') {
+                // "标题板块" (纯白背景，大型 Serif 字体标题)
+                return (
+                  <div 
+                    key={index} 
+                    className="break-inside-avoid relative group rounded-[2rem] bg-white border border-gray-100 p-8 md:p-10 transition-all duration-500 shadow-sm hover:shadow-xl hover:-translate-y-1"
+                    style={{ minHeight: item.height }}
+                  >
+                    <div className="flex flex-col gap-4">
+                       <div className="flex items-center gap-3">
+                        <span className="font-serif font-black text-white text-lg bg-black rounded-full w-8 h-8 flex items-center justify-center pt-0.5">
+                          {item.number.substring(1)}
+                        </span>
+                        <sup className="text-sm font-light text-gray-400">Concepts Done?</sup>
+                       </div>
+                       <h3 className="text-3xl md:text-4xl lg:text-5xl font-serif font-black tracking-tighter text-[#111] leading-none mb-2">
+                        {item.title}
+                       </h3>
+                       <p className="text-gray-600 text-sm md:text-base leading-relaxed font-medium">
+                        {item.subtitle}
+                       </p>
+                    </div>
+                  </div>
+                );
+              }
+
+              return null; // 默认不渲染
+            })}
           </div>
         </div>
 
@@ -363,8 +495,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
              
              {displayProject && (
                <>
-                 {/* 左侧：沉浸式看图区 (支持点击放大/缩小) */}
-                 <div className="w-full md:w-[65%] h-[40vh] md:h-full bg-[#111] relative flex items-center justify-center overflow-hidden group">
+                 {/* 左侧：专业级滚轮缩放与拖拽画板 */}
+                 <div 
+                   className="w-full md:w-[65%] h-[40vh] md:h-full bg-[#111] relative flex items-center justify-center overflow-hidden group"
+                   // 滚轮缩放逻辑
+                   onWheel={(e) => {
+                     const delta = e.deltaY < 0 ? 0.2 : -0.2;
+                     const newScale = Math.min(Math.max(zoomScale + delta, 1), 5); // 限制比例 1x ~ 5x
+                     setZoomScale(newScale);
+                     if (newScale === 1) setPanPosition({ x: 0, y: 0 }); // 缩回原位时重置平移
+                   }}
+                   // 鼠标拖拽平移逻辑
+                   onMouseDown={() => zoomScale > 1 && setIsDragging(true)}
+                   onMouseUp={() => setIsDragging(false)}
+                   onMouseLeave={() => setIsDragging(false)}
+                   onMouseMove={(e) => {
+                     if (isDragging && zoomScale > 1) {
+                       setPanPosition(prev => ({ 
+                         x: prev.x + e.movementX, 
+                         y: prev.y + e.movementY 
+                       }));
+                     }
+                   }}
+                 >
                     <img 
                       src={displayProject.image} 
                       alt={displayProject.title} 
