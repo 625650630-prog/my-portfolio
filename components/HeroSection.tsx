@@ -1,7 +1,10 @@
-import React from 'react';
-import { Language, Category } from '../types';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { Language, Category, Project } from '../types';
 import { CONTACT_DATA } from '../src/data/contact';
-import { ArrowRight, Play, CheckCircle2, Star, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, Play, CheckCircle2, Star, ArrowUpRight, Mail, X, ZoomIn, ZoomOut } from 'lucide-react';
+// 引入作品数据用于瀑布流和弹窗展示
+import { PROJECTS, CATEGORY_LABELS } from '../constants';
 
 interface HeroSectionProps {
   onNavigate: (page: string) => void;
@@ -12,19 +15,42 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategorySelect, language }) => {
   const contactContent = CONTACT_DATA[language];
 
+  // 弹窗状态管理
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [displayProject, setDisplayProject] = useState<Project | null>(null);
+  const [isModalRendered, setIsModalRendered] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false); // 控制图片放大缩小
+
   const handleExploreClick = () => {
     onCategorySelect(Category.ALL);
     onNavigate('portfolio');
   };
 
-  // 核心技能数据 (用于底部 Logo 墙)
+  // 监听弹窗打开/关闭，锁定背景滚动
+  useEffect(() => {
+    if (selectedProject) {
+      setDisplayProject(selectedProject);
+      setIsModalRendered(true);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      const timer = setTimeout(() => {
+        setIsModalRendered(false);
+        setDisplayProject(null);
+        setIsZoomed(false); // 重置缩放状态
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedProject]);
+
+  // 核心技能数据
   const skillsList = [
     'Photoshop', 'CorelDRAW', 'Illustrator', 'Premiere', 'After Effects', 
     'Lightroom', 'DaVinci Resolve', 'ComfyUI', 'Gemini', '剪映', '即梦', 'DeepSeek'
   ];
   const marqueeTrack = [...skillsList, ...skillsList, ...skillsList];
 
-  // 精选优质作品数据 (5个板块)
+  // 精选优质作品数据
   const showcaseData = [
     {
       number: '01',
@@ -63,8 +89,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     }
   ];
 
+  // 截取前 8 个作品用于瀑布流展示
+  const recentProjects = PROJECTS[language].slice(0, 8);
+
   return (
-    <div className="w-full bg-white font-sans pb-12 pt-4 md:pt-6 px-4 md:px-6">
+    <div className="w-full bg-white font-sans pt-4 md:pt-6 px-0 md:px-0">
       
       <style>
         {`
@@ -80,9 +109,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
 
       {/* 核心灰色包裹容器 */}
       <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto bg-gradient-to-br from-[#f4f5f7] to-[#e5e7eb] rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden shadow-sm border border-gray-100/50 min-h-[85vh] flex flex-col justify-center">
-        
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 relative z-20 w-full py-8 lg:py-12 lg:px-16 xl:px-32">
-          
           {/* 左侧文字区 */}
           <div className="lg:col-span-6 flex flex-col items-start justify-center">
             <div className="flex items-center gap-3 mb-6 lg:mb-8">
@@ -96,17 +123,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                 </span>
               </div>
             </div>
-
             <h1 className="text-7xl md:text-8xl lg:text-[11rem] font-serif text-[#111] tracking-tighter leading-none mb-6 lg:mb-10 relative">
               Design<sup className="text-5xl md:text-8xl absolute top-4 ml-1">+</sup>
             </h1>
-
             <p className="text-lg md:text-xl text-gray-600 font-medium max-w-md leading-relaxed mb-10">
               {language === 'zh' 
                 ? '打破常规框架，将最前沿的视觉设计与 AIGC 技术结合 — 提供无与伦比的美学深度。' 
                 : 'Drive Visual Growth, And Harness Ai-Powered Content — Up To 50x Faster.'}
             </p>
-
             <div className="flex items-center gap-4 mb-12 border-t border-gray-300/50 pt-8 w-full max-w-md">
               <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center shrink-0">
                  <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop" alt="avatar" className="w-full h-full object-cover" />
@@ -116,7 +140,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                 <span className="text-gray-500 font-medium text-base mt-0.5">{contactContent.locationValue}</span>
               </div>
             </div>
-
             <div className="flex items-center gap-6">
               <button 
                 onClick={handleExploreClick}
@@ -133,8 +156,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               </button>
             </div>
           </div>
-
-          {/* 右侧图片悬浮元素区 */}
+          {/* 右侧图片悬浮区 */}
           <div className="lg:col-span-6 relative h-[500px] lg:h-[650px] w-full max-w-lg lg:max-w-[550px] mx-auto mt-10 lg:mt-0">
             <div className="absolute inset-4 lg:inset-8 bg-gradient-to-br from-[#ff7a50] to-[#ff5030] rounded-[3rem] shadow-2xl overflow-hidden">
                <img 
@@ -191,25 +213,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 👉 全新的手风琴展示板块 - 根据用户反馈调整居中排版与间距 */}
-      {/* 调整细节：增加pt-20拓宽与上方的间距，pb-32拓宽整体视觉，mt-32拓宽模块间距 */}
-      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 mt-32 relative selection:bg-black selection:text-white">
-        
-        {/* 标题区域：彻底居中 */}
-        {/* 调整细节：flex flex-col items-center 确保文字居中，text-center 处理文本，mb-16 增加下方间距 */}
-        <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
-          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-3 text-[#111] max-w-4xl mx-auto">
+      {/* 精选优质作品标题区 */}
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-10 pb-16 mt-16 relative">
+        <div className="flex flex-col items-center text-center mb-16 border-b border-gray-200/60 pb-10 px-4">
+          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-3 text-[#111]">
             {language === 'zh' ? '精选优质作品' : 'Selected Premium Works'}
           </h2>
-          {/* 这里去掉了原本英文副标题前面的红色装饰条 span */}
-          <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic mt-2">
+          <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-400 italic mt-2">
              Create a visual feast
           </h3>
         </div>
 
-        {/* 5个板块的横向手风琴容器 */}
+        {/* 手风琴画廊 */}
         <div className="w-full flex flex-col lg:flex-row gap-4 h-[700px] lg:h-[500px]">
-          
           {showcaseData.map((item, index) => (
             <div 
               key={index}
@@ -229,7 +245,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                   <div className="hidden lg:block h-[2px] w-12 bg-[#ff5030] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 delay-100"></div>
                   <span className="lg:hidden text-white font-bold text-lg leading-tight">{language === 'zh' ? item.titleZh : item.titleEn}</span>
                 </div>
-
                 <div className="opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-100 flex flex-col overflow-hidden max-h-0 group-hover:max-h-[200px]">
                   <div className="min-w-[250px] md:min-w-[300px]">
                     <h3 className="text-white font-bold text-2xl lg:text-3xl mb-3 mt-2 leading-tight">
@@ -243,13 +258,204 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           ))}
-
         </div>
       </div>
+
+      {/* 作品瀑布流 (Masonry Grid) */}
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-20 border-t border-gray-100 mt-10">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 px-4 md:px-0">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight mb-2 text-[#111]">
+              {language === 'zh' ? '更多案例存档' : 'Project Archive'}
+            </h2>
+            <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic">
+               Explore the full collection
+            </h3>
+          </div>
+          <button 
+            onClick={() => { onCategorySelect(Category.ALL); onNavigate('portfolio'); }}
+            className="hidden md:flex items-center gap-2 font-bold text-sm uppercase tracking-widest hover:text-[#ff5030] transition-colors"
+          >
+            {language === 'zh' ? '查看完整作品集' : 'View Full Portfolio'} <ArrowRight size={16} />
+          </button>
+        </div>
+
+        {/* 瀑布流网格 */}
+        <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
+          {recentProjects.map((project, index) => (
+            <div 
+              key={project.id} 
+              className="break-inside-avoid relative group rounded-[2rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-1 bg-gray-100 border border-gray-200/50"
+              // 👉 这里修改了点击事件：不再跳转页面，而是将当前项目设置为 selectedProject 打开弹窗
+              onClick={() => setSelectedProject(project)}
+            >
+              <img 
+                src={project.image} 
+                alt={project.title} 
+                loading="lazy"
+                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                style={{ minHeight: index % 3 === 0 ? '400px' : index % 2 === 0 ? '300px' : '250px' }} 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  <div className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-3">
+                    {CATEGORY_LABELS[language][project.category] || project.category}
+                  </div>
+                  <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-2">{project.title}</h3>
+                  <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button 
+           onClick={() => { onCategorySelect(Category.ALL); onNavigate('portfolio'); }}
+           className="md:hidden mt-10 w-full py-4 rounded-full border-2 border-black font-bold text-sm uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+        >
+          {language === 'zh' ? '查看完整作品集' : 'View Full Portfolio'}
+        </button>
+      </div>
+
+      {/* 个人联系方式尾页 (Footer CTA) */}
+      <div className="w-full bg-[#050505] text-white pt-24 md:pt-32 pb-10 rounded-t-[3rem] md:rounded-t-[4rem] relative overflow-hidden mt-10">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#ff5030]/20 blur-[120px] rounded-full pointer-events-none"></div>
+        <div className="max-w-[95vw] lg:max-w-[80vw] mx-auto flex flex-col items-center text-center relative z-10 px-4">
+          <div className="w-16 h-16 bg-[#ccff00] text-black rounded-full flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(204,255,0,0.2)]">
+            <Mail size={28} strokeWidth={2.5} />
+          </div>
+          <h2 className="text-6xl md:text-8xl lg:text-[10rem] font-serif font-black tracking-tighter leading-none mb-8">
+            Let's Talk<span className="text-[#ff5030]">.</span>
+          </h2>
+          <p className="text-lg md:text-xl text-gray-400 font-medium max-w-2xl mb-12">
+            {language === 'zh' 
+              ? '准备好将您的想法转化为令人惊叹的视觉现实了吗？无论是项目合作还是随性交流，我都在这里。' 
+              : 'Ready to turn your ideas into stunning visual realities? Whether it\'s a project or just to say hi, I\'m here.'}
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 mb-24 lg:mb-32">
+            <a 
+              href={`mailto:${contactContent.email}`} 
+              className="bg-white text-black px-8 py-4 rounded-full font-bold text-base md:text-lg hover:scale-105 transition-transform flex items-center gap-2 shadow-xl"
+            >
+              {language === 'zh' ? '发送邮件给我' : 'Send an Email'} <ArrowUpRight size={20} strokeWidth={3} />
+            </a>
+            <button 
+              onClick={() => onNavigate('contact')} 
+              className="bg-transparent border border-white/20 px-8 py-4 rounded-full font-bold text-base md:text-lg text-white hover:border-[#ccff00] hover:text-[#ccff00] transition-colors"
+            >
+              {language === 'zh' ? '探索更多联系方式' : 'More Contact Info'}
+            </button>
+          </div>
+          <div className="w-full flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-xs md:text-sm text-gray-500 font-medium uppercase tracking-widest gap-4">
+            <span>© {new Date().getFullYear()} SILENCE 7C. ALL RIGHTS RESERVED.</span>
+            <div className="flex gap-6">
+              <span className="hover:text-white cursor-pointer transition-colors" onClick={() => window.open('https://mp.weixin.qq.com/s/MD5T-BsAgUi9yUo6ISY1CA')}>WECHAT</span>
+              <span className="hover:text-white cursor-pointer transition-colors" onClick={() => window.open('https://www.xiaohongshu.com/user/profile/61bbb882000000001000e80d')}>XIAOHONGSHU</span>
+              <span className="hover:text-white cursor-pointer transition-colors" onClick={() => window.open('https://b23.tv/XNNX02Q')}>BILIBILI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 👉 全新升级：小红书风格的作品详情弹窗 */}
+      {isModalRendered && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-8">
+           {/* 背景模糊遮罩层，点击关闭 */}
+           <div 
+             className={`absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${selectedProject ? 'opacity-100' : 'opacity-0'}`} 
+             onClick={() => setSelectedProject(null)}
+           ></div>
+
+           {/* 弹窗主体容器：左右分栏 */}
+           <div className={`relative w-full h-full md:max-w-6xl md:h-[85vh] bg-white md:rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden transition-all duration-300 transform ${selectedProject ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+             
+             {displayProject && (
+               <>
+                 {/* 左侧：沉浸式看图区 (支持点击放大/缩小) */}
+                 <div className="w-full md:w-[65%] h-[40vh] md:h-full bg-[#111] relative flex items-center justify-center overflow-hidden group">
+                    <img 
+                      src={displayProject.image} 
+                      alt={displayProject.title} 
+                      className={`transition-all duration-500 ease-out ${isZoomed ? 'w-full h-full object-cover cursor-zoom-out scale-125' : 'w-full h-full object-contain cursor-zoom-in p-0 md:p-8'}`}
+                      onClick={() => setIsZoomed(!isZoomed)}
+                    />
+                    {/* 缩放提示胶囊 */}
+                    <div className="absolute bottom-6 right-6 bg-black/50 backdrop-blur-md text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                       {isZoomed 
+                         ? <><ZoomOut size={16}/> {language === 'zh' ? '缩小' : 'Zoom Out'}</> 
+                         : <><ZoomIn size={16}/> {language === 'zh' ? '点击放大' : 'Click to Zoom'}</>}
+                    </div>
+                    {/* 手机端的返回/关闭按钮 (悬浮在图片上方) */}
+                    <button onClick={() => setSelectedProject(null)} className="md:hidden absolute top-4 left-4 p-2 bg-black/50 backdrop-blur-md text-white rounded-full">
+                       <X size={20} />
+                    </button>
+                 </div>
+
+                 {/* 右侧：小红书风格详情信息面板 */}
+                 <div className="w-full md:w-[35%] h-[60vh] md:h-full bg-white flex flex-col relative">
+                   
+                   {/* 顶部栏：作者信息与关闭按钮 */}
+                   <div className="flex items-center justify-between p-5 border-b border-gray-100 shrink-0">
+                     <div className="flex items-center gap-3">
+                       <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden shrink-0">
+                         <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" alt="avatar" className="w-full h-full object-cover"/>
+                       </div>
+                       <div className="flex flex-col">
+                          <span className="font-bold text-sm text-[#111] leading-none mb-1">Silence 7C</span>
+                          <span className="text-[10px] text-gray-500 font-medium">Visual Designer</span>
+                       </div>
+                     </div>
+                     <button onClick={() => setSelectedProject(null)} className="hidden md:flex p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors text-gray-500 hover:text-black">
+                       <X size={20} />
+                     </button>
+                   </div>
+
+                   {/* 滑动正文区 */}
+                   <div className="p-6 md:p-8 overflow-y-auto no-scrollbar flex-grow">
+                      {/* 分类标签 */}
+                      <div className="bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-4">
+                        {CATEGORY_LABELS[language][displayProject.category] || displayProject.category}
+                      </div>
+                      
+                      {/* 标题 */}
+                      <h2 className="text-2xl md:text-3xl font-black mb-4 text-[#111] leading-tight">
+                        {displayProject.title}
+                      </h2>
+                      
+                      {/* 正文描述 */}
+                      <p className="text-sm md:text-base text-gray-600 mb-8 leading-relaxed whitespace-pre-wrap">
+                        {displayProject.description}
+                      </p>
+                      
+                      {/* 概念说明区块 */}
+                      {displayProject.concept && (
+                         <div className="bg-[#f8f9fa] p-5 rounded-2xl border border-gray-100 mb-8 relative overflow-hidden">
+                           <div className="absolute top-0 left-0 w-1 h-full bg-[#ff5030]"></div>
+                           <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Design Concept</h4>
+                           <p className="text-sm text-gray-700 leading-relaxed font-medium">{displayProject.concept}</p>
+                         </div>
+                      )}
+
+                      {/* 底部标签区 */}
+                      <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-100">
+                        {displayProject.tags.map(tag => (
+                          <span key={tag} className="text-xs font-bold text-[#ff5030] bg-[#ff5030]/10 px-3 py-1.5 rounded-full cursor-pointer hover:bg-[#ff5030] hover:text-white transition-colors">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                   </div>
+
+                 </div>
+               </>
+             )}
+           </div>
+        </div>,
+        document.body
+      )}
 
     </div>
   );
