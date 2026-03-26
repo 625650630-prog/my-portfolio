@@ -1,7 +1,7 @@
 import React from 'react';
 import { Language, Category } from '../types';
 import { CONTACT_DATA } from '../src/data/contact';
-import { ArrowRight, MapPin, Mail } from 'lucide-react';
+import { ArrowRight, Instagram, Twitter, Settings } from 'lucide-react';
 
 interface HeroSectionProps {
   onNavigate: (page: string) => void;
@@ -17,138 +17,134 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     onNavigate('portfolio');
   };
 
-  // 核心技能数据 
-  const skillsList = [
-    { name: 'Photoshop', abbr: 'Ps' },
-    { name: 'CorelDRAW', abbr: 'Cd' },
-    { name: 'Illustrator', abbr: 'Ai' },
-    { name: 'Premiere', abbr: 'Pr' },
-    { name: 'After Effects', abbr: 'Ae' },
-    { name: 'Lightroom', abbr: 'Lr' },
-    { name: 'DaVinci Resolve', abbr: 'Dv' },
-    { name: 'ComfyUI', abbr: 'Cu' },
-    { name: 'Gemini', abbr: 'Gm' },
-    { name: '剪映', abbr: '剪' },
-    { name: '即梦', abbr: '梦' },
-    { name: 'DeepSeek', abbr: 'Ds' }
-  ];
-
-  const marqueeTrack = [...skillsList, ...skillsList, ...skillsList, ...skillsList];
-
   return (
-    <div className="w-full bg-[#eef1f5] font-sans pb-16 relative overflow-hidden">
+    // 外层容器：浅灰/白色背景，给内部的 Hero 卡片留出呼吸空间
+    <div className="w-full bg-[#f8f9fa] font-sans pb-20 pt-4 md:pt-8 px-4 md:px-8">
       
-      <style>
-        {`
-          @keyframes marquee-slow {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-          }
-          .animate-marquee-super-slow { 
-            animation: marquee-slow 60s linear infinite; 
-          }
-          .pause-on-hover:hover .animate-marquee-super-slow {
-            animation-play-state: paused;
-          }
-        `}
-      </style>
-
-      <div className="max-w-[95vw] lg:max-w-[85vw] mx-auto relative z-10 pt-8 md:pt-16">
+      {/* 核心 Hero 卡片：大圆角、溢出隐藏、相对定位 */}
+      <div className="relative w-full h-[85vh] min-h-[700px] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl group">
         
-        {/* 顶部 Hero 区域 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-16 md:mb-24">
-          <div className="flex flex-col items-start z-10">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] mb-6 text-[#111]">
+        {/* 背景图与渐变遮罩 */}
+        <img 
+          src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2500&auto=format&fit=crop" 
+          alt="Hero Background" 
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+        />
+        {/* 加一层极淡的渐变，保证文字可读性，同时维持通透感 */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-black/30 mix-blend-multiply"></div>
+
+        {/* 👉 完美复刻：内嵌悬浮黑色胶囊导航 (Pill Navbar) */}
+        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-50 w-max hidden md:flex items-center bg-black/90 backdrop-blur-md rounded-full p-2 shadow-2xl border border-white/10">
+          <div className="text-white font-black text-lg px-6 tracking-widest italic">
+            SILENCE 7C<span className="text-gray-400 font-normal text-xs align-top ml-1">®</span>
+          </div>
+          <ul className="flex items-center gap-8 px-8 text-sm font-medium text-gray-300">
+            <li className="hover:text-white cursor-pointer transition-colors" onClick={() => onNavigate('home')}>
+              {language === 'zh' ? '首页' : 'Home'}
+            </li>
+            <li className="hover:text-white cursor-pointer transition-colors" onClick={handleExploreClick}>
+              {language === 'zh' ? '精选作品' : 'Portfolios'}
+            </li>
+            <li className="hover:text-white cursor-pointer transition-colors" onClick={() => onCategorySelect(Category.DESIGN)}>
+              {language === 'zh' ? '服务范围' : 'Services'}
+            </li>
+          </ul>
+          <button 
+            onClick={() => onNavigate('contact')}
+            className="bg-white text-black font-bold text-sm px-6 py-2.5 rounded-full hover:bg-gray-200 transition-colors"
+          >
+            {language === 'zh' ? '取得联系' : 'Get In Touch'}
+          </button>
+        </div>
+
+        {/* 四个角落的摄影机取景框角标 ⌜ ⌝ ⌞ ⌟ */}
+        <div className="absolute top-8 left-8 md:top-12 md:left-12 w-8 h-8 border-t-[1.5px] border-l-[1.5px] border-white/40 rounded-tl-lg"></div>
+        <div className="absolute top-8 right-8 md:top-12 md:right-12 w-8 h-8 border-t-[1.5px] border-r-[1.5px] border-white/40 rounded-tr-lg"></div>
+        <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12 w-8 h-8 border-b-[1.5px] border-l-[1.5px] border-white/40 rounded-bl-lg"></div>
+        <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12 w-8 h-8 border-b-[1.5px] border-r-[1.5px] border-white/40 rounded-br-lg"></div>
+
+        {/* 右上角设置图标 */}
+        <div className="absolute top-10 right-10 md:top-14 md:right-14 text-white/50 hover:text-white cursor-pointer transition-colors hidden md:block">
+          <Settings size={20} />
+        </div>
+
+        {/* 主内容区：排版布局 */}
+        <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-center">
+          
+          {/* 左侧大标题与描述 */}
+          <div className="max-w-3xl mt-20 md:mt-0">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-2 h-2 rounded-full bg-white/80"></span>
+              <span className="text-white/80 text-sm font-medium tracking-wide">
+                {language === 'zh' ? '多元视觉设计机构' : 'Creative Design Agency'}
+              </span>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-light text-white leading-[1.1] tracking-tight mb-6">
               {language === 'zh' ? (
-                <>深潜视觉<br/>与体验的<br/><span className="text-gray-400">无尽边界</span></>
+                <>打破常规框架<br /><span className="font-medium">重塑视觉体验</span></>
               ) : (
-                <>Dive Into<br/>The Depths Of<br/><span className="text-gray-400">Visual Design</span></>
+                <>Professional Creative<br /><span className="font-medium">Photography & Design</span></>
               )}
             </h1>
-            <p className="text-lg md:text-xl font-medium max-w-lg mb-10 text-gray-600">
+          </div>
+
+          {/* 右侧悬浮文案 (居中偏右) */}
+          <div className="absolute right-8 md:right-24 top-1/2 transform -translate-y-1/2 max-w-sm hidden lg:block text-right">
+            <p className="text-white/80 text-lg font-light leading-relaxed">
               {language === 'zh' 
-                ? '打破常规框架。将最前沿的视觉设计、AIGC技术与多元理念结合，提供无与伦比的商业现实感与美学深度。' 
-                : 'Break the barriers. Combining cutting-edge visuals, AIGC, and multiversal design to deliver unparalleled commercial realism.'}
+                ? '将最前沿的视觉设计、AIGC技术与多元理念结合，提供无与伦比的商业现实感与美学深度。' 
+                : 'Contemporary architecture, prime locations, and upscale home design to inspire your next journey.'}
             </p>
-            
-            {/* 按钮组 */}
-            <div className="flex flex-wrap items-center gap-4">
-              <button 
-                onClick={handleExploreClick}
-                className="flex items-center gap-4 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl bg-[#151515] text-white"
-              >
-                {language === 'zh' ? '探索作品世界' : 'EXPLORE WORKS'}
-                <ArrowRight size={20} />
-              </button>
-
-              <button 
-                onClick={() => onNavigate('contact')}
-                className="flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-sm bg-white text-[#111] border border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-              >
-                {language === 'zh' ? '合作与联系' : 'GET IN TOUCH'}
-                <Mail size={20} className="text-gray-500" />
-              </button>
-            </div>
-
-            {/* 👉 全新调整：将位置信息移到了这里，变成精致的小坐标 */}
-            <div className="mt-10 lg:mt-12 flex items-center gap-3 bg-white/50 backdrop-blur-sm pl-2 pr-5 py-2 rounded-full border border-gray-200/60 shadow-sm">
-              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
-                <MapPin size={16} />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">
-                  {contactContent.baseLabel}
-                </span>
-                <span className="text-sm font-bold text-[#111] leading-none">
-                  {contactContent.locationValue}
-                </span>
-              </div>
-            </div>
-
           </div>
 
-          <div className="relative w-full aspect-square lg:aspect-[4/5] rounded-t-[50%] rounded-b-[2rem] overflow-hidden shadow-2xl transition-transform duration-700 hover:scale-[1.02]">
-            <img 
-              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop" 
-              alt="Hero Concept" 
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+          {/* 左下角：玻璃拟物化卡片 (Glassmorphism) */}
+          <div className="absolute bottom-16 left-8 md:left-16 flex items-center gap-6">
+            <div className="w-24 h-28 md:w-32 md:h-40 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 overflow-hidden relative shadow-2xl cursor-pointer hover:bg-white/20 transition-colors flex flex-col">
+               {/* 这里放一个小头像或作品缩略图 */}
+               <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=200&h=200&fit=crop" className="w-full h-full object-cover opacity-80 mix-blend-overlay" alt="thumbnail" />
+               {/* 卡片左侧的装饰性圆点指示器 */}
+               <div className="absolute left-3 top-1/2 transform -translate-y-1/2 flex flex-col gap-1.5 bg-black/30 p-1.5 rounded-full backdrop-blur-sm">
+                 <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                 <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+                 <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+                 <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+                 <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+               </div>
+            </div>
           </div>
+
+          {/* 右下角：社交信任背书 */}
+          <div className="absolute bottom-16 right-8 md:right-16 flex flex-col items-end gap-3 text-white">
+            <p className="text-sm font-medium opacity-80">{language === 'zh' ? '探索更多灵感' : 'Trusted by 25,000+ clients'}</p>
+            <div className="flex gap-4">
+               <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 cursor-pointer transition-colors">
+                 <Instagram size={16} />
+               </div>
+               <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 cursor-pointer transition-colors">
+                 <Twitter size={16} />
+               </div>
+            </div>
+          </div>
+
         </div>
-
-        {/* 品牌 Logo 墙风格缓慢滚动 */}
-        <div className="mb-10 w-full relative">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-10">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-2 text-[#111]">
-                {language === 'zh' ? '核心技能栈' : 'CORE SKILLS'}
-              </h2>
-            </div>
-          </div>
-
-          <div 
-            className="relative w-full overflow-hidden pause-on-hover py-4" 
-            style={{ maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)' }}
-          >
-            <div className="flex w-max animate-marquee-super-slow items-center">
-              {marqueeTrack.map((skill, index) => (
-                <div 
-                  key={index} 
-                  className="mx-3 flex items-center gap-3 px-6 py-4 bg-white rounded-2xl hover:bg-gray-50 transition-colors cursor-default shrink-0 shadow-sm border border-black/5"
-                >
-                  <div className="w-8 h-8 rounded-full bg-[#111] text-white flex items-center justify-center text-[10px] font-bold shrink-0">
-                    {skill.abbr}
-                  </div>
-                  <span className="font-bold text-[#111] text-lg tracking-tight whitespace-nowrap">
-                    {skill.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      {/* 👉 Hero 卡片下方的区域：平滑过渡到服务介绍 */}
+      <div className="w-full max-w-4xl mx-auto mt-24 mb-10 text-center flex flex-col items-center">
+        <span className="px-4 py-1 rounded-full border border-gray-200 text-gray-500 text-sm font-medium mb-6 uppercase tracking-widest">
+           {language === 'zh' ? '核心服务' : 'Services'}
+        </span>
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#111] tracking-tight mb-6">
+          {language === 'zh' ? '今天我能为您提供什么帮助？' : 'How can I assist you today?'}
+        </h2>
+        <p className="text-gray-500 text-lg md:text-xl font-light max-w-2xl leading-relaxed">
+           {language === 'zh' 
+             ? '我专注于将您的抽象概念转化为具有商业价值与美学深度的视觉表达，覆盖摄影、UI/UX与AIGC等多个领域。' 
+             : 'I transform your ideas into captivating images, focusing on creativity and expert use of light.'}
+        </p>
+      </div>
+
     </div>
   );
 };
