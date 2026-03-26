@@ -191,69 +191,55 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 👉 全新升级：横向丝滑手风琴悬停自动展开模块 */}
-      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pb-20 pt-10">
+      {/* 👉 全新的手风琴展示板块 - 根据用户反馈调整居中排版与间距 */}
+      {/* 调整细节：增加pt-20拓宽与上方的间距，pb-32拓宽整体视觉，mt-32拓宽模块间距 */}
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 mt-32 relative selection:bg-black selection:text-white">
         
-        {/* 标题区域 */}
-        <div className="flex flex-col mb-10 border-b border-gray-200 pb-6">
-          <h2 className="text-4xl md:text-5xl font-black text-[#111] tracking-tight mb-2">
+        {/* 标题区域：彻底居中 */}
+        {/* 调整细节：flex flex-col items-center 确保文字居中，text-center 处理文本，mb-16 增加下方间距 */}
+        <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
+          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight mb-3 text-[#111] max-w-4xl mx-auto">
             {language === 'zh' ? '精选优质作品' : 'Selected Premium Works'}
           </h2>
-          <div className="flex items-center gap-4">
-            <span className="w-12 h-1 bg-[#ff5030] rounded-full"></span>
-            <h3 className="text-lg md:text-xl font-medium text-gray-500 italic">
-               Create a visual feast
-            </h3>
-          </div>
+          {/* 这里去掉了原本英文副标题前面的红色装饰条 span */}
+          <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic mt-2">
+             Create a visual feast
+          </h3>
         </div>
 
         {/* 5个板块的横向手风琴容器 */}
-        {/* 在移动端(md以下)呈垂直堆叠(flex-col)，在电脑端(lg)呈横向并排(flex-row) */}
         <div className="w-full flex flex-col lg:flex-row gap-4 h-[700px] lg:h-[500px]">
           
           {showcaseData.map((item, index) => (
             <div 
               key={index}
-              // 核心样式：flex-1 是默认状态占据等分空间，hover:flex-[4] 是鼠标放上去占据 4 倍空间。
               className="group relative flex-1 lg:hover:flex-[4] hover:flex-[3] rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] cursor-pointer shadow-sm hover:shadow-2xl"
               onClick={() => onCategorySelect(Category.ALL)}
             >
-              {/* 背景大图 */}
               <img 
                 src={item.img} 
                 alt={item.titleEn} 
                 className="absolute inset-0 w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
               />
-              
-              {/* 渐变遮罩层 (底部加深以便看清文字) */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700"></div>
 
-              {/* 卡片内容容器 */}
               <div className="absolute bottom-0 left-0 w-full p-6 lg:p-8 flex flex-col justify-end h-full">
-                
-                {/* 编号与装饰条 */}
                 <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 mb-2 lg:mb-0 transition-all duration-700 group-hover:mb-4">
                   <span className="text-white font-black text-3xl lg:text-4xl opacity-80 group-hover:opacity-100 group-hover:text-[#ff5030] transition-colors">{item.number}</span>
                   <div className="hidden lg:block h-[2px] w-12 bg-[#ff5030] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 delay-100"></div>
-                  
-                  {/* 在未展开时(窄状态)，显示这个短标题以提示用户 */}
-                  <span className="lg:hidden text-white font-bold text-lg">{language === 'zh' ? item.titleZh : item.titleEn}</span>
+                  <span className="lg:hidden text-white font-bold text-lg leading-tight">{language === 'zh' ? item.titleZh : item.titleEn}</span>
                 </div>
 
-                {/* 隐藏的详细文字 (只有悬停展开且容器足够宽/高时才浮现) */}
                 <div className="opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-100 flex flex-col overflow-hidden max-h-0 group-hover:max-h-[200px]">
-                  {/* 使用 min-w 确保文字在动画过程中不会被挤压换行 */}
                   <div className="min-w-[250px] md:min-w-[300px]">
-                    <h3 className="text-white font-bold text-2xl lg:text-3xl mb-3 mt-2">
+                    <h3 className="text-white font-bold text-2xl lg:text-3xl mb-3 mt-2 leading-tight">
                       {language === 'zh' ? item.titleZh : item.titleEn}
                     </h3>
-                    <p className="text-gray-300 text-sm md:text-base leading-relaxed hidden lg:block">
+                    <p className="text-gray-300 text-sm md:text-base leading-relaxed hidden lg:block line-clamp-2">
                       {item.desc}
                     </p>
-                    
-                    {/* 探索按钮 */}
                     <div className="mt-6 flex items-center gap-2 text-sm font-bold text-[#ff5030] uppercase tracking-widest">
-                      Explore Project <ArrowUpRight size={16} />
+                      Explore Project <ArrowUpRight size={16} strokeWidth={3} />
                     </div>
                   </div>
                 </div>
