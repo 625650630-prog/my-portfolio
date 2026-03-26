@@ -1,7 +1,7 @@
 import React from 'react';
 import { Language, Category } from '../types';
 import { CONTACT_DATA } from '../src/data/contact';
-import { ArrowRight, MapPin, Mail, Zap } from 'lucide-react';
+import { ArrowRight, MapPin, Mail } from 'lucide-react';
 
 interface HeroSectionProps {
   onNavigate: (page: string) => void;
@@ -17,160 +17,138 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     onNavigate('portfolio');
   };
 
-  // 技能栈数据
-  const skills = [
-    'Photoshop', 'CorelDRAW', 'Illustrator', 'Premiere', 'After Effects', 
-    'Lightroom', 'DaVinci Resolve', 'ComfyUI', 'Gemini', '剪映', '即梦', 'DeepSeek'
+  // 核心技能数据 
+  const skillsList = [
+    { name: 'Photoshop', abbr: 'Ps' },
+    { name: 'CorelDRAW', abbr: 'Cd' },
+    { name: 'Illustrator', abbr: 'Ai' },
+    { name: 'Premiere', abbr: 'Pr' },
+    { name: 'After Effects', abbr: 'Ae' },
+    { name: 'Lightroom', abbr: 'Lr' },
+    { name: 'DaVinci Resolve', abbr: 'Dv' },
+    { name: 'ComfyUI', abbr: 'Cu' },
+    { name: 'Gemini', abbr: 'Gm' },
+    { name: '剪映', abbr: '剪' },
+    { name: '即梦', abbr: '梦' },
+    { name: 'DeepSeek', abbr: 'Ds' }
   ];
 
-  // 复制4份，用于无限无缝滚动
-  const marqueeSkills = [...skills, ...skills, ...skills, ...skills];
+  const marqueeTrack = [...skillsList, ...skillsList, ...skillsList, ...skillsList];
 
   return (
-    // 极致暗黑底色，全局替换选择文本颜色为荧光绿
-    <div className="w-full bg-[#050505] font-sans relative overflow-hidden text-white selection:bg-[#ccff00] selection:text-black pb-10">
+    <div className="w-full bg-[#eef1f5] font-sans pb-16 relative overflow-hidden">
       
-      {/* 注入速度感滚动的 CSS 动画 */}
       <style>
         {`
-          @keyframes marquee-left {
+          @keyframes marquee-slow {
             0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
           }
-          @keyframes marquee-right {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0%); }
+          .animate-marquee-super-slow { 
+            animation: marquee-slow 60s linear infinite; 
           }
-          .animate-marquee-racing {
-            animation: marquee-left 25s linear infinite;
-          }
-          .animate-marquee-racing-reverse {
-            animation: marquee-right 30s linear infinite;
+          .pause-on-hover:hover .animate-marquee-super-slow {
+            animation-play-state: paused;
           }
         `}
       </style>
 
-      {/* 极客风背景网格 */}
-      <div 
-        className="absolute inset-0 opacity-10 pointer-events-none" 
-        style={{ backgroundImage: 'linear-gradient(#ccff00 1px, transparent 1px), linear-gradient(90deg, #ccff00 1px, transparent 1px)', backgroundSize: '60px 60px' }}
-      ></div>
-
-      <div className="max-w-[95vw] lg:max-w-[90vw] mx-auto relative z-10 pt-20 md:pt-32 pb-10">
+      <div className="max-w-[95vw] lg:max-w-[85vw] mx-auto relative z-10 pt-8 md:pt-16">
         
-        {/* 顶部 Hero 主区域：左右分割结构 */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
-          
-          {/* 左侧：巨型文字排版区 */}
-          <div className="w-full lg:w-[55%] flex flex-col items-start relative z-20">
-            
-            {/* 顶部赛车风小标签 */}
-            <div className="inline-block px-4 py-1.5 border border-[#ccff00] text-[#ccff00] font-mono text-xs font-bold tracking-widest uppercase mb-6 rounded-full shadow-[0_0_15px_rgba(204,255,0,0.2)]">
-              {language === 'zh' ? '多模态视觉设计师' : 'Multimodal Visual Designer'}
-            </div>
-            
-            {/* 核心巨型标题：描边与实心结合 */}
-            <h1 className="text-[20vw] lg:text-[11vw] font-black uppercase leading-[0.8] tracking-tighter italic">
-              SILENCE<br/>
-              <span className="text-transparent" style={{ WebkitTextStroke: '2px #ccff00' }}>7C.</span>
+        {/* 顶部 Hero 区域 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-16 md:mb-24">
+          <div className="flex flex-col items-start z-10">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] mb-6 text-[#111]">
+              {language === 'zh' ? (
+                <>深潜视觉<br/>与体验的<br/><span className="text-gray-400">无尽边界</span></>
+              ) : (
+                <>Dive Into<br/>The Depths Of<br/><span className="text-gray-400">Visual Design</span></>
+              )}
             </h1>
-
-            <p className="mt-8 text-lg md:text-xl font-medium text-gray-400 max-w-lg leading-relaxed mix-blend-lighten">
+            <p className="text-lg md:text-xl font-medium max-w-lg mb-10 text-gray-600">
               {language === 'zh' 
-                ? '打破常规框架，将最前沿的视觉设计与AIGC技术结合。为品牌注入极致性能与无与伦比的商业现实感。' 
-                : 'Break the barriers. Combining cutting-edge visuals and AIGC to deliver ultimate performance and commercial realism.'}
+                ? '打破常规框架。将最前沿的视觉设计、AIGC技术与多元理念结合，提供无与伦比的商业现实感与美学深度。' 
+                : 'Break the barriers. Combining cutting-edge visuals, AIGC, and multiversal design to deliver unparalleled commercial realism.'}
             </p>
-
-            {/* 赛车仪表盘风格的 Welcome 坐标 */}
-            <div className="mt-8 flex items-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 p-2 pr-6 rounded-full w-max shadow-xl">
-              <div className="bg-[#ccff00] text-black p-3 rounded-full">
-                <MapPin size={18} strokeWidth={3} />
-              </div>
-              <div className="flex flex-col uppercase tracking-widest justify-center">
-                <span className="text-[9px] text-gray-400 font-bold mb-0.5">Welcome!</span>
-                <span className="text-sm text-white font-black leading-none">{contactContent.locationValue}</span>
-              </div>
-            </div>
-
-            {/* 倾斜进攻性双按钮 */}
-            <div className="flex flex-wrap items-center gap-4 md:gap-6 mt-12">
-              <button 
-                onClick={handleExploreClick} 
-                className="group flex items-center gap-4 px-8 py-4 bg-[#ccff00] text-black rounded-full font-black text-lg transition-all hover:scale-105 uppercase tracking-wide skew-x-[-10deg] shadow-[0_0_30px_rgba(204,255,0,0.2)]"
-              >
-                <span className="skew-x-[10deg]">{language === 'zh' ? '探索作品世界' : 'EXPLORE WORKS'}</span>
-                <ArrowRight size={24} className="skew-x-[10deg] transition-transform group-hover:translate-x-2" strokeWidth={3} />
-              </button>
-
-              <button 
-                onClick={() => onNavigate('contact')} 
-                className="flex items-center gap-3 px-8 py-4 bg-transparent text-white border-2 border-white/20 rounded-full font-black text-lg transition-all hover:border-[#ccff00] hover:text-[#ccff00] uppercase tracking-wide skew-x-[-10deg]"
-              >
-                <span className="skew-x-[10deg]">{language === 'zh' ? '合作与联系' : 'GET IN TOUCH'}</span>
-                <Mail size={20} className="skew-x-[10deg]" />
-              </button>
-            </div>
-          </div>
-
-          {/* 右侧：视觉图蒙版 */}
-          <div className="w-full lg:w-[40%] relative mt-10 lg:mt-0">
-            <div className="w-full aspect-[3/4] lg:aspect-[4/5] overflow-hidden rounded-[2rem] lg:rounded-tl-[8rem] lg:rounded-br-[8rem] border border-white/10 relative z-10 shadow-2xl group">
-              <img 
-                src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop" 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-105" 
-                alt="Hero Concept" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80"></div>
-            </div>
             
-            {/* 悬浮属性战力表 */}
-            <div className="absolute -bottom-6 -left-4 lg:-left-12 bg-white text-black px-6 py-5 rounded-2xl z-20 shadow-2xl flex items-center gap-4 border-4 border-[#050505] transform -rotate-3 hover:rotate-0 transition-transform">
-              <Zap size={32} fill="#ccff00" className="text-[#ccff00]" />
-              <div className="flex flex-col">
-                <span className="text-3xl font-black leading-none">ALL IN</span>
-                <span className="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Multi-Visual</span>
+            {/* 按钮组 */}
+            <div className="flex flex-wrap items-center gap-4">
+              <button 
+                onClick={handleExploreClick}
+                className="flex items-center gap-4 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl bg-[#151515] text-white"
+              >
+                {language === 'zh' ? '探索作品世界' : 'EXPLORE WORKS'}
+                <ArrowRight size={20} />
+              </button>
+
+              <button 
+                onClick={() => onNavigate('contact')}
+                className="flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-sm bg-white text-[#111] border border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+              >
+                {language === 'zh' ? '合作与联系' : 'GET IN TOUCH'}
+                <Mail size={20} className="text-gray-500" />
+              </button>
+            </div>
+
+            {/* 👉 全新调整：将位置信息移到了这里，变成精致的小坐标 */}
+            <div className="mt-10 lg:mt-12 flex items-center gap-3 bg-white/50 backdrop-blur-sm pl-2 pr-5 py-2 rounded-full border border-gray-200/60 shadow-sm">
+              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
+                <MapPin size={16} />
               </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">
+                  {contactContent.baseLabel}
+                </span>
+                <span className="text-sm font-bold text-[#111] leading-none">
+                  {contactContent.locationValue}
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          <div className="relative w-full aspect-square lg:aspect-[4/5] rounded-t-[50%] rounded-b-[2rem] overflow-hidden shadow-2xl transition-transform duration-700 hover:scale-[1.02]">
+            <img 
+              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop" 
+              alt="Hero Concept" 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+        {/* 品牌 Logo 墙风格缓慢滚动 */}
+        <div className="mb-10 w-full relative">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-10">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight mb-2 text-[#111]">
+                {language === 'zh' ? '核心技能栈' : 'CORE SKILLS'}
+              </h2>
+            </div>
+          </div>
+
+          <div 
+            className="relative w-full overflow-hidden pause-on-hover py-4" 
+            style={{ maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)' }}
+          >
+            <div className="flex w-max animate-marquee-super-slow items-center">
+              {marqueeTrack.map((skill, index) => (
+                <div 
+                  key={index} 
+                  className="mx-3 flex items-center gap-3 px-6 py-4 bg-white rounded-2xl hover:bg-gray-50 transition-colors cursor-default shrink-0 shadow-sm border border-black/5"
+                >
+                  <div className="w-8 h-8 rounded-full bg-[#111] text-white flex items-center justify-center text-[10px] font-bold shrink-0">
+                    {skill.abbr}
+                  </div>
+                  <span className="font-bold text-[#111] text-lg tracking-tight whitespace-nowrap">
+                    {skill.name}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </div>
 
-      {/* 巨型倾斜跑马灯轨道 */}
-      <div className="mt-16 md:mt-24 w-full relative z-20">
-        
-        {/* 轨道 1：荧光绿底黑字，向左滚动 */}
-        <div className="relative w-full overflow-hidden py-6 transform -skew-y-3 bg-[#ccff00] shadow-2xl shadow-[#ccff00]/20">
-          <div className="flex w-max animate-marquee-racing items-center gap-10">
-            {marqueeSkills.map((skill, index) => (
-              <React.Fragment key={`r1-${index}`}>
-                <span className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-[#050505]">
-                  {skill}
-                </span>
-                <div className="w-4 h-4 bg-[#050505] rounded-full"></div>
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-
-        {/* 轨道 2：黑底荧光绿描边，向右滚动 */}
-        <div className="relative w-full overflow-hidden py-4 transform -skew-y-3 bg-[#050505] border-y border-[#ccff00]/30 -mt-1 z-[-1]">
-          <div className="flex w-max animate-marquee-racing-reverse items-center gap-10">
-            {marqueeSkills.map((skill, index) => (
-              <React.Fragment key={`r2-${index}`}>
-                <span 
-                  className="text-3xl md:text-5xl font-black uppercase italic tracking-tighter text-transparent" 
-                  style={{ WebkitTextStroke: '1px #ccff00' }}
-                >
-                  {skill}
-                </span>
-                <span className="text-[#ccff00]">✦</span>
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
       </div>
-      
-      {/* 注：原本在这里的白色背景切割遮罩已经彻底删除！ */}
     </div>
   );
 };
