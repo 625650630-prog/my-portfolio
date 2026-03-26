@@ -12,7 +12,7 @@ interface HeroSectionProps {
   language: Language;
 }
 
-// 定义瀑布流卡片类型 (删除了文字块类型)
+// 定义瀑布流卡片类型
 type GridItem = 
   | { type: 'project'; data: Project; height: string };
 
@@ -34,7 +34,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     onNavigate('portfolio');
   };
 
-  // 监听弹窗打开/关闭，锁定背景滚动，并重置缩放状态
+  // 监听弹窗打开/关闭
   useEffect(() => {
     if (selectedProject) {
       setDisplayProject(selectedProject);
@@ -52,27 +52,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     }
   }, [selectedProject]);
 
-  // 👉 这里是简易替换的关键部分 (修改 1/2)
-  // 核心技能数据：将原有的字符串数组修改为对象数组
-  // 格式为：{ name: '软件名', iconUrl: '/icons/图片名.png' }
-  // 注意：这里的 /icons/ 是相对于网站根目录的绝对路径，前提是你的图片放在了项目的 public/icons/ 文件夹内。
+  // 核心技能数据：彩色图标模式
   const skillsList = [
-    { name: 'Photoshop', iconUrl: '/icons/PS.png' }, // ✅ 示例：提供了图标
-    { name: 'CorelDRAW', iconUrl: '/icons/CDR.png' }, // ✅ 示例：提供了图标
-    { name: 'Illustrator', iconUrl: '/icons/ai.png' }, // ✅ 示例：提供了图标
-    { name: 'Premiere', iconUrl: '/icons/PR.png' }, // ✅ 示例：提供了图标
-    { name: 'After Effects', iconUrl: '/icons/AE.png' }, // ✅ 示例：提供了图标
-    { name: 'Lightroom', iconUrl: '/icons/LR.png' }, // ✅ 示例：提供了图标
-    { name: 'DaVinci Resolve', iconUrl: '/icons/DFQ.png' }, // ✅ 示例：提供了图标
-    { name: 'ComfyUI' , iconUrl: '/icons/comfy.png' }, // ✅ 示例：提供了图标
-    { name: 'Gemini', iconUrl: '/icons/gemini.png' }, // ✅ 示例：提供了图标
-    { name: '剪映', iconUrl: '/icons/JY.png' }, // ✅ 示例：提供了图标
-    { name: '即梦', iconUrl: '/icons/JM.png' }, // ✅ 示例：提供了图标
-    { name: 'DeepSeek', iconUrl: '/icons/deepsk.png' }, // ✅ 示例
+    { name: 'Photoshop', iconUrl: '/icons/PS.png' },
+    { name: 'CorelDRAW', iconUrl: '/icons/CDR.png' },
+    { name: 'Illustrator', iconUrl: '/icons/ai.png' },
+    { name: 'Premiere', iconUrl: '/icons/PR.png' },
+    { name: 'After Effects', iconUrl: '/icons/AE.png' },
+    { name: 'Lightroom', iconUrl: '/icons/LR.png' },
+    { name: 'DaVinci Resolve', iconUrl: '/icons/DFQ.png' },
+    { name: 'ComfyUI' , iconUrl: '/icons/comfy.png' },
+    { name: 'Gemini', iconUrl: '/icons/gemini.png' },
+    { name: '剪映', iconUrl: '/icons/JY.png' },
+    { name: '即梦', iconUrl: '/icons/JM.png' },
+    { name: 'DeepSeek', iconUrl: '/icons/deepsk.png' },
   ];
   const marqueeTrack = [...skillsList, ...skillsList, ...skillsList];
 
-  // 精选优质作品数据 (5个手风琴板块)
+  // 精选优质作品数据 (保持原样)
   const showcaseData = [
     {
       number: '01',
@@ -111,8 +108,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     }
   ];
 
-  // 为了让瀑布流看起来丰富饱满，提取 12 个作品展示
-  const waterfallProjects = PROJECTS[language];
+  // 瀑布流数据逻辑
+  const allProjects = PROJECTS[language];
+  const gridItems: GridItem[] = [
+    { type: 'project', data: allProjects[allProjects.length - 1], height: '300px' },
+    { type: 'project', data: allProjects[allProjects.length - 2], height: '280px' },
+    { type: 'project', data: allProjects[0], height: '400px' },
+    { type: 'project', data: allProjects[allProjects.length - 3], height: '250px' },
+    { type: 'project', data: allProjects[1], height: '450px' },
+    { type: 'project', data: allProjects[2], height: '400px' },
+    { type: 'project', data: allProjects[3], height: '350px' },
+    { type: 'project', data: allProjects[4], height: '400px' },
+    { type: 'project', data: allProjects[5], height: '350px' },
+    { type: 'project', data: allProjects[allProjects.length - 4], height: '300px' },
+    { type: 'project', data: allProjects[6], height: '400px' },
+    { type: 'project', data: allProjects[7], height: '350px' },
+  ];
 
   return (
     <div className="w-full bg-white font-sans pt-4 md:pt-6 px-0 md:px-0 relative selection:bg-black selection:text-white">
@@ -129,10 +140,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         `}
       </style>
 
-      {/* 核心灰色包裹容器 */}
+      {/* Hero 灰色大容器 */}
       <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto bg-gradient-to-br from-[#f4f5f7] to-[#e5e7eb] rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden shadow-sm border border-gray-100/50 min-h-[85vh] flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 relative z-20 w-full py-8 lg:py-12 lg:px-16 xl:px-32">
-          {/* 左侧文字区 */}
+          {/* 左侧文字 */}
           <div className="lg:col-span-6 flex flex-col items-start justify-center">
             <div className="flex items-center gap-3 mb-6 lg:mb-8">
               <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
@@ -178,7 +189,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               </button>
             </div>
           </div>
-          {/* 右侧图片悬浮区 */}
+          {/* 右侧图片 */}
           <div className="lg:col-span-6 relative h-[500px] lg:h-[650px] w-full max-w-lg lg:max-w-[550px] mx-auto mt-10 lg:mt-0">
             <div className="absolute inset-4 lg:inset-8 bg-gradient-to-br from-[#ff7a50] to-[#ff5030] rounded-[3rem] shadow-2xl overflow-hidden">
                <img 
@@ -219,30 +230,27 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 底部软件 Logo 墙 */}
+      {/* 👉 滚动软件 Logo 墙：已移除 grayscale 效果 */}
       <div className="w-full max-w-[95vw] lg:max-w-[80vw] mx-auto mt-12 mb-16 overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
         <div className="flex w-max animate-marquee-logos items-center gap-12 lg:gap-20">
-          
-          {/* 👉 修改渲染逻辑以处理图片 (修改 2/2) */}
           {marqueeTrack.map((item, index) => (
-            <div key={index} className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-default">
+            <div key={index} className="flex items-center gap-3 opacity-100 transition-opacity cursor-default">
               
-              {/* 如果提供了 iconUrl，使用 img 标签来显示图标图片 */}
+              {/* 图标：使用原始彩色，不应用 grayscale */}
               {item.iconUrl ? (
                 <img 
                   src={item.iconUrl} 
                   alt={item.name} 
-                  className="w-6 h-6 rounded-md object-contain" 
+                  className="w-8 h-8 rounded-md object-contain" 
                 />
               ) : (
-                // 如果没有提供图标，保留原有的数字图标作为默认方案
-                <div className="w-6 h-6 rounded-md bg-black text-white flex items-center justify-center font-bold text-[10px]">
+                <div className="w-8 h-8 rounded-md bg-black text-white flex items-center justify-center font-bold text-[12px]">
                   {item.name.substring(0, 2).toUpperCase()}
                 </div>
               )}
               
-              {/* 这里是软件名 */}
-              <span className="text-xl md:text-3xl font-black tracking-tighter text-[#111]">
+              {/* 软件名：保持深灰色/黑色风格 */}
+              <span className="text-xl md:text-3xl font-black tracking-tighter text-[#444444]">
                 {item.name}
               </span>
             </div>
@@ -250,7 +258,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 精选优质作品标题区 */}
+      {/* 精选作品 (手风琴) */}
       <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 mt-10 relative selection:bg-black selection:text-white">
         <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111] max-w-4xl mx-auto">
@@ -260,8 +268,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
              Create a visual feast
           </h3>
         </div>
-
-        {/* 手风琴画廊 (尺寸已调整) */}
         <div className="w-full flex flex-col lg:flex-row gap-4 h-[750px] lg:h-[650px]">
           {showcaseData.map((item, index) => (
             <div 
@@ -269,53 +275,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               className="group relative flex-1 lg:hover:flex-[4] hover:flex-[3] rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] cursor-pointer shadow-sm hover:shadow-2xl"
               onClick={() => onCategorySelect(Category.ALL)}
             >
-              <img 
-                src={item.img} 
-                alt={item.titleEn} 
-                className="absolute inset-0 w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" 
-              />
+              <img src={item.img} alt={item.titleEn} className="absolute inset-0 w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700"></div>
-
-              {/* 卡片内容容器 */}
               <div className="absolute bottom-0 left-0 w-full p-6 lg:p-8 flex flex-col justify-end h-full">
-                
-                {/* 编号与装饰条 */}
                 <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-3 mb-2 lg:mb-0 transition-all duration-700 group-hover:mb-4">
-                  
-                  {/* 项目编号 */}
                   <div className="flex items-center gap-3">
-                    <span className="text-white font-black text-3xl lg:text-4xl opacity-80 group-hover:opacity-100 group-hover:text-[#ff5030] transition-colors shrink-0">
-                      {item.number}
-                    </span>
-                    
-                    {/* 项目标题名称 */}
+                    <span className="text-white font-black text-3xl lg:text-4xl opacity-80 group-hover:opacity-100 group-hover:text-[#ff5030] transition-colors shrink-0">{item.number}</span>
                     <div className="flex flex-col">
-                      <span className="text-white font-bold text-xl lg:text-2xl leading-none transition-colors">
-                        {language === 'zh' ? item.titleZh : item.titleEn}
-                      </span>
-                      <span className="text-gray-400 text-xs font-medium lg:text-sm mt-0.5 group-hover:text-gray-200 transition-colors">
-                        {language === 'zh' ? item.titleEn : item.titleZh}
-                      </span>
+                      <span className="text-white font-bold text-xl lg:text-2xl leading-none transition-colors">{language === 'zh' ? item.titleZh : item.titleEn}</span>
+                      <span className="text-gray-400 text-xs font-medium lg:text-sm mt-0.5 group-hover:text-gray-200 transition-colors">{language === 'zh' ? item.titleEn : item.titleZh}</span>
                     </div>
                   </div>
-
-                  {/* 这里保留装饰条，但移到名称块后面 */}
                   <div className="hidden lg:block h-[2px] w-8 bg-[#ff5030] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 delay-100"></div>
                 </div>
-
-                {/* 隐藏的详细文字 (展开内容) (原样保留，调整 max-h) */}
                 <div className="opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-100 flex flex-col overflow-hidden max-h-0 group-hover:max-h-[300px]">
                   <div className="min-w-[250px] md:min-w-[300px]">
-                    {/* 这块是大标题，在展开后依然显示 (保持原样) */}
-                    <h3 className="text-white font-bold text-2xl lg:text-3xl mb-3 mt-2 leading-tight">
-                      {language === 'zh' ? item.titleZh : item.titleEn}
-                    </h3>
-                    <p className="text-gray-300 text-sm md:text-base leading-relaxed hidden lg:block line-clamp-2">
-                      {item.desc}
-                    </p>
-                    <div className="mt-6 flex items-center gap-2 text-sm font-bold text-[#ff5030] uppercase tracking-widest">
-                      Explore Project <ArrowUpRight size={16} strokeWidth={3} />
-                    </div>
+                    <h3 className="text-white font-bold text-2xl lg:text-3xl mb-3 mt-2 leading-tight">{language === 'zh' ? item.titleZh : item.titleEn}</h3>
+                    <p className="text-gray-300 text-sm md:text-base leading-relaxed hidden lg:block line-clamp-2">{item.desc}</p>
+                    <div className="mt-6 flex items-center gap-2 text-sm font-bold text-[#ff5030] uppercase tracking-widest">Explore Project <ArrowUpRight size={16} strokeWidth={3} /></div>
                   </div>
                 </div>
               </div>
@@ -324,135 +301,64 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 统一间距：更多案例存档瀑布流区 */}
+      {/* 更多案例存档 (瀑布流) */}
       <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 border-t border-gray-100 mt-10 selection:bg-black selection:text-white relative">
         <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111] max-w-4xl mx-auto">
-            {language === 'zh' ? '更多案例存档' : 'Project Archive'}
-          </h2>
-          <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic mt-2">
-             Explore the full collection
-          </h3>
-          <button 
-            onClick={() => { onCategorySelect(Category.ALL); onNavigate('portfolio'); }}
-            className="hidden md:flex items-center gap-2 font-bold text-sm uppercase tracking-widest hover:text-[#ff5030] transition-colors mt-8 bg-white border border-gray-200 rounded-full px-8 py-4 shadow-sm hover:shadow-lg transition-all"
-          >
-            {language === 'zh' ? '查看完整作品集' : 'View Full Portfolio'} <ArrowRight size={16} />
-          </button>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111] max-w-4xl mx-auto">{language === 'zh' ? '更多案例存档' : 'Project Archive'}</h2>
+          <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic mt-2">Explore the full collection</h3>
+          <button onClick={() => { onCategorySelect(Category.ALL); onNavigate('portfolio'); }} className="hidden md:flex items-center gap-2 font-bold text-sm uppercase tracking-widest hover:text-[#ff5030] transition-colors mt-8 bg-white border border-gray-200 rounded-full px-8 py-4 shadow-sm hover:shadow-lg transition-all">{language === 'zh' ? '查看完整作品集' : 'View Full Portfolio'} <ArrowRight size={16} /></button>
         </div>
-
-        {/* 带有两侧渐变虚化的瀑布流区域 */}
         <div className="w-full overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
           <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 pb-10 px-10">
-            {waterfallProjects.map((project, index) => (
-              <div 
-                key={`${project.id}-${index}`} // 确保循环出的key也是唯一的
-                className="break-inside-avoid relative group rounded-[2rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-1 bg-gray-100 border border-gray-200/50"
-                onClick={() => setSelectedProject(project)}
-              >
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  loading="lazy"
-                  className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                  // 给不同图片赋予高度差以制造瀑布流错落感
-                  style={{ minHeight: index % 3 === 0 ? '400px' : index % 2 === 0 ? '300px' : '250px' }} 
-                />
-                {/* 底部悬停信息遮罩 */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <div className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-3">
-                      {CATEGORY_LABELS[language][project.category] || project.category}
+            {gridItems.map((item, index) => {
+              const project = item.data;
+              return (
+                <div key={`${project.id}-${index}`} className="break-inside-avoid relative group rounded-[2rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-1 bg-gray-100 border border-gray-200/50" onClick={() => setSelectedProject(project)}>
+                  <img src={project.image} alt={project.title} loading="lazy" className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" style={{ minHeight: item.height }} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <div className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-3">{CATEGORY_LABELS[language][project.category] || project.category}</div>
+                      <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-2">{project.title}</h3>
+                      <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
                     </div>
-                    <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-2">{project.title}</h3>
-                    <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
-
-        <button 
-           onClick={() => { onCategorySelect(Category.ALL); onNavigate('portfolio'); }}
-           className="md:hidden mt-10 w-full py-4 rounded-full border-2 border-black font-bold text-sm uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
-        >
-          {language === 'zh' ? '查看完整作品集' : 'View Full Portfolio'}
-        </button>
       </div>
 
-      {/* 👉 支持滚轮缩放 + 拖拽平移的作品详情弹窗 */}
+      {/* 全屏看图详情弹窗 */}
       {isModalRendered && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-8">
-           <div 
-             className={`absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${selectedProject ? 'opacity-100' : 'opacity-0'}`} 
-             onClick={() => setSelectedProject(null)}
-           ></div>
-
+           <div className={`absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${selectedProject ? 'opacity-100' : 'opacity-0'}`} onClick={() => setSelectedProject(null)}></div>
            <div className={`relative w-full h-full md:max-w-6xl md:h-[85vh] bg-white md:rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden transition-all duration-300 transform ${selectedProject ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
-             
              {displayProject && (
                <>
-                 {/* 左侧：专业级滚轮缩放与拖拽画板 */}
-                 <div 
-                   className="w-full md:w-[65%] h-[40vh] md:h-full bg-[#111] relative flex items-center justify-center overflow-hidden group"
-                   onWheel={(e) => {
-                     const delta = e.deltaY < 0 ? 0.2 : -0.2;
-                     const newScale = Math.min(Math.max(zoomScale + delta, 1), 5);
-                     setZoomScale(newScale);
-                     if (newScale === 1) setPanPosition({ x: 0, y: 0 });
-                   }}
+                 <div className="w-full md:w-[65%] h-[40vh] md:h-full bg-[#111] relative flex items-center justify-center overflow-hidden group"
+                   onWheel={(e) => { const delta = e.deltaY < 0 ? 0.2 : -0.2; const newScale = Math.min(Math.max(zoomScale + delta, 1), 5); setZoomScale(newScale); if (newScale === 1) setPanPosition({ x: 0, y: 0 }); }}
                    onMouseDown={() => zoomScale > 1 && setIsDragging(true)}
                    onMouseUp={() => setIsDragging(false)}
                    onMouseLeave={() => setIsDragging(false)}
-                   onMouseMove={(e) => {
-                     if (isDragging && zoomScale > 1) {
-                       setPanPosition(prev => ({ 
-                         x: prev.x + e.movementX, 
-                         y: prev.y + e.movementY 
-                       }));
-                     }
-                   }}
+                   onMouseMove={(e) => { if (isDragging && zoomScale > 1) { setPanPosition(prev => ({ x: prev.x + e.movementX, y: prev.y + e.movementY })); } }}
                  >
-                    <img 
-                      src={displayProject.image} 
-                      alt={displayProject.title} 
-                      draggable="false"
-                      className={`w-full h-full object-contain p-0 md:p-8 ${isDragging ? 'transition-none' : 'transition-transform duration-200 ease-out'}`}
-                      style={{ 
-                        transform: `translate(${panPosition.x}px, ${panPosition.y}px) scale(${zoomScale})`,
-                        cursor: zoomScale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in'
-                      }}
-                      onClick={() => {
-                        if (zoomScale > 1) {
-                          setZoomScale(1);
-                          setPanPosition({ x: 0, y: 0 });
-                        } else {
-                          setZoomScale(2.5);
-                        }
-                      }}
+                    <img src={displayProject.image} alt={displayProject.title} draggable="false" className={`w-full h-full object-contain p-0 md:p-8 ${isDragging ? 'transition-none' : 'transition-transform duration-200 ease-out'}`} style={{ transform: `translate(${panPosition.x}px, ${panPosition.y}px) scale(${zoomScale})`, cursor: zoomScale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in' }}
+                      onClick={() => { if (zoomScale > 1) { setZoomScale(1); setPanPosition({ x: 0, y: 0 }); } else { setZoomScale(2.5); } }}
                     />
-                    
                     <div className="absolute bottom-6 right-6 bg-black/50 backdrop-blur-md text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-50">
-                       {zoomScale > 1 
-                         ? <><ZoomOut size={16}/> {language === 'zh' ? '滚轮缩放 / 拖拽平移' : 'Scroll & Drag'}</> 
-                         : <><ZoomIn size={16}/> {language === 'zh' ? '滚动滚轮 / 点击放大' : 'Scroll or Click'}</>}
+                       {zoomScale > 1 ? <><ZoomOut size={16}/> {language === 'zh' ? '滚轮缩放 / 拖拽平移' : 'Scroll & Drag'}</> : <><ZoomIn size={16}/> {language === 'zh' ? '滚动滚轮 / 点击放大' : 'Scroll or Click'}</>}
                     </div>
-                    
                     <button onClick={() => setSelectedProject(null)} className="md:hidden absolute top-4 left-4 p-2 bg-black/50 backdrop-blur-md text-white rounded-full z-50"><X size={20} /></button>
                  </div>
-
-                 {/* 右侧：详情信息面板 */}
                  <div className="w-full md:w-[35%] h-[60vh] md:h-full bg-white flex flex-col relative z-10 shadow-[-10px_0_20px_rgba(0,0,0,0.1)] shrink-0">
-                   
                    <div className="flex items-center justify-between p-5 border-b border-gray-100 shrink-0">
                      <div className="flex items-center gap-3">
-                       <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden shrink-0"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" alt="avatar" className="w-full h-full object-cover"/></div>
+                       <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden shrink-0"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop" alt="avatar" className="w-full h-full object-cover"/></div>
                        <div className="flex flex-col"><span className="font-bold text-sm text-[#111] leading-none mb-1">Silence 7C</span><span className="text-[10px] text-gray-500 font-medium">Visual Designer</span></div>
                      </div>
                      <button onClick={() => setSelectedProject(null)} className="hidden md:flex p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors text-gray-500 hover:text-black shrink-0"><X size={20} /></button>
                    </div>
-
                    <div className="p-6 md:p-8 overflow-y-auto no-scrollbar flex-grow">
                       <div className="bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-4">{CATEGORY_LABELS[language][displayProject.category] || displayProject.category}</div>
                       <h2 className="text-2xl md:text-3xl font-black mb-4 text-[#111] leading-tight">{displayProject.title}</h2>
