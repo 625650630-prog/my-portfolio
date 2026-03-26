@@ -12,6 +12,10 @@ interface HeroSectionProps {
   language: Language;
 }
 
+// 👉 定义瀑布流卡片类型 (删除了文字块类型)
+type GridItem = 
+  | { type: 'project'; data: Project; height: string };
+
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategorySelect, language }) => {
   const contactContent = CONTACT_DATA[language];
 
@@ -94,8 +98,40 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
     }
   ];
 
-  // 👉 为了让瀑布流看起来丰富饱满，提取 12 个作品展示（如果不够就循环填满）
-  const waterfallProjects = [...PROJECTS[language], ...PROJECTS[language]].slice(0, 12);
+  // 👉 全新升级：彻底用图片填满瀑布流，删除了所有文字/色块块
+  // 1. COMMERCIAL 块 (原本第一列第一块)
+  // 2. BRAND IDENTITY 块 (原本第一列第二块)
+  // 3. Explore 块 (原本第一列第四块)
+  // 全部替换为从你 PROJECTS 数据中提取的新图片
+
+  const allProjects = PROJECTS[language]; // 获取所有项目
+  
+  // 👉 定义全新的网格项数组，只包含图片
+  const gridItems: GridItem[] = [
+    // --- 第一列 (填满左侧空白) ---
+    // 原 COMMERCIAL 块位置 -> 替换为项目图片
+    { type: 'project', data: allProjects[allProjects.length - 1], height: '300px' }, 
+    // 原 BRAND IDENTITY 块位置 -> 替换为项目图片
+    { type: 'project', data: allProjects[allProjects.length - 2], height: '280px' },
+    // 原项目1块 -> 保持
+    { type: 'project', data: allProjects[0], height: '400px' },
+    // 原 Explore 块位置 -> 替换为项目图片
+    { type: 'project', data: allProjects[allProjects.length - 3], height: '250px' },
+
+    // --- 第二列 (保持错落) ---
+    { type: 'project', data: allProjects[1], height: '450px' },
+    { type: 'project', data: allProjects[2], height: '400px' },
+    { type: 'project', data: allProjects[3], height: '350px' },
+
+    // --- 第三列 ---
+    { type: 'project', data: allProjects[4], height: '400px' },
+    { type: 'project', data: allProjects[5], height: '350px' },
+    { type: 'project', data: allProjects[allProjects.length - 4], height: '300px' }, // 使用最后面的项目
+    
+    // --- 第四列 ---
+    { type: 'project', data: allProjects[6], height: '400px' },
+    { type: 'project', data: allProjects[7], height: '350px' },
+  ];
 
   return (
     <div className="w-full bg-white font-sans pt-4 md:pt-6 px-0 md:px-0 relative selection:bg-black selection:text-white">
@@ -205,7 +241,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       {/* 底部软件 Logo 墙 */}
       <div className="w-full max-w-[95vw] lg:max-w-[80vw] mx-auto mt-12 mb-16 overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
         <div className="flex w-max animate-marquee-logos items-center gap-12 lg:gap-20">
-          {marqueeTrack.map((skill, index) => (
+          {skillsList.concat(skillsList, skillsList).map((skill, index) => (
             <div key={index} className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-default">
               <div className="w-6 h-6 rounded-md bg-black text-white flex items-center justify-center font-bold text-[10px]">
                 {skill.substring(0, 2).toUpperCase()}
@@ -282,10 +318,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 👉 统一间距与居中：更多案例存档瀑布流区 */}
+      {/* 统一间距：更多案例存档瀑布流区 */}
       <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 border-t border-gray-100 mt-10 selection:bg-black selection:text-white relative">
-        
-        {/* 完全居中的标题区 */}
         <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111] max-w-4xl mx-auto">
             {language === 'zh' ? '更多案例存档' : 'Project Archive'}
@@ -301,35 +335,38 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           </button>
         </div>
 
-        {/* 👉 纯图片的瀑布流区域，保留两侧渐变虚化效果 */}
+        {/* 带有两侧渐变虚化的瀑布流区域 */}
         <div className="w-full overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
+          
+          {/* 👉 全图片错落瀑布流网格，左侧3个空白已填满 */}
           <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 pb-10 px-10">
-            {waterfallProjects.map((project, index) => (
-              <div 
-                key={`${project.id}-${index}`} // 确保循环出的key也是唯一的
-                className="break-inside-avoid relative group rounded-[2rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-1 bg-gray-100 border border-gray-200/50"
-                onClick={() => setSelectedProject(project)}
-              >
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  loading="lazy"
-                  className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                  // 给不同图片赋予高度差以制造瀑布流错落感
-                  style={{ minHeight: index % 3 === 0 ? '400px' : index % 2 === 0 ? '300px' : '250px' }} 
-                />
-                {/* 底部悬停信息遮罩 */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <div className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-3">
-                      {CATEGORY_LABELS[language][project.category] || project.category}
+            {gridItems.map((item, index) => {
+              const project = item.data;
+              return (
+                <div 
+                  key={`${project.id}-${index}`} 
+                  className="break-inside-avoid relative group rounded-[2rem] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-500 transform-gpu hover:-translate-y-1 bg-gray-100 border border-gray-200/50"
+                  onClick={() => setSelectedProject(project)}
+                >
+                  <img 
+                    src={project.image} 
+                    alt={project.title} 
+                    loading="lazy"
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                    style={{ minHeight: item.height }} // 使用项目指定的高度制造错落感
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <div className="bg-white text-black text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full w-max mb-3">
+                        {CATEGORY_LABELS[language][project.category] || project.category}
+                      </div>
+                      <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-2">{project.title}</h3>
+                      <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
                     </div>
-                    <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-2">{project.title}</h3>
-                    <p className="text-gray-300 text-sm line-clamp-2">{project.description}</p>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -341,14 +378,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </button>
       </div>
 
-      {/* 👉 支持滚轮缩放 + 拖拽平移的作品详情弹窗 */}
+      {/* 小红书风格的作品详情弹窗 */}
       {isModalRendered && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-8">
+           {/* 背景模糊遮罩层，点击关闭 */}
            <div 
              className={`absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${selectedProject ? 'opacity-100' : 'opacity-0'}`} 
              onClick={() => setSelectedProject(null)}
            ></div>
 
+           {/* 弹窗主体容器：左右分栏 */}
            <div className={`relative w-full h-full md:max-w-6xl md:h-[85vh] bg-white md:rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden transition-all duration-300 transform ${selectedProject ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
              
              {displayProject && (
@@ -358,9 +397,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                    className="w-full md:w-[65%] h-[40vh] md:h-full bg-[#111] relative flex items-center justify-center overflow-hidden group"
                    onWheel={(e) => {
                      const delta = e.deltaY < 0 ? 0.2 : -0.2;
-                     const newScale = Math.min(Math.max(zoomScale + delta, 1), 5);
+                     const newScale = Math.min(Math.max(zoomScale + delta, 1), 5); // 限制比例 1x ~ 5x
                      setZoomScale(newScale);
-                     if (newScale === 1) setPanPosition({ x: 0, y: 0 });
+                     if (newScale === 1) setPanPosition({ x: 0, y: 0 }); // 缩回原位时重置平移
                    }}
                    onMouseDown={() => zoomScale > 1 && setIsDragging(true)}
                    onMouseUp={() => setIsDragging(false)}
@@ -377,7 +416,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                     <img 
                       src={displayProject.image} 
                       alt={displayProject.title} 
-                      draggable="false"
+                      draggable="false" // 禁用浏览器默认拖拽行为
                       className={`w-full h-full object-contain p-0 md:p-8 ${isDragging ? 'transition-none' : 'transition-transform duration-200 ease-out'}`}
                       style={{ 
                         transform: `translate(${panPosition.x}px, ${panPosition.y}px) scale(${zoomScale})`,
@@ -388,17 +427,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                           setZoomScale(1);
                           setPanPosition({ x: 0, y: 0 });
                         } else {
-                          setZoomScale(2.5);
+                          setZoomScale(2.5); // 点击快捷放大到 2.5倍
                         }
                       }}
                     />
                     
+                    {/* 缩放交互提示胶囊 */}
                     <div className="absolute bottom-6 right-6 bg-black/50 backdrop-blur-md text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-50">
                        {zoomScale > 1 
                          ? <><ZoomOut size={16}/> {language === 'zh' ? '滚轮缩放 / 拖拽平移' : 'Scroll & Drag'}</> 
                          : <><ZoomIn size={16}/> {language === 'zh' ? '滚动滚轮 / 点击放大' : 'Scroll or Click'}</>}
                     </div>
                     
+                    {/* 手机端关闭按钮 */}
                     <button onClick={() => setSelectedProject(null)} className="md:hidden absolute top-4 left-4 p-2 bg-black/50 backdrop-blur-md text-white rounded-full z-50">
                        <X size={20} />
                     </button>
@@ -443,23 +484,4 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                          </div>
                       )}
 
-                      <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-100">
-                        {displayProject.tags.map(tag => (
-                          <span key={tag} className="text-xs font-bold text-[#ff5030] bg-[#ff5030]/10 px-3 py-1.5 rounded-full cursor-pointer hover:bg-[#ff5030] hover:text-white transition-colors">
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
-                   </div>
-
-                 </div>
-               </>
-             )}
-           </div>
-        </div>,
-        document.body
-      )}
-
-    </div>
-  );
-};
+                      <div className="flex flex-
