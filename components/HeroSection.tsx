@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Language, Category, Project } from '../types';
-import { CONTACT_DATA } from '../src/data/contact';
-import { ArrowRight, CheckCircle2, Star, ArrowUpRight, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, X, ZoomIn, ZoomOut } from 'lucide-react';
 // 引入作品数据
 import { PROJECTS, CATEGORY_LABELS } from '../constants';
 
@@ -15,8 +14,6 @@ interface HeroSectionProps {
 type GridItem = { type: 'project'; data: Project; height: string };
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategorySelect, language }) => {
-  const contactContent = CONTACT_DATA[language];
-
   // 状态管理
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [displayProject, setDisplayProject] = useState<Project | null>(null);
@@ -104,61 +101,36 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden shadow-sm border border-gray-100/50 min-h-[85vh] flex flex-col justify-center bg-cover bg-center"
         style={{ backgroundImage: 'url(/BJ.jpg)' }} 
       >
-        {/* 👉 移除黑色的遮罩层，展现原始色彩 */}
-        
-        {/* 👉 内容容器：改回靠左对齐 (items-start, justify-center) */}
+        {/* 内容容器 */}
         <div className="flex flex-col items-start justify-center relative z-20 w-full py-8 lg:py-12 lg:px-16 xl:px-32 text-left">
           
           <div className="w-full max-w-4xl flex flex-col items-start justify-center">
-            {/* 顶部的 100+ Projects 胶囊 */}
-            <div className="flex items-center gap-3 mb-6 lg:mb-8 bg-white/10 px-5 py-2.5 rounded-full border border-white/20 backdrop-blur-md">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-black">
-                <span className="font-serif italic text-base pr-1">S</span>
-              </div>
-              <div className="flex flex-col items-start">
-                <span className="font-bold text-white leading-tight text-sm">100+ Projects</span>
-                <span className="text-xs text-gray-200 font-medium underline decoration-gray-400 underline-offset-2 cursor-pointer hover:text-white transition-colors">
-                  {language === 'zh' ? '查看成功案例' : 'Read Our Success Stories'}
-                </span>
-              </div>
-            </div>
             
-            {/* 标题 */}
+            {/* 👉 标题 (移除顶部胶囊后，作为第一视觉元素) */}
             <h1 className="text-7xl md:text-8xl lg:text-[11rem] font-serif text-white tracking-tighter leading-none mb-6 lg:mb-10 relative drop-shadow-lg">
-              Design<sup className="text-5xl md:text-8xl absolute top-4 ml-1">+</sup>
+              Hello<sup className="text-5xl md:text-8xl absolute top-4 ml-1">+</sup>
             </h1>
             
-            {/* 描述文字 */}
-            <p className="text-lg md:text-xl text-gray-100 font-medium max-w-2xl leading-relaxed mb-10 drop-shadow-md">
+            {/* 👉 描述文字 */}
+            <p className="text-lg md:text-xl text-gray-100 font-medium max-w-2xl leading-relaxed mb-12 drop-shadow-md">
               {language === 'zh' 
-                ? '打破常规框架，将最前沿的视觉设计与 AIGC 技术结合 — 提供无与伦比的美学深度。' 
+                ? '打破常规设计视觉，将最前沿的视觉带给您。' 
                 : 'Drive Visual Growth, And Harness Ai-Powered Content — Up To 50x Faster.'}
             </p>
             
-            {/* 头像与坐标 (修改为 justify-start 靠左) */}
-            <div className="flex items-center gap-4 mb-12 border-t border-white/20 pt-8 w-full max-w-md justify-start">
-              <div className="w-12 h-12 rounded-full bg-gray-500 overflow-hidden flex items-center justify-center shrink-0 border border-white/30 shadow-md">
-                 <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop" alt="avatar" className="w-full h-full object-cover" />
-              </div>
-              <div className="flex flex-col text-sm font-bold text-gray-200 items-start text-left">
-                <span>{language === 'zh' ? '坐标' : 'Location'} / <Star className="inline w-3 h-3 mb-0.5 text-yellow-400" fill="currentColor"/> {contactContent.baseLabel}</span>
-                <span className="text-white font-medium text-base mt-0.5 drop-shadow-sm">{contactContent.locationValue}</span>
-              </div>
-            </div>
-            
-            {/* 按钮 (修改为 justify-start 靠左) */}
+            {/* 👉 按钮 (直接跟在描述文字下方，移除了原本的头像和坐标区块) */}
             <div className="flex items-center justify-start gap-6">
               <button 
                 onClick={handleExploreClick}
                 className="bg-white text-black px-8 py-4 rounded-full font-bold text-sm lg:text-base transition-transform hover:scale-105 shadow-xl"
               >
-                {language === 'zh' ? '探索精选作品' : 'Explore Works'}
+                {language === 'zh' ? '探索作品集' : 'Explore Works'}
               </button>
               <button 
                 onClick={() => onNavigate('contact')}
                 className="font-bold text-sm lg:text-base text-white hover:text-gray-300 transition-colors flex items-center gap-2 group bg-black/30 backdrop-blur-md px-8 py-4 rounded-full border border-white/10"
               >
-                {language === 'zh' ? '查看服务报价' : 'Our Pricing'}
+                {language === 'zh' ? '联系作者' : 'Our Pricing'}
                 <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
               </button>
             </div>
@@ -166,7 +138,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
         </div>
       </div>
 
-      {/* 滚动软件跑马灯：无去色滤镜，文字保持灰色 */}
+      {/* 滚动软件跑马灯 */}
       <div className="w-full max-w-[95vw] lg:max-w-[80vw] mx-auto mt-12 mb-16 overflow-hidden relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)' }}>
         <div className="flex w-max animate-marquee-logos items-center gap-12 lg:gap-20">
           {marqueeTrack.map((item, index) => (
