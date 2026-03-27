@@ -17,10 +17,10 @@ export const HOME_DATA: Record<Language, HomeContent> = {
   zh: {
     heroItems: [
       { text: "电商视觉设计", category: Category.DESIGN },
-      { text: "AIGC项目",  category: Category.AIGC },
-      { text: "新媒体运营",  category: Category.NEW_MEDIA },
-      { text: "商业拍摄与视频制作",  category: Category.VIDEO_PHOTO },
-      { text: "多元视觉设计落地", category: Category.MULTIVERSAL }
+      { text: "AIGC视觉探索",  category: Category.AIGC },
+      { text: "新媒体内容制作",  category: Category.NEW_MEDIA },
+      { text: "商业影像拍摄",  category: Category.VIDEO_PHOTO },
+      { text: "多元设计落地", category: Category.MULTIVERSAL }
     ],
     intro: "pursuit of perfection.",
     selectedWorks: "精选作品",
