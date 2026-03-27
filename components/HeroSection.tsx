@@ -117,14 +117,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
             {/* 描述文字 */}
             <p className="text-lg md:text-xl text-gray-100 font-medium max-w-2xl leading-relaxed mb-8 drop-shadow-md">
               {language === 'zh' 
-                ? '打破常规设计视觉，将最前沿的视觉带给您。' 
+                ? '打破常规传统设计视觉，将最前沿的视觉体验带给您。期待您的联系' 
                 : 'Drive Visual Growth, And Harness Ai-Powered Content — Up To 50x Faster.'}
             </p>
 
             {/* 头像与坐标区块 */}
             <div className="flex items-center gap-4 mb-10 border-t border-white/20 pt-6 w-full max-w-md justify-start">
               <div className="w-12 h-12 rounded-full bg-gray-500 overflow-hidden flex items-center justify-center shrink-0 border border-white/30 shadow-md">
-                 {/* 👉 修改1: Hero 部分的头像 */}
                  <img src="/2ae4006dbc0d00fcd6122f18035e7ffc7cd0a7a6128fe-ZBEQ0q_fw1200webp.jpg" alt="avatar" className="w-full h-full object-cover" />
               </div>
               <div className="flex flex-col text-sm font-bold text-gray-200 items-start text-left drop-shadow-md">
@@ -182,13 +181,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
             <div key={index} className="group relative flex-1 lg:hover:flex-[4] hover:flex-[3] rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] cursor-pointer shadow-sm hover:shadow-2xl" onClick={() => onCategorySelect(Category.ALL)}>
               <img src={item.img} alt={item.titleEn} className="absolute inset-0 w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700"></div>
+              
               <div className="absolute bottom-0 left-0 w-full p-6 lg:p-8 flex flex-col justify-end h-full">
+                {/* 常驻/初始显示的标题区域 */}
                 <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-3 mb-2 lg:mb-0 transition-all duration-700 group-hover:mb-4">
-                  <div className="flex items-center gap-3"><span className="text-white font-black text-3xl lg:text-4xl opacity-80 group-hover:opacity-100 group-hover:text-[#ff5030] transition-colors shrink-0">{item.number}</span><div className="flex flex-col"><span className="text-white font-bold text-xl lg:text-2xl leading-none transition-colors">{language === 'zh' ? item.titleZh : item.titleEn}</span><span className="text-gray-400 text-xs font-medium lg:text-sm mt-0.5 group-hover:text-gray-200 transition-colors">{language === 'zh' ? item.titleEn : item.titleZh}</span></div></div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-white font-black text-3xl lg:text-4xl opacity-80 group-hover:opacity-100 group-hover:text-[#ff5030] transition-colors shrink-0">{item.number}</span>
+                    <div className="flex flex-col">
+                      <span className="text-white font-bold text-xl lg:text-2xl leading-none transition-colors">{language === 'zh' ? item.titleZh : item.titleEn}</span>
+                      <span className="text-gray-400 text-xs font-medium lg:text-sm mt-0.5 group-hover:text-gray-200 transition-colors">{language === 'zh' ? item.titleEn : item.titleZh}</span>
+                    </div>
+                  </div>
                   <div className="hidden lg:block h-[2px] w-8 bg-[#ff5030] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 delay-100"></div>
                 </div>
+                
+                {/* 👉 Hover时展开的详情区域 (删除了重复的 <h3> 标题) */}
                 <div className="opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-100 flex flex-col overflow-hidden max-h-0 group-hover:max-h-[300px]">
-                  <div className="min-w-[250px] md:min-w-[300px]"><h3 className="text-white font-bold text-2xl lg:text-3xl mb-3 mt-2 leading-tight">{language === 'zh' ? item.titleZh : item.titleEn}</h3><p className="text-gray-300 text-sm md:text-base leading-relaxed hidden lg:block line-clamp-2">{item.desc}</p><div className="mt-6 flex items-center gap-2 text-sm font-bold text-[#ff5030] uppercase tracking-widest">Explore Project <ArrowUpRight size={16} strokeWidth={3} /></div></div>
+                  <div className="min-w-[250px] md:min-w-[300px]">
+                    <p className="text-gray-300 text-sm md:text-base leading-relaxed hidden lg:block line-clamp-2 mt-2">{item.desc}</p>
+                    <div className="mt-6 flex items-center gap-2 text-sm font-bold text-[#ff5030] uppercase tracking-widest">Explore Project <ArrowUpRight size={16} strokeWidth={3} /></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -246,7 +258,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                  <div className="w-full md:w-[35%] h-[60vh] md:h-full bg-white flex flex-col relative z-10 shadow-[-10px_0_20px_rgba(0,0,0,0.1)] shrink-0">
                    <div className="flex items-center justify-between p-5 border-b border-gray-100 shrink-0">
                      <div className="flex items-center gap-3">
-                       {/* 👉 修改2: 弹窗细节部分的头像 */}
                        <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden shrink-0"><img src="/2ae4006dbc0d00fcd6122f18035e7ffc7cd0a7a6128fe-ZBEQ0q_fw1200webp.jpg" alt="avatar" className="w-full h-full object-cover"/></div>
                        <div className="flex flex-col"><span className="font-bold text-sm text-[#111] leading-none mb-1">Silence 7C</span><span className="text-[10px] text-gray-500 font-medium">Visual Designer</span></div>
                      </div>
