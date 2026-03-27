@@ -174,6 +174,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       </div>
 
       {/* 精选作品展示区 */}
+      {/* 这里的间距类名是 pt-20 pb-10 mt-10 和 mb-16 pb-10 */}
       <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-10 mt-10 relative">
         <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111]">{language === 'zh' ? '精选优质作品' : 'Selected Works'}</h2>
@@ -217,8 +218,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       </div>
 
       {/* ================= 更多案例预览 (瀑布流) ================= */}
-      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-16 pb-32 relative">
-        <div className="flex flex-col items-center text-center mb-12 border-b-2 border-gray-100 pb-8 px-4">
+      {/* 👇 这里的容器及标题间距已经和上方的“精选作品展示区”完全对齐 (pt-20 mt-10 以及 mb-16 pb-10) */}
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 mt-10 relative">
+        <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111]">
             {language === 'zh' ? '更多案例预览' : 'More Cases Preview'}
           </h2>
