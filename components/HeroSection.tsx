@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Language, Category, Project } from '../types';
-import { ArrowRight, ArrowUpRight, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { CONTACT_DATA } from '../src/data/contact';
+import { ArrowRight, Star, ArrowUpRight, X, ZoomIn, ZoomOut } from 'lucide-react';
 // 引入作品数据
 import { PROJECTS, CATEGORY_LABELS } from '../constants';
 
@@ -14,6 +15,8 @@ interface HeroSectionProps {
 type GridItem = { type: 'project'; data: Project; height: string };
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategorySelect, language }) => {
+  const contactContent = CONTACT_DATA[language];
+
   // 状态管理
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [displayProject, setDisplayProject] = useState<Project | null>(null);
@@ -106,19 +109,30 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           
           <div className="w-full max-w-4xl flex flex-col items-start justify-center">
             
-            {/* 👉 标题 (移除顶部胶囊后，作为第一视觉元素) */}
+            {/* 标题 */}
             <h1 className="text-7xl md:text-8xl lg:text-[11rem] font-serif text-white tracking-tighter leading-none mb-6 lg:mb-10 relative drop-shadow-lg">
               Hello<sup className="text-5xl md:text-8xl absolute top-4 ml-1">+</sup>
             </h1>
             
-            {/* 👉 描述文字 */}
-            <p className="text-lg md:text-xl text-gray-100 font-medium max-w-2xl leading-relaxed mb-12 drop-shadow-md">
+            {/* 描述文字 */}
+            <p className="text-lg md:text-xl text-gray-100 font-medium max-w-2xl leading-relaxed mb-8 drop-shadow-md">
               {language === 'zh' 
-                ? '打破常规设计视觉，将最前沿的视觉带给您。' 
+                ? '打破常规传统的设计视觉，将最前沿的视觉体验带给您。' 
                 : 'Drive Visual Growth, And Harness Ai-Powered Content — Up To 50x Faster.'}
             </p>
+
+            {/* 👉 重新加回来的：头像与坐标区块 */}
+            <div className="flex items-center gap-4 mb-10 border-t border-white/20 pt-6 w-full max-w-md justify-start">
+              <div className="w-12 h-12 rounded-full bg-gray-500 overflow-hidden flex items-center justify-center shrink-0 border border-white/30 shadow-md">
+                 <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop" alt="avatar" className="w-full h-full object-cover" />
+              </div>
+              <div className="flex flex-col text-sm font-bold text-gray-200 items-start text-left drop-shadow-md">
+                <span>{language === 'zh' ? '坐标' : 'Location'} / <Star className="inline w-3 h-3 mb-0.5 text-yellow-400" fill="currentColor"/> {contactContent.baseLabel}</span>
+                <span className="text-white font-medium text-base mt-0.5">{contactContent.locationValue}</span>
+              </div>
+            </div>
             
-            {/* 👉 按钮 (直接跟在描述文字下方，移除了原本的头像和坐标区块) */}
+            {/* 按钮 */}
             <div className="flex items-center justify-start gap-6">
               <button 
                 onClick={handleExploreClick}
