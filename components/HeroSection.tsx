@@ -117,14 +117,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
             {/* 描述文字 */}
             <p className="text-lg md:text-xl text-gray-100 font-medium max-w-2xl leading-relaxed mb-8 drop-shadow-md">
               {language === 'zh' 
-                ? '打破常规传统的设计视觉，将最前沿的视觉体验带给您。' 
+                ? '打破常规设计视觉，将最前沿的视觉带给您。' 
                 : 'Drive Visual Growth, And Harness Ai-Powered Content — Up To 50x Faster.'}
             </p>
 
-            {/* 👉 重新加回来的：头像与坐标区块 */}
+            {/* 头像与坐标区块 */}
             <div className="flex items-center gap-4 mb-10 border-t border-white/20 pt-6 w-full max-w-md justify-start">
               <div className="w-12 h-12 rounded-full bg-gray-500 overflow-hidden flex items-center justify-center shrink-0 border border-white/30 shadow-md">
-                 <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop" alt="avatar" className="w-full h-full object-cover" />
+                 {/* 👉 修改1: Hero 部分的头像 */}
+                 <img src="/2ae4006dbc0d00fcd6122f18035e7ffc7cd0a7a6128fe-ZBEQ0q_fw1200webp.jpg" alt="avatar" className="w-full h-full object-cover" />
               </div>
               <div className="flex flex-col text-sm font-bold text-gray-200 items-start text-left drop-shadow-md">
                 <span>{language === 'zh' ? '坐标' : 'Location'} / <Star className="inline w-3 h-3 mb-0.5 text-yellow-400" fill="currentColor"/> {contactContent.baseLabel}</span>
@@ -245,7 +246,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                  <div className="w-full md:w-[35%] h-[60vh] md:h-full bg-white flex flex-col relative z-10 shadow-[-10px_0_20px_rgba(0,0,0,0.1)] shrink-0">
                    <div className="flex items-center justify-between p-5 border-b border-gray-100 shrink-0">
                      <div className="flex items-center gap-3">
-                       <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden shrink-0"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop" alt="avatar" className="w-full h-full object-cover"/></div>
+                       {/* 👉 修改2: 弹窗细节部分的头像 */}
+                       <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden shrink-0"><img src="/2ae4006dbc0d00fcd6122f18035e7ffc7cd0a7a6128fe-ZBEQ0q_fw1200webp.jpg" alt="avatar" className="w-full h-full object-cover"/></div>
                        <div className="flex flex-col"><span className="font-bold text-sm text-[#111] leading-none mb-1">Silence 7C</span><span className="text-[10px] text-gray-500 font-medium">Visual Designer</span></div>
                      </div>
                      <button onClick={() => setSelectedProject(null)} className="hidden md:flex p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors text-gray-500 hover:text-black shrink-0"><X size={20} /></button>
