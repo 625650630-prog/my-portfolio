@@ -97,6 +97,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       <style>{`
           @keyframes marquee-slow { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
           .animate-marquee-logos { animation: marquee-slow 40s linear infinite; }
+          .text-shadow-hard { text-shadow: 0 4px 8px rgba(0,0,0,0.5); }
       `}</style>
 
       {/* Hero 图片背景大容器 */}
@@ -110,12 +111,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           <div className="w-full max-w-4xl flex flex-col items-start justify-center">
             
             {/* 标题 */}
-            <h1 className="text-7xl md:text-8xl lg:text-[11rem] font-serif text-white tracking-tighter leading-none mb-6 lg:mb-10 relative drop-shadow-lg">
+            <h1 className="text-7xl md:text-8xl lg:text-[11rem] font-serif text-white tracking-tighter leading-none mb-6 lg:mb-10 relative text-shadow-hard">
               Hello<sup className="text-5xl md:text-8xl absolute top-4 ml-1">+</sup>
             </h1>
             
             {/* 描述文字 */}
-            <p className="text-lg md:text-xl text-gray-100 font-medium max-w-2xl leading-relaxed mb-8 drop-shadow-md">
+            <p className="text-lg md:text-xl text-gray-100 font-medium max-w-2xl leading-relaxed mb-8 text-shadow-hard">
               {language === 'zh' 
                 ? '打破常规传统设计视觉，将最前沿的视觉体验带给您。期待您的联系' 
                 : 'Drive Visual Growth, And Harness Ai-Powered Content — Up To 50x Faster.'}
@@ -126,7 +127,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               <div className="w-12 h-12 rounded-full bg-gray-500 overflow-hidden flex items-center justify-center shrink-0 border border-white/30 shadow-md">
                  <img src="/2ae4006dbc0d00fcd6122f18035e7ffc7cd0a7a6128fe-ZBEQ0q_fw1200webp.jpg" alt="avatar" className="w-full h-full object-cover" />
               </div>
-              <div className="flex flex-col text-sm font-bold text-gray-200 items-start text-left drop-shadow-md">
+              <div className="flex flex-col text-sm font-bold text-gray-100 items-start text-left text-shadow-hard">
                 <span>{language === 'zh' ? '坐标' : 'Location'} / <Star className="inline w-3 h-3 mb-0.5 text-yellow-400" fill="currentColor"/> {contactContent.baseLabel}</span>
                 <span className="text-white font-medium text-base mt-0.5">{contactContent.locationValue}</span>
               </div>
@@ -142,7 +143,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               </button>
               <button 
                 onClick={() => onNavigate('contact')}
-                className="font-bold text-sm lg:text-base text-white hover:text-gray-300 transition-colors flex items-center gap-2 group bg-black/30 backdrop-blur-md px-8 py-4 rounded-full border border-white/10"
+                className="font-bold text-sm lg:text-base text-white hover:text-gray-200 transition-colors flex items-center gap-2 group bg-black/40 backdrop-blur-md px-8 py-4 rounded-full border border-white/20 shadow-lg"
               >
                 {language === 'zh' ? '联系作者' : 'Our Pricing'}
                 <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
@@ -183,7 +184,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700"></div>
               
               <div className="absolute bottom-0 left-0 w-full p-6 lg:p-8 flex flex-col justify-end h-full">
-                {/* 常驻/初始显示的标题区域 */}
+                {/* 标题 */}
                 <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-3 mb-2 lg:mb-0 transition-all duration-700 group-hover:mb-4">
                   <div className="flex items-center gap-3">
                     <span className="text-white font-black text-3xl lg:text-4xl opacity-80 group-hover:opacity-100 group-hover:text-[#ff5030] transition-colors shrink-0">{item.number}</span>
@@ -195,7 +196,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                   <div className="hidden lg:block h-[2px] w-8 bg-[#ff5030] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 delay-100"></div>
                 </div>
                 
-                {/* 👉 Hover时展开的详情区域 (删除了重复的 <h3> 标题) */}
+                {/* 👉 展开的描述内容（已去掉重复的标题 h3） */}
                 <div className="opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-100 flex flex-col overflow-hidden max-h-0 group-hover:max-h-[300px]">
                   <div className="min-w-[250px] md:min-w-[300px]">
                     <p className="text-gray-300 text-sm md:text-base leading-relaxed hidden lg:block line-clamp-2 mt-2">{item.desc}</p>
