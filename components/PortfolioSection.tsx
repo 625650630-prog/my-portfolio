@@ -10,7 +10,8 @@ interface PortfolioSectionProps {
 }
 
 export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, externalFilter }) => {
-  const [filter, setFilter] = useState<string>('All');
+  // 👇 修改点1：默认状态设为第一个分类（Category.DESIGN），而不是 'All'
+  const [filter, setFilter] = useState<string>(Category.DESIGN);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [displayProject, setDisplayProject] = useState<Project | null>(null);
   const [isModalRendered, setIsModalRendered] = useState(false);
@@ -54,14 +55,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
         <div className="flex justify-center mb-10 w-full">
           <div className="inline-flex flex-wrap items-center justify-center p-1.5 md:p-2 bg-gray-100/80 backdrop-blur-md rounded-full shadow-inner gap-1 md:gap-2">
             
-            <button 
-              onClick={() => handleFilter('All')} 
-              className={`px-6 py-2.5 rounded-full text-sm md:text-base font-bold transition-all duration-300 ${
-                filter === 'All' ? 'bg-white text-[#111] shadow-sm' : 'text-gray-500 hover:text-[#111]'
-              }`}
-            >
-              {language === 'zh' ? '全部' : 'All'}
-            </button>
+            {/* 👇 修改点2：已删除原先单独渲染的“全部”按钮 */}
 
             {Object.values(Category).map((catValue) => {
               const catString = catValue ? String(catValue).toLowerCase() : '';
