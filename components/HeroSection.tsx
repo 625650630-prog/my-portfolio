@@ -85,14 +85,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       titleZh: '商业影像拍摄', 
       titleEn: 'Commercial Photography', // 👈 帮你修正了英文
       desc: '专业的商业产品摄影与视频拍摄，全面呈现产品质感和用户体验。', 
-      img: '/xmt.jpg' // 👈 替换成你的第 3 张图片名
+      img: '/SY.jpg' // 👈 替换成你的第 3 张图片名
     },
     { 
       number: '04', 
       titleZh: '新媒体内容制作', 
       titleEn: 'New Media Content', // 👈 帮你修正了英文
       desc: '提供从创意策划、制图执行到后期运营的一站式服务。', 
-      img: '/SY.jpg' // 👈 替换成你的第 4 张图片名 
+      img: '/xmt.jpg' // 👈 替换成你的第 4 张图片名 
     },
     { 
       number: '05', 
