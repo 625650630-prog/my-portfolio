@@ -361,12 +361,13 @@ function App() {
         );
       case 'portfolio':
         return (
-          <div className="pt-20 w-full max-w-[96vw] mx-auto">
-             <div className="mb-24">
-               <h1 className="text-[8vw] leading-none font-black mb-8 text-black dark:text-white transition-colors duration-300">
+          <div className="pt-8 md:pt-16 w-full max-w-[96vw] mx-auto">
+             {/* 👉 这里修改了标题的样式：居中对齐、缩小字号、优化间距 */}
+             <div className="mb-16 flex flex-col items-center text-center">
+               <h1 className="text-3xl md:text-5xl tracking-widest font-black mb-6 text-black dark:text-white transition-colors duration-300">
                  {PORTFOLIO_PAGE_DATA[language].title}
                </h1>
-               <p className="text-2xl text-gray-500 dark:text-gray-400 max-w-2xl font-medium transition-colors duration-300">
+               <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 max-w-2xl font-medium transition-colors duration-300">
                  {PORTFOLIO_PAGE_DATA[language].description}
                </p>
              </div>
