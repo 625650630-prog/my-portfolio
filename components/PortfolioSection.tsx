@@ -66,7 +66,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
 
             {/* 遍历数据里的分类 */}
             {Object.values(Category).map(cat => {
-              // 👉 核心修复：不仅过滤 Article，还要过滤掉数据自带的 All
+              // 过滤掉数据自带的 All 和 Article
               const catString = cat ? cat.toString().toLowerCase() : '';
               if (!catString || catString === 'article' || catString === 'all') return null;
               
