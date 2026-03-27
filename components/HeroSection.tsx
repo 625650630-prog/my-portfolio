@@ -67,14 +67,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
   // ========================================================
   // 👉 核心：手风琴作品数据（请确保 targetCategory 对应你 types.ts 里的定义）
   // ========================================================
-  const showcaseData = [
+const showcaseData = [
     { 
       number: '01', 
       titleZh: '电商视觉设计', 
       titleEn: 'E-commerce Visual', 
       desc: '为品牌店铺打造可扩展的视觉规范与大促氛围包装。', 
       img: '/DS.png',
-      targetCategory: Category.DESIGN // 👈 对应作品集里的“电商视觉设计”
+      targetCategory: Category.DESIGN 
     },
     { 
       number: '02', 
@@ -82,7 +82,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       titleEn: 'AIGC Exploration', 
       desc: '结合 AI 工具生成极具商业实用的视觉效果图。', 
       img: '/AI.png',
-      targetCategory: Category.AIGC // 👈 对应作品集里的“AIGC项目”
+      targetCategory: Category.AIGC 
     },
     { 
       number: '03', 
@@ -90,7 +90,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       titleEn: 'Commercial Photography', 
       desc: '专业的产品摄影与视频拍摄，呈现极致产品质感。', 
       img: '/SY.jpg',
-      targetCategory: Category.VIDEO // 👈 对应作品集里的“商业拍摄与视频”
+      targetCategory: Category.VIDEO_PHOTO // 👈 修改：对应 types.ts
     },
     { 
       number: '04', 
@@ -98,7 +98,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       titleEn: 'New Media Content', 
       desc: '提供创意策划、制图执行到后期运营的一站式服务。', 
       img: '/xmt.jpg',
-      targetCategory: Category.OPERATION // 👈 对应作品集里的“新媒体运营”
+      targetCategory: Category.NEW_MEDIA // 👈 修改：对应 types.ts
     },
     { 
       number: '05', 
@@ -106,7 +106,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
       titleEn: 'Diverse Design', 
       desc: '融合平面、产品、视觉传达等不同方向的落地。', 
       img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop',
-      targetCategory: Category.DIVERSE // 👈 对应作品集里的“多元视觉设计”
+      targetCategory: Category.MULTIVERSAL // 👈 修改：对应 types.ts
     }
   ];
 
