@@ -65,9 +65,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
   const marqueeTrack = [...skillsList, ...skillsList, ...skillsList];
 
   // ========================================================
-  // 👉 核心：手风琴作品数据（请确保 targetCategory 对应你 types.ts 里的定义）
+  // 👉 核心：手风琴作品数据
   // ========================================================
-const showcaseData = [
+  const showcaseData = [
     { 
       number: '01', 
       titleZh: '电商视觉设计', 
@@ -90,7 +90,7 @@ const showcaseData = [
       titleEn: 'Commercial Photography', 
       desc: '专业的产品摄影与视频拍摄，呈现极致产品质感。', 
       img: '/SY.jpg',
-      targetCategory: Category.VIDEO_PHOTO // 👈 修改：对应 types.ts
+      targetCategory: Category.VIDEO_PHOTO
     },
     { 
       number: '04', 
@@ -98,7 +98,7 @@ const showcaseData = [
       titleEn: 'New Media Content', 
       desc: '提供创意策划、制图执行到后期运营的一站式服务。', 
       img: '/xmt.jpg',
-      targetCategory: Category.NEW_MEDIA // 👈 修改：对应 types.ts
+      targetCategory: Category.NEW_MEDIA
     },
     { 
       number: '05', 
@@ -106,7 +106,7 @@ const showcaseData = [
       titleEn: 'Diverse Design', 
       desc: '融合平面、产品、视觉传达等不同方向的落地。', 
       img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop',
-      targetCategory: Category.MULTIVERSAL // 👈 修改：对应 types.ts
+      targetCategory: Category.MULTIVERSAL
     }
   ];
 
@@ -174,7 +174,7 @@ const showcaseData = [
       </div>
 
       {/* 精选作品展示区 */}
-      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-32 mt-10 relative">
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-20 pb-10 mt-10 relative">
         <div className="flex flex-col items-center text-center mb-16 border-b-2 border-gray-100 pb-10 px-4">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111]">{language === 'zh' ? '精选优质作品' : 'Selected Works'}</h2>
           <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic">Create a visual feast</h3>
@@ -185,7 +185,6 @@ const showcaseData = [
             <div 
               key={index} 
               className="group relative flex-1 lg:hover:flex-[4] hover:flex-[3] rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] cursor-pointer shadow-sm" 
-              // 👇 修改点：点击时调用分类筛选并跳转
               onClick={() => {
                 onCategorySelect(item.targetCategory);
                 onNavigate('portfolio');
@@ -217,7 +216,106 @@ const showcaseData = [
         </div>
       </div>
 
-      {/* ... 保持下方瀑布流和弹窗逻辑不变 ... */}
+      {/* ================= 更多案例预览 (瀑布流) ================= */}
+      <div className="w-full max-w-[95vw] lg:max-w-[90vw] mx-auto pt-16 pb-32 relative">
+        <div className="flex flex-col items-center text-center mb-12 border-b-2 border-gray-100 pb-8 px-4">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight mb-3 text-[#111]">
+            {language === 'zh' ? '更多案例预览' : 'More Cases Preview'}
+          </h2>
+          <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic">
+            Inspiration & Details
+          </h3>
+        </div>
+
+        {/* 瀑布流容器 */}
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+          {allProjects.map((project, index) => (
+            <div
+              key={project.id || index}
+              className="break-inside-avoid relative group cursor-pointer rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-50"
+              onClick={() => {
+                setSelectedProject(project);
+                setZoomScale(1);
+                setPanPosition({ x: 0, y: 0 });
+              }}
+            >
+              {project.image ? (
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+              ) : (
+                <div className="w-full aspect-[4/3] flex items-center justify-center text-gray-400">无图片</div>
+              )}
+              {/* 鼠标悬浮时的遮罩和图标 */}
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <ZoomIn className="text-white w-10 h-10" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ================= 滚轮缩放 + 拖拽 大图弹窗 ================= */}
+      {isModalRendered && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md select-none">
+          {/* 关闭按钮 */}
+          <button
+            onClick={() => setSelectedProject(null)}
+            className="absolute top-6 right-6 z-50 p-3 rounded-full bg-white/10 hover:bg-white/30 text-white transition-colors"
+          >
+            <X size={24} />
+          </button>
+
+          {/* 底部操作提示 */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 text-white/80 bg-black/50 px-6 py-3 rounded-full text-sm font-medium tracking-wider backdrop-blur-sm whitespace-nowrap">
+            <span className="flex items-center gap-2"><ZoomIn size={16}/> 滚轮缩放</span>
+            <span className="w-px h-4 bg-white/30"></span>
+            <span className="flex items-center gap-2">按住拖拽移动</span>
+            <span className="w-px h-4 bg-white/30"></span>
+            <span className="text-gray-400">当前缩放: {Math.round(zoomScale * 100)}%</span>
+          </div>
+
+          {/* 交互核心区 */}
+          <div
+            className="w-full h-full flex items-center justify-center overflow-hidden"
+            onWheel={(e) => {
+              setZoomScale((prev) => {
+                const newScale = e.deltaY < 0 ? prev * 1.1 : prev / 1.1;
+                // 限制缩放 0.5倍 到 5倍
+                return Math.min(Math.max(newScale, 0.5), 5);
+              });
+            }}
+            onMouseDown={() => setIsDragging(true)}
+            onMouseMove={(e) => {
+              if (isDragging) {
+                setPanPosition((prev) => ({
+                  x: prev.x + e.movementX,
+                  y: prev.y + e.movementY,
+                }));
+              }
+            }}
+            onMouseUp={() => setIsDragging(false)}
+            onMouseLeave={() => setIsDragging(false)}
+          >
+            {displayProject?.image && (
+              <img
+                src={displayProject.image}
+                alt={displayProject.title}
+                draggable={false} // 禁止浏览器原生拖拽图，不然会和我们的平移冲突
+                style={{
+                  transform: `translate(${panPosition.x}px, ${panPosition.y}px) scale(${zoomScale})`,
+                  transition: isDragging ? 'none' : 'transform 0.1s ease-out',
+                  cursor: isDragging ? 'grabbing' : 'grab',
+                }}
+                className="max-w-full max-h-[90vh] object-contain shadow-2xl"
+              />
+            )}
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 };
