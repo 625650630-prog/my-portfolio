@@ -8,16 +8,16 @@ export const CATEGORY_LABELS: Record<Language, Record<string, string>> = {
     'All': '全部',
     'Commercial Visual Design': '电商视觉设计',
     'AIGC Projects': 'AIGC视觉探索',
-    'New Media Operations': '新媒体内容制作',
     'Commercial Photo & Video': '商业影像拍摄',
+    'New Media Operations': '新媒体内容制作',
     'Multiversal Design': '多元设计落地'
   },
   en: {
     'All': 'All',
     'Commercial Visual Design': 'Commercial Visual Design',
     'AIGC Projects': 'AIGC Projects',
-    'New Media Operations': 'New Media Operations',
     'Commercial Photo & Video': 'Commercial Photo & Video',
+    'New Media Operations': 'New Media Operations',
     'Multiversal Design': 'Multiversal Design Implementation'
   }
 };
