@@ -64,42 +64,47 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
   ];
   const marqueeTrack = [...skillsList, ...skillsList, ...skillsList];
 
- // 手风琴作品数据
+  // 手风琴作品数据 - 已绑定对应的 targetCategory
   const showcaseData = [
     { 
       number: '01', 
       titleZh: '电商视觉设计', 
-      titleEn: 'E-commerce Visual', // 👈 帮你修正了英文
+      titleEn: 'E-commerce Visual', 
       desc: '为品牌店铺打造可扩展的视觉规范与大促氛围包装，提升用户转化。', 
-      img: '/DS.png' // 👈 替换成你的第 1 张图片名 
+      img: '/DS.png',
+      targetCategory: Category.DESIGN // 假设电商属于设计分类
     },
     { 
       number: '02', 
       titleZh: 'AIGC视觉探索', 
-      titleEn: 'AIGC Exploration', // 👈 帮你修正了英文
+      titleEn: 'AIGC Exploration', 
       desc: '结合 Gemini 与 nano banana，生成极具商业实用的视觉效果图。', 
-      img: '/AI.png' // 👈 替换成你的第 2 张图片名  
+      img: '/AI.png',
+      targetCategory: Category.DESIGN
     },
     { 
       number: '03', 
       titleZh: '商业影像拍摄', 
-      titleEn: 'Commercial Photography', // 👈 帮你修正了英文
+      titleEn: 'Commercial Photography', 
       desc: '专业的商业产品摄影与视频拍摄，全面呈现产品质感和用户体验。', 
-      img: '/SY.jpg' // 👈 替换成你的第 3 张图片名
+      img: '/SY.jpg',
+      targetCategory: Category.VIDEO // 假设影像属于视频分类
     },
     { 
       number: '04', 
       titleZh: '新媒体内容制作', 
-      titleEn: 'New Media Content', // 👈 帮你修正了英文
+      titleEn: 'New Media Content', 
       desc: '提供从创意策划、制图执行到后期运营的一站式服务。', 
-      img: '/xmt.jpg' // 👈 替换成你的第 4 张图片名 
+      img: '/xmt.jpg',
+      targetCategory: Category.DESIGN 
     },
     { 
       number: '05', 
       titleZh: '多元设计落地', 
-      titleEn: 'Diverse Design', // 👈 帮你修正了英文
+      titleEn: 'Diverse Design', 
       desc: '融合平面设计、室内设计、产品设计、视觉传达、数字交互等不同方向。', 
-      img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop' 
+      img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop',
+      targetCategory: Category.DESIGN
     }
   ];
 
@@ -206,10 +211,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
           <h3 className="text-xl md:text-2xl font-light uppercase tracking-widest text-gray-500 italic mt-2">Create a visual feast</h3>
         </div>
         
-        {/* 手风琴作品集 */}
+        {/* 手风琴作品集 - 点击时自动筛选分类并跳转 */}
         <div className="w-full flex flex-col lg:flex-row gap-4 h-[750px] lg:h-[650px]">
           {showcaseData.map((item, index) => (
-            <div key={index} className="group relative flex-1 lg:hover:flex-[4] hover:flex-[3] rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] cursor-pointer shadow-sm hover:shadow-2xl" onClick={() => onCategorySelect(Category.ALL)}>
+            <div 
+              key={index} 
+              className="group relative flex-1 lg:hover:flex-[4] hover:flex-[3] rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] cursor-pointer shadow-sm hover:shadow-2xl" 
+              onClick={() => {
+                onCategorySelect(item.targetCategory); // 1. 执行分类筛选
+                onNavigate('portfolio');             // 2. 执行页面跳转
+              }}
+            >
               <img src={item.img} alt={item.titleEn} className="absolute inset-0 w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-700"></div>
               
@@ -226,7 +238,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
                   <div className="hidden lg:block h-[2px] w-8 bg-[#ff5030] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 delay-100"></div>
                 </div>
                 
-                {/* 👉 展开的描述内容（已去掉重复的标题 h3） */}
+                {/* 展开描述 */}
                 <div className="opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-100 flex flex-col overflow-hidden max-h-0 group-hover:max-h-[300px]">
                   <div className="min-w-[250px] md:min-w-[300px]">
                     <p className="text-gray-300 text-sm md:text-base leading-relaxed hidden lg:block line-clamp-2 mt-2">{item.desc}</p>
