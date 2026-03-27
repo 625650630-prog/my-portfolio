@@ -66,8 +66,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onCategory
 
   // 手风琴作品数据
   const showcaseData = [
-    { number: '01', titleZh: '电商视觉设计', titleEn: 'AIGC Exploration', desc: '结合 Gemini 与 nano banana，生成极具商业实用的视觉效果图。', img: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop' },
-    { number: '02', titleZh: 'AIGC视觉探索', titleEn: 'E-commerce Visual', desc: '为品牌店铺打造可扩展的视觉规范与大促氛围包装，提升用户转化。', img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop' },
+    { number: '01', titleZh: '电商视觉设计', titleEn: 'AIGC Exploration', desc: '为品牌店铺打造可扩展的视觉规范与大促氛围包装，提升用户转化。', img: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop' },
+    { number: '02', titleZh: 'AIGC视觉探索', titleEn: 'E-commerce Visual', desc: '结合 Gemini 与 nano banana，生成极具商业实用的视觉效果图。', img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop' },
     { number: '03', titleZh: '商业影像拍摄', titleEn: 'New Media Motion', desc: '专业的商业产品摄影与视频拍摄，全面呈现产品质感和用户体验。', img: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1000&auto=format&fit=crop' },
     { number: '04', titleZh: '新媒体内容制作', titleEn: 'Commercial Photo', desc: '提供从创意策划、制图执行到后期运营的一站式服务。', img: 'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=1000&auto=format&fit=crop' },
     { number: '05', titleZh: '多元设计落地', titleEn: 'UI/UX Design', desc: '融合平面设计、室内设计、产品设计、视觉传达、数字交互等不同方向。', img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop' }
