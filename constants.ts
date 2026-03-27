@@ -5,20 +5,20 @@ import { ARTICLE_DATA } from './src/data/articles';
 
 export const CATEGORY_LABELS: Record<Language, Record<string, string>> = {
   zh: {
-    'All': '全部',
-    'Commercial Visual Design': '电商视觉设计',
-    'AIGC Projects': 'AIGC视觉探索',
-    'Commercial Photo & Video': '商业影像拍摄',
-    'New Media Operations': '新媒体内容制作',
-    'Multiversal Design': '多元设计落地'
+    'All': '全部', // 假设你 All 的枚举值就是字符串 'All'，如果也是枚举，请改为 [Category.ALL]
+    [Category.DESIGN]: '电商视觉设计',
+    [Category.AIGC]: 'AIGC视觉探索',
+    [Category.VIDEO]: '商业影像拍摄',
+    [Category.OPERATION]: '新媒体内容制作',
+    [Category.DIVERSE]: '多元设计落地'
   },
   en: {
     'All': 'All',
-    'Commercial Visual Design': 'Commercial Visual Design',
-    'AIGC Projects': 'AIGC Projects',
-    'Commercial Photo & Video': 'Commercial Photo & Video',
-    'New Media Operations': 'New Media Operations',
-    'Multiversal Design': 'Multiversal Design Implementation'
+    [Category.DESIGN]: 'Commercial Visual Design',
+    [Category.AIGC]: 'AIGC Projects',
+    [Category.VIDEO]: 'Commercial Photo & Video',
+    [Category.OPERATION]: 'New Media Operations',
+    [Category.DIVERSE]: 'Multiversal Design Implementation'
   }
 };
 
