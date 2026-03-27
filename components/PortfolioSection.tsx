@@ -21,12 +21,12 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
     }
   }, [externalFilter]);
 
-  const currentProjects = PROJECTS[language];
+  // 🛡️ 防御性编程：确保 PROJECTS 存在，防止 undefined 报错
+  const currentProjects = PROJECTS[language] || []; 
   const filteredProjects = filter === 'All' 
     ? currentProjects 
-    : currentProjects.filter(p => p.category === filter);
+    : currentProjects.filter(p => p?.category === filter);
 
-  // 弹窗控制逻辑
   useEffect(() => {
     if (selectedProject) {
       setDisplayProject(selectedProject);
@@ -54,7 +54,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
         <div className="flex justify-center mb-10 w-full">
           <div className="inline-flex flex-wrap items-center justify-center p-1.5 md:p-2 bg-gray-100/80 backdrop-blur-md rounded-full shadow-inner gap-1 md:gap-2">
             
-            {/* 我们手动固定的“全部”按钮 */}
             <button 
               onClick={() => handleFilter('All')} 
               className={`px-6 py-2.5 rounded-full text-sm md:text-base font-bold transition-all duration-300 ${
@@ -64,12 +63,13 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
               {language === 'zh' ? '全部' : 'All'}
             </button>
 
-            {/* 遍历数据里的分类 */}
-            {Object.values(Category).map(cat => {
-              // 过滤掉数据自带的 All 和 Article
-              const catString = cat ? cat.toString().toLowerCase() : '';
+            {Object.values(Category).map((catValue) => {
+              const catString = catValue ? String(catValue).toLowerCase() : '';
               if (!catString || catString === 'article' || catString === 'all') return null;
               
+              // 🛡️ 解决 TS 索引报错：显式断言类型
+              const cat = catValue as Category; 
+
               return (
                 <button 
                   key={cat} 
@@ -78,7 +78,8 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
                     filter === cat ? 'bg-white text-[#111] shadow-sm' : 'text-gray-500 hover:text-[#111]'
                   }`}
                 >
-                  {CATEGORY_LABELS[language][cat] || cat}
+                  {/* 🛡️ 确保 CATEGORY_LABELS 安全访问 */}
+                  {(CATEGORY_LABELS[language] && CATEGORY_LABELS[language][cat]) || cat}
                 </button>
               );
             })}
@@ -88,17 +89,18 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
         {/* ================= 浅灰色大底板 + 模块化网格展示区 ================= */}
         <div className="w-full bg-[#f7f8f9] rounded-[2.5rem] md:rounded-[3rem] p-4 md:p-6 lg:p-10 shadow-sm border border-gray-100/50">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, index) => (
               <div 
-                key={project.id} 
+                // 🛡️ 防止 ID 缺失
+                key={project?.id || index} 
                 className="group cursor-pointer bg-white rounded-[2rem] shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 transform-gpu hover:-translate-y-1 overflow-hidden"
                 onClick={() => setSelectedProject(project)}
               >
                 <div className="w-full aspect-[4/3] bg-gray-50 relative flex items-center justify-center overflow-hidden">
-                  {project.image ? (
+                  {project?.image ? (
                       <img 
                         src={project.image} 
-                        alt={project.title} 
+                        alt={project?.title || 'project'} 
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                       />
                   ) : (
@@ -139,10 +141,10 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
 
                  <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col">
                    <div className="w-full bg-[#f7f8f9] relative flex items-start justify-center p-0 md:p-8 min-h-[50vh]">
-                      {displayProject.image ? (
+                      {displayProject?.image ? (
                           <img 
                             src={displayProject.image} 
-                            alt={displayProject.title} 
+                            alt={displayProject?.title || 'project'} 
                             className="w-full h-auto object-contain md:rounded-xl shadow-sm" 
                           />
                       ) : (
@@ -152,13 +154,15 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
 
                    <div className="p-8 md:p-12 text-[#111] flex flex-col md:flex-row gap-8 md:gap-16 shrink-0 bg-white border-t border-gray-100">
                       <div className="md:w-1/3 shrink-0">
-                        <h2 className="text-3xl md:text-4xl font-black mb-4 leading-tight">{displayProject.title}</h2>
+                        <h2 className="text-3xl md:text-4xl font-black mb-4 leading-tight">{displayProject?.title}</h2>
                         <div className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-6">
-                          {CATEGORY_LABELS[language][displayProject.category] || displayProject.category}
+                          {/* 🛡️ 安全读取分类 */}
+                          {(CATEGORY_LABELS[language] && CATEGORY_LABELS[language][displayProject?.category as Category]) || displayProject?.category}
                         </div>
                         
                         <div className="flex flex-wrap gap-2">
-                          {displayProject.tags.map(tag => (
+                          {/* 🛡️ 防止 tags 为 undefined 导致 .map 崩溃 */}
+                          {displayProject?.tags?.map(tag => (
                               <span key={tag} className="text-xs font-bold text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full">
                                 #{tag}
                               </span>
@@ -169,10 +173,10 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
                       <div className="md:w-2/3">
                         <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Project Overview</h3>
                         <p className="text-sm md:text-base text-gray-600 leading-relaxed whitespace-pre-wrap mb-8">
-                          {displayProject.description}
+                          {displayProject?.description}
                         </p>
 
-                        {displayProject.concept && (
+                        {displayProject?.concept && (
                           <>
                              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Design Concept</h3>
                              <p className="text-sm md:text-base text-gray-600 leading-relaxed font-medium">
