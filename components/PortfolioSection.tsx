@@ -47,7 +47,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
   };
 
   return (
-    // 去掉了固定最大宽度，改用 w-full，使其自动填满父级容器，与顶部 Logo 对齐
     <div className="w-full relative z-10 font-sans text-[#111] pb-32">
       <div className="w-full flex flex-col items-center">
 
@@ -55,6 +54,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
         <div className="flex justify-center mb-10 w-full">
           <div className="inline-flex flex-wrap items-center justify-center p-1.5 md:p-2 bg-gray-100/80 backdrop-blur-md rounded-full shadow-inner gap-1 md:gap-2">
             
+            {/* 我们手动固定的“全部”按钮 */}
             <button 
               onClick={() => handleFilter('All')} 
               className={`px-6 py-2.5 rounded-full text-sm md:text-base font-bold transition-all duration-300 ${
@@ -64,9 +64,11 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
               {language === 'zh' ? '全部' : 'All'}
             </button>
 
+            {/* 遍历数据里的分类 */}
             {Object.values(Category).map(cat => {
-              // 👉 核心修复：自动过滤掉枚举中的 'Article' 标签和可能的空白异常标签
-              if (!cat || cat.toString().toLowerCase() === 'article') return null;
+              // 👉 核心修复：不仅过滤 Article，还要过滤掉数据自带的 All
+              const catString = cat ? cat.toString().toLowerCase() : '';
+              if (!catString || catString === 'article' || catString === 'all') return null;
               
               return (
                 <button 
@@ -84,7 +86,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
         </div>
 
         {/* ================= 浅灰色大底板 + 模块化网格展示区 ================= */}
-        {/* w-full 保证宽度铺满，和上方对齐 */}
         <div className="w-full bg-[#f7f8f9] rounded-[2.5rem] md:rounded-[3rem] p-4 md:p-6 lg:p-10 shadow-sm border border-gray-100/50">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {filteredProjects.map((project) => (
@@ -93,7 +94,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
                 className="group cursor-pointer bg-white rounded-[2rem] shadow-sm hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-500 transform-gpu hover:-translate-y-1 overflow-hidden"
                 onClick={() => setSelectedProject(project)}
               >
-                {/* 封面缩略图容器 */}
                 <div className="w-full aspect-[4/3] bg-gray-50 relative flex items-center justify-center overflow-hidden">
                   {project.image ? (
                       <img 
@@ -118,21 +118,18 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
 
       </div>
 
-      {/* ================= 详情大图弹窗 (支持超长图) ================= */}
+      {/* ================= 详情大图弹窗 ================= */}
       {isModalRendered && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-10">
-           {/* 背景半透明遮罩 */}
            <div 
              className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${selectedProject ? 'opacity-100' : 'opacity-0'}`} 
              onClick={() => setSelectedProject(null)}
            ></div>
            
-           {/* 弹窗主体容器 */}
            <div className={`relative w-full max-w-5xl h-[90vh] bg-white rounded-[2rem] shadow-2xl flex flex-col transition-all duration-300 transform overflow-hidden ${selectedProject ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
              
              {displayProject && (
                <>
-                 {/* 悬浮关闭按钮 */}
                  <button 
                    onClick={() => setSelectedProject(null)} 
                    className="absolute top-6 right-6 z-50 p-3 rounded-full bg-white/80 backdrop-blur-md hover:bg-gray-100 text-[#111] transition-colors shadow-sm border border-gray-200/50"
@@ -140,10 +137,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
                    <X size={24} strokeWidth={2.5} />
                  </button>
 
-                 {/* 内容滚动区域 */}
                  <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col">
-                   
-                   {/* 上半部分：大图展示区 */}
                    <div className="w-full bg-[#f7f8f9] relative flex items-start justify-center p-0 md:p-8 min-h-[50vh]">
                       {displayProject.image ? (
                           <img 
@@ -156,7 +150,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
                       )}
                    </div>
 
-                   {/* 下半部分：文字信息区 */}
                    <div className="p-8 md:p-12 text-[#111] flex flex-col md:flex-row gap-8 md:gap-16 shrink-0 bg-white border-t border-gray-100">
                       <div className="md:w-1/3 shrink-0">
                         <h2 className="text-3xl md:text-4xl font-black mb-4 leading-tight">{displayProject.title}</h2>
@@ -189,7 +182,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ language, ex
                         )}
                       </div>
                    </div>
-                   
                  </div>
                </>
              )}
